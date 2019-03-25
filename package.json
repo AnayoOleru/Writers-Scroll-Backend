@@ -1,0 +1,19 @@
+{
+  "name": "hermes-ah-backend",
+  "version": "1.0.0",
+  "description": "Authors Haven - A Social platform for the creative at heart. =======",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andela/hermes-ah-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andela/hermes-ah-backend/issues"
+  },
+  "homepage": "https://github.com/andela/hermes-ah-backend#readme"
+}

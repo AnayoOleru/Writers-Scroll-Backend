@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/andela/hermes-ah-backend#readme",
   "devDependencies": {
-    "swagger-ui-express": "^4.0.2"
+    "swagger-ui-express": "^4.0.2",
+    "eslint": "^5.15.3",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
   }
 }

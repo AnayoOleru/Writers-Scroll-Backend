@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/andela/hermes-ah-backend/issues"
   },
-  "homepage": "https://github.com/andela/hermes-ah-backend#readme"
+  "homepage": "https://github.com/andela/hermes-ah-backend#readme",
+  "devDependencies": {
+    "swagger-ui-express": "^4.0.2"
+  }
 }

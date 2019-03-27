@@ -14,7 +14,8 @@
     "prettier:check": "prettier --check \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "check:lint-prettier": "npm run eslint:check && npm run prettier:check",
-    "pretest": "npm run check:lint-prettier"
+    "pretest": "npm run check:lint-prettier",
+    "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
     "type": "git",
@@ -32,12 +33,14 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.4.0",
+    "coveralls": "^3.0.3",
     "eslint": "^5.15.3",
     "eslint-config-airbnb-base": "^13.1.0",
-    "nodemon": "^1.18.10",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0",
     "prettier": "1.16.4",
     "swagger-ui-express": "^4.0.2"
   },

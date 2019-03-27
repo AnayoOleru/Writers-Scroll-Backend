@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../server/app';

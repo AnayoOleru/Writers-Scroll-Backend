@@ -9,7 +9,7 @@
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
     "seed": "sequelize db:seed:all",
-    "start:dev": "npm run migrate && nodemon server/app.js --exec babel-node",
+    "start:dev": "nodemon server/app.js --exec babel-node",
     "eslint:check": "node_modules/eslint/bin/eslint.js \"server/**/*.js\"",
     "prettier:check": "prettier --check \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",

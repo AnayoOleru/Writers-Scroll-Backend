@@ -3,6 +3,8 @@ node_js:
   _ "stable"
 services:
   - postgresql
+install:
+  - npm install
 script:
   - npm test
 after_success:

@@ -6,10 +6,10 @@
       "es6": true,
       "mocha": true
     },
+    "parserOptions": {
+      "sourceType": "module"
+  },
     "rules": {
-      "parserOptions": {
-        "sourceType": "module"
-    },
       "one-var": 0,
       "one-var-declaration-per-line": 0,
       "new-cap": 0,

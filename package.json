@@ -34,16 +34,18 @@
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
     "@babel/register": "^7.4.0",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
     "coveralls": "^3.0.3",
     "eslint": "^5.15.3",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-prettier": "^3.0.1",
+    "mocha": "^6.0.2",
     "nodemon": "^1.18.10",
     "nyc": "^13.3.0",
-    "prettier": "1.16.4",
-    "swagger-ui-express": "^4.0.2"
+    "prettier": "1.16.4"
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.0",
@@ -54,6 +56,7 @@
     "lint-staged": "^8.1.5",
     "pg": "^7.9.0",
     "sequelize": "^5.2.1",
+    "swagger-ui-express": "^4.0.2",
     "yarn": "^1.15.2"
   },
   "husky": {

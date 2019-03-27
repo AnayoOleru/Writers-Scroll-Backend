@@ -7,8 +7,10 @@
     "es6": true,
     "mocha": true
   },
+  "parser": "babel-eslint",
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "allowImportExportEverywhere": false
   },
   "rules": {
     "one-var": 0,

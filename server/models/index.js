@@ -12,6 +12,7 @@ let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);
 } else {
+<<<<<<< HEAD
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
@@ -19,11 +20,31 @@ fs
   .readdirSync(__dirname)
   .filter(file => (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js'))
   .forEach((file) => {
+=======
+  sequelize = new Sequelize(
+    config.database,
+    config.username,
+    config.password,
+    config
+  );
+}
+
+fs.readdirSync(__dirname)
+  .filter(
+    file =>
+      file.indexOf('.') !== 0 && file !== basename && file.slice(-3) === '.js'
+  )
+  .forEach(file => {
+>>>>>>> 467f771... chore(postgres-setup): setup postgres database
     const model = sequelize.import(path.join(__dirname, file));
     db[model.name] = model;
   });
 
+<<<<<<< HEAD
 Object.keys(db).forEach((modelName) => {
+=======
+Object.keys(db).forEach(modelName => {
+>>>>>>> 467f771... chore(postgres-setup): setup postgres database
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

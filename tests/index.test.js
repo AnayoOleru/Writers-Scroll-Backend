@@ -15,5 +15,3 @@ describe('HOMEPAGE', () => {
       });
   });
 });
-
-export { chai, expect, app };

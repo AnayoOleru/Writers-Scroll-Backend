@@ -1,12 +1,9 @@
 language: node_js
-node_js:
+nodejs:
   _ "stable"
-services:
-  - postgresql
-install:
-  - npm install
+cache:
+  directories:
+  - node_modules
 script:
+  -npm install
   - npm test
-after_success:
-  - npm run coverage
-

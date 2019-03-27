@@ -3,5 +3,8 @@ node_js:
   _ "stable"
 services:
   - postgresql
-
+script:
+  - npm test
+after_success:
+  - npm run coverage
 

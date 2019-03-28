@@ -1,5 +1,7 @@
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com)
 
+[![Build Status](https://travis-ci.com/andela/hermes-ah-backend.svg?branch=develop)](https://travis-ci.com/andela/hermes-ah-backend)
+
 Authors Haven - A Social platform for the creative at heart.
 
 ## Vision

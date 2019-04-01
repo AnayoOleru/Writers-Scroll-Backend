@@ -9,13 +9,14 @@
     "migrate": "sequelize db:migrate",
     "migrate:undo": "sequelize db:migrate:undo:all",
     "seed": "sequelize db:seed:all",
+    "db:reset": "npm run migrate:undo && npm run migrate && npm run seed",
     "start:dev": "npm run migrate && nodemon server/app.js --exec babel-node",
     "test": "export NODE_ENV=test && nyc mocha tests/**/*.test.js --timeout 20000 --require @babel/register --exit",
     "eslint:check": "node_modules/eslint/bin/eslint.js \"server/**/*.js\"",
     "prettier:check": "prettier --check \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "check:lint-prettier": "npm run eslint:check && npm run prettier:check",
-    "pretest": "npm run check:lint-prettier",
+    "pretest": "export NODE_ENV=test && npm run check:lint-prettier && npm run db:reset",
     "coverage": "nyc report --reporter=text-lcov | coveralls"
   },
   "repository": {
@@ -29,11 +30,6 @@
   },
   "homepage": "https://github.com/andela/hermes-ah-backend#readme",
   "devDependencies": {
-    "@babel/cli": "^7.2.3",
-    "@babel/core": "^7.4.0",
-    "@babel/node": "^7.2.2",
-    "@babel/preset-env": "^7.4.2",
-    "@babel/register": "^7.4.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "coveralls": "^3.0.3",
@@ -48,6 +44,11 @@
     "prettier": "1.16.4"
   },
   "dependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/register": "^7.4.0",
     "@babel/polyfill": "^7.4.0",
     "babel-eslint": "^10.0.1",
     "dotenv": "^7.0.0",
@@ -56,6 +57,7 @@
     "lint-staged": "^8.1.5",
     "pg": "^7.9.0",
     "sequelize": "^5.2.1",
+    "sequelize-cli": "^5.4.0",
     "swagger-ui-express": "^4.0.2",
     "yarn": "^1.15.2"
   },

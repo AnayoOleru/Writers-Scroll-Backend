@@ -1,6 +1,6 @@
 module.exports = {
   up: queryInterface =>
-    queryInterface.bulkInsert('Reporteds', [
+    queryInterface.bulkInsert('Reported_articles', [
       {
         id: 'c7900e08-5407-11e9-8647-d663bd873d93',
         reporter_id: '6517a6ea-662b-4eef-ab9f-20f89bd7099c',

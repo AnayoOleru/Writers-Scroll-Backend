@@ -35,22 +35,22 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      isactivated: {
+      is_activated: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      imageurl: {
+      image_url: {
         type: Sequelize.STRING,
       },
-      isadmin: {
+      is_admin: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      isreviewer: {
+      is_reviewer: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
-      isreported: {
+      is_reported: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

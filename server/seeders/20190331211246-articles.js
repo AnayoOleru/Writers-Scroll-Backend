@@ -13,8 +13,8 @@ module.exports = {
         category: 'Computer Science',
         bookmark_count: 54,
         likes_count: 23,
-        imageurl: 'https://picsum.photos/200/300',
-        isreported: false,
+        image_url: 'https://picsum.photos/200/300',
+        is_reported: false,
       },
       {
         id: 'fa3def47-153a-40bd-8181-a1c787e083d6',
@@ -28,8 +28,8 @@ module.exports = {
         category: 'Computer Science',
         bookmark_count: 23,
         likes_count: 3244,
-        imageurl: 'https://picsum.photos/200/300',
-        isreported: false,
+        image_url: 'https://picsum.photos/200/300',
+        is_reported: false,
       },
     ]),
 };

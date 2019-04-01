@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Drafts', {
+    return queryInterface.createTable('Followers', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -8,27 +8,13 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         unique: true,
       },
-      user_id: {
+      follower_id: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      title: {
-        type: Sequelize.STRING,
-      },
-      slug: {
-        type: Sequelize.STRING,
-      },
-      abstract: {
-        type: Sequelize.TEXT,
-      },
-      body: {
-        type: Sequelize.TEXT,
-      },
-      category: {
-        type: Sequelize.STRING,
-      },
-      imageurl: {
-        type: Sequelize.STRING,
+      followee_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -42,5 +28,5 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Drafts'),
+  down: queryInterface => queryInterface.dropTable('Followers'),
 };

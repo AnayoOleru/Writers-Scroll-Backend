@@ -34,22 +34,22 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    isactivated: {
+    is_activated: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    imageurl: {
+    image_url: {
       type: DataTypes.STRING,
     },
-    isadmin: {
+    is_admin: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isreviewer: {
+    is_reviewer: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
-    isreported: {
+    is_reported: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

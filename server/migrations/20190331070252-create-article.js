@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      imageurl: {
+      image_url: {
         type: Sequelize.STRING,
       },
       bookmark_count: {
@@ -40,8 +40,12 @@ module.exports = {
       likes_count: {
         type: Sequelize.INTEGER,
       },
-      isreported: {
+      is_reported: {
         type: Sequelize.BOOLEAN,
+      },
+      is_draft: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,

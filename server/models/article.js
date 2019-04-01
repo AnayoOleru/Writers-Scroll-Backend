@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    imageurl: {
+    image_url: {
       type: DataTypes.STRING,
     },
     bookmark_count: {
@@ -39,7 +39,11 @@ module.exports = (sequelize, DataTypes) => {
     likes_count: {
       type: DataTypes.INTEGER,
     },
-    isreported: {
+    is_reported: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    is_draft: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Reported = sequelize.define('Reported', {
+  const Reported = sequelize.define('Reported_article', {
     id: {
       allowNull: false,
       primaryKey: true,

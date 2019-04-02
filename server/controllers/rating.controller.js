@@ -27,13 +27,13 @@ const rating = {
         } catch (err) {
           res.status(404).json({
             status: 404,
-            data: 'Article does not exist',
+            error: 'Article does not exist',
           });
         }
       } catch (err) {
         res.status(404).json({
           status: 404,
-          data: 'User does not exist',
+          error: 'User does not exist',
         });
       }
       const ratingDetails = await Rating.create({
@@ -41,7 +41,7 @@ const rating = {
         article_id: req.body.article_id,
         rating_value: req.body.rating_value,
       });
-      res.status(200).json({
+      res.status(201).json({
         message: 'Thank you for rating this article',
         data: ratingDetails,
       });

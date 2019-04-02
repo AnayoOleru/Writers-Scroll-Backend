@@ -37,7 +37,7 @@ describe('POST RATING', () => {
         rating_value: 3,
       })
       .end((req, res) => {
-        expect(res).to.have.status(400);
+        expect(res).to.have.status(404);
         expect(res.body.error).to.equal('Article does not exist');
         done();
       });
@@ -70,11 +70,13 @@ describe('POST RATING', () => {
         expect(res).to.have.status(201);
         expect(res.body.message).to.equal('Thank you for rating this article');
         expect(res.body.data).to.be.an('object');
-        expect(res.body.data).to.have.all.key('user_id');
-        expect(res.body.data).to.have.all.key('article_id');
-        expect(res.body.data).to.have.all.key('rating_value');
-        expect(res.body.data[0].user_id).to.equal(ratingDetails.user_id);
-        expect(res.body.data[0].art).to.equal(ratingDetails.art);
+        expect(res.body.data).to.have.all.keys(
+          'user_id',
+          'article_id',
+          'rating_value',
+          'createdAt',
+          'updatedAt'
+        );
         done();
       });
   });

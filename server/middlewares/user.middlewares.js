@@ -45,7 +45,7 @@ const signUpValidator = async (req, res, next) => {
   const user = await findUser('email', email);
   if (user) {
     return res.status(409).send({
-      message: 'email alredy exist',
+      message: 'email already exist',
     });
   }
   return next();

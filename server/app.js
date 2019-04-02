@@ -1,6 +1,8 @@
+import '@babel/polyfill';
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import swaggerDocument from '../documentation/swagger.json';
+import routes from './routes';
 
 const app = express();
 
@@ -11,6 +13,8 @@ const port = process.env.PORT || 6000;
 app.get('/', (req, res) => {
   res.send('Welcone to Authors Heaven');
 });
+
+app.use('/api/v1', routes);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

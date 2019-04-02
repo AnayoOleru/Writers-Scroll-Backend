@@ -10,7 +10,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const port = process.env.PORT || 6000;
 
 app.get('/', (req, res) => {
-  res.send('Welcone to Authors Heaven');
+  res.send('Welcome to Authors Haven');
 });
 
 app.use('/api/v1', routes);

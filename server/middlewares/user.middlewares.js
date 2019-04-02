@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import joiFormater from '../helpers/joiFormater';
-import findUserByEmail from '../helpers/findUser';
+import findUser from '../helpers/findUser';
 
 const signUpValidator = async (req, res, next) => {
   const schema = Joi.object().keys({
@@ -42,7 +42,7 @@ const signUpValidator = async (req, res, next) => {
       message: formatedMessage,
     });
   }
-  const user = await findUserByEmail(email);
+  const user = await findUser('email', email);
   if (user) {
     return res.status(409).send({
       message: 'email alredy exist',

@@ -4,8 +4,8 @@ import middlewares from '../middlewares';
 
 const { signUpValidator } = middlewares;
 
-const authRoute = express.Router();
 const { authController } = controllers;
+const authRoute = express.Router();
 
 authRoute.post('/signup', signUpValidator.signUpValidator);
 authRoute.post(
@@ -15,5 +15,11 @@ authRoute.post(
 );
 authRoute.post('/signup', signUpValidator.signUpValidator);
 authRoute.post('/login', signUpValidator.loginValidator);
+
+authRoute.post(
+  '/signup',
+  middlewares.signUpValidator,
+  authController.signupController
+);
 
 export default authRoute;

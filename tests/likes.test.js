@@ -31,13 +31,8 @@ describe('LIKE', () => {
       })
       .end((err, res) => {
         expect(res.body).to.be.a('object');
-        expect(res.body.status).to.be.equal(400);
         expect(res.body.message).to.equal('id not valid');
         done();
-      });
-  });
-  it('should respone with 404 status for invalid article Id  ', done => {
-    chai
       .request(app)
       .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f')
       .set('Authorization', token)

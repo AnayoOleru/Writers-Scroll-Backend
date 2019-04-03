@@ -1,15 +1,5 @@
 import Joi from 'joi';
 
-const validateArticlePage = page => {
-  const schema = Joi.number().integer();
-  const { error } = Joi.validate(page, schema);
-
-  if (error) {
-    return false;
-  }
-  return true;
-};
-
 const validations = {
   /**
    * @description Validate UUIDs
@@ -31,7 +21,15 @@ const validations = {
 
     return valid;
   },
-  validateArticlePage,
+  validateArticlePage(page) {
+    const schema = Joi.number().integer();
+    const { error } = Joi.validate(page, schema);
+
+    if (error) {
+      return false;
+    }
+    return true;
+  },
   validProfileQueryString(query) {
     let valid = true;
     const searchableProfileFields = [

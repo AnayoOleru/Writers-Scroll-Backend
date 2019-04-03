@@ -11,7 +11,7 @@
     "seed": "sequelize db:seed:all",
     "db:reset": "npm run migrate:undo && npm run migrate && npm run seed",
     "start:dev": "npm run migrate && nodemon server/app.js --exec babel-node",
-    "test": "export NODE_ENV=test && nyc mocha tests/**/*.test.js --timeout 20000 --require @babel/register --exit",
+    "test": "export NODE_ENV=test && nyc  --reporter=html --reporter=text mocha tests/**/*.test.js --timeout 20000 --require @babel/register --exit",
     "eslint:check": "node_modules/eslint/bin/eslint.js \"server/**/*.js\"",
     "prettier:check": "prettier --check \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
     "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
@@ -67,7 +67,8 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
     }
   },
   "lint-staged": {

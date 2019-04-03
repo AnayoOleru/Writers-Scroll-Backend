@@ -13,10 +13,10 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'tes@gmail.com', password: 'test' })
       .end((err, res) => {
-        const { status, message } = res.body;
-        expect(status).to.be.equal(403);
+        const { status, errors } = res.body;
+        expect(status).to.be.equal(401);
         expect(res).to.be.a('object');
-        expect(message).to.be.equal('invalid username and/or password');
+        expect(errors.body[0]).to.be.equal('invalid username and/or password');
         done();
       });
   });
@@ -26,10 +26,10 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'ameachichuks@gmail.com', password: 'testMaster' })
       .end((err, res) => {
-        const { status, message } = res.body;
-        expect(status).to.be.equal(403);
+        const { status, errors } = res.body;
+        expect(status).to.be.equal(401);
         expect(res).to.be.a('object');
-        expect(message).to.be.equal('invalid username and/or password');
+        expect(errors.body[0]).to.be.equal('invalid username and/or password');
         done();
       });
   });
@@ -39,11 +39,12 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'ameachichuks@gmail.com', password: '12345678' })
       .end((err, res) => {
-        const { status, message, token } = res.body;
+        const { status, message, user } = res.body;
         expect(status).to.be.equal(200);
         expect(res).to.be.a('object');
+        expect(user).to.be.a('object');
+        expect(user).to.have.keys('email', 'token', 'bio', 'image');
         expect(message).to.be.equal('login was successfull');
-        expect(token).length.to.greaterThan(20);
         done();
       });
   });

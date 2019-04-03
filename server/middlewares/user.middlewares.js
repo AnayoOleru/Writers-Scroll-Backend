@@ -1,8 +1,10 @@
 import Joi from 'joi';
 import joiFormater from '../helpers/joiFormater';
-import findUser from '../helpers/findUser';
+import search from '../helpers/searchDatabase';
 import signupSchema from '../joiSchema/signupSchema';
 import loginSchema from '../joiSchema/loginSchema';
+
+const { findUser } = search;
 
 const signUpValidator = async (req, res, next) => {
   try {
@@ -18,7 +20,7 @@ const signUpValidator = async (req, res, next) => {
         message: formatedMessage,
       });
     }
-    const user = await findUser('email', email);
+    const user = await findUser(email);
     if (user) {
       return res.status(409).send({
         message: 'Email already exists',

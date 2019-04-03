@@ -1,6 +1,6 @@
 import express from 'express';
 import controllers from '../controllers';
-import ratingValidation from '../schema/ratingSchema';
+import ratingValidation from '../joiSchema/ratingSchema';
 
 const { ratingController } = controllers;
 

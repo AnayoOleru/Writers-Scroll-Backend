@@ -1,6 +1,8 @@
-import db from '../models/index';
+import search from '../helpers/searchDatabase';
+import model from '../models';
 
-const { User, Rating, Article } = db;
+const { Rating } = model;
+const { databaseError, findArticle } = search;
 
 const rating = {
   post: async (req, res) => {
@@ -12,28 +14,13 @@ const rating = {
      */
 
     try {
-      try {
-        await User.findOne({
-          where: {
-            id: req.body.user_id,
-          },
-        });
-        try {
-          await Article.findOne({
-            where: {
-              id: req.body.article_id,
-            },
-          });
-        } catch (err) {
-          res.status(404).json({
-            status: 404,
-            error: 'Article does not exist',
-          });
-        }
-      } catch (err) {
-        res.status(404).json({
+      const article = await findArticle(req.body.article_id);
+      if (!article) {
+        return res.status(404).send({
           status: 404,
-          error: 'User does not exist',
+          errors: {
+            body: ['Article does not exist'],
+          },
         });
       }
       const ratingDetails = await Rating.create({
@@ -46,22 +33,7 @@ const rating = {
         data: ratingDetails,
       });
     } catch (err) {
-      if (err.errors[0].type === 'unique violation') {
-        res.status(409).json({
-          status: 409,
-          error: 'You have already rated this article, thank you!!!',
-        });
-      } else if (err.errors[0].type === 'Validation error') {
-        res.status(400).json({
-          status: 400,
-          error: 'Rating value should range from 0 and 5',
-        });
-      } else {
-        res.status(500).json({
-          status: 500,
-          error: err.errors[0].message,
-        });
-      }
+      databaseError(err, res);
     }
   },
 };

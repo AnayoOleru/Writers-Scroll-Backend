@@ -1,3 +1,4 @@
+import authHelpers from '../helpers/auth';
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {
@@ -33,6 +34,13 @@ module.exports = (sequelize, DataTypes) => {
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+      validate: {
+        len: {
+          args: 8,
+          msg: 'password length must be at least 8 characters long',
+        },
+        isAlphanumeric: true,
+      },
     },
     is_activated: {
       type: DataTypes.BOOLEAN,
@@ -56,6 +64,12 @@ module.exports = (sequelize, DataTypes) => {
     research_field: {
       type: DataTypes.STRING,
     },
+  });
+  User.beforeCreate(user => {
+    user.password = authHelpers.hashPassword(user.password);
+  });
+  User.beforeUpdate(user => {
+    user.password = authHelpers.hashPassword(user.password);
   });
   return User;
 };

@@ -36,6 +36,25 @@ const validations = {
     return true;
   },
   validateArticlePage,
+  validProfileQueryString(query) {
+    let valid = true;
+    const searchableProfileFields = [
+      'first_name',
+      'last_name',
+      'title',
+      'email',
+      'is_reviewer',
+      'research_field',
+    ];
+
+    Object.keys(query).forEach(item => {
+      if (!searchableProfileFields.includes(item)) {
+        valid = false;
+      }
+    });
+
+    return valid;
+  },
 };
 
 export default validations;

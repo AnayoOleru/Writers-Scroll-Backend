@@ -5,6 +5,14 @@ const { User } = db;
 const error = ['invalid username and/or password'];
 const status = 401;
 
+/**
+ * @description - this method logs in a user
+ *
+ * @param {object} req - The request payload sent to the router
+ * @param {object} res - The response payload sent back from the controller
+ *
+ * @returns {object} - object
+ */
 const loginController = async (req, res) => {
   try {
     const { email, password } = req.body;

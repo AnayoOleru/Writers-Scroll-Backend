@@ -44,7 +44,7 @@ describe('LOGIN CONTROLLER TEST', () => {
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('login was successfull');
+        expect(message).to.be.equal('Login was successful');
         done();
       });
   });

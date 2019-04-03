@@ -30,6 +30,7 @@ const validations = {
     }
     return true;
   },
+
   validProfileQueryString(query) {
     let valid = true;
     const searchableProfileFields = [
@@ -70,6 +71,54 @@ const validations = {
     });
 
     return valid;
+  },
+
+  verifyEmail(req, res, next) {
+    const schema = Joi.object().keys({
+      email: Joi.string()
+        .email({ minDomainAtoms: 2 })
+        .strict()
+        .trim()
+        .min(2)
+        .required()
+        .error(() => 'Kindly enter a valid email'),
+    });
+    const { error } = Joi.validate(req.body, schema);
+    if (error) {
+      return res.status(400).send({
+        error: `${error.details[0].message}`,
+      });
+    }
+    return next();
+  },
+
+  validatePassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+    const schema = Joi.object().keys({
+      password: Joi.string()
+        .strict()
+        .trim()
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .min(6)
+        .required()
+        .error(() => 'Password is required'),
+    });
+
+    const { error } = Joi.validate(req.body, schema);
+    if (error) {
+      return res.status(400).send({
+        error: `${error.details[0].message}`,
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        status: 400,
+        error: 'Passwords do not match',
+      });
+    }
+
+    return next();
   },
 };
 

@@ -29,11 +29,7 @@ const validations = {
       }
     });
 
-    if (!valid) {
-      return false;
-    }
-
-    return true;
+    return valid;
   },
   validateArticlePage,
   validProfileQueryString(query) {
@@ -49,6 +45,28 @@ const validations = {
 
     Object.keys(query).forEach(item => {
       if (!searchableProfileFields.includes(item)) {
+        valid = false;
+      }
+    });
+
+    return valid;
+  },
+  validEditableProfileBody(body) {
+    let valid = true;
+    const editableProfileFields = [
+      'first_name',
+      'last_name',
+      'title',
+      'bio',
+      'is_activated',
+      'image_url',
+      'email',
+      'is_reviewer',
+      'research_field',
+    ];
+
+    Object.keys(body).forEach(item => {
+      if (!editableProfileFields.includes(item)) {
         valid = false;
       }
     });

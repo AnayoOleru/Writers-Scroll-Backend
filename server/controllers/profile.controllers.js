@@ -1,5 +1,6 @@
 import model from '../models';
 import validations from '../helpers/validations';
+import profiler from '../helpers/profiler';
 
 const { User } = model;
 
@@ -85,6 +86,35 @@ const controller = {
         message: 'Oops! There seem to be a database error',
       });
     }
+  },
+
+  async patchProfile(req, res) {
+    if (!validations.verifyUUID(req.params.id)) {
+      return res.status(400).json({
+        error: 'id not valid',
+      });
+    }
+
+    const updateBody = req.body;
+
+    const userProfile = await User.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!userProfile) {
+      return res.status(404).json({
+        error: 'no user found',
+      });
+    }
+    const user = await userProfile.update(updateBody);
+
+    const profile = profiler(user);
+
+    return res.status(200).json({
+      data: [profile],
+    });
   },
 };
 

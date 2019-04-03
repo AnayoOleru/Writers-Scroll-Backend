@@ -11,7 +11,7 @@ describe('LOGIN CONTROLLER TEST', () => {
     chai
       .request(app)
       .post(`${baseUrl}/login`)
-      .send({ email: 'test@gmail.com' })
+      .send({ email: 'tes@gmail.com', password: 'test' })
       .end((err, res) => {
         const { status, message } = res.body;
         expect(status).to.be.equal(403);

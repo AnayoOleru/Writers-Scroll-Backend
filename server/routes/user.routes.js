@@ -8,8 +8,8 @@ const { authController } = controllers;
 authRoute.post('/signup', Middleware.signUpValidator);
 authRoute.post(
   '/login',
-  authController.loginController,
-  Middleware.loginValidator
+  Middleware.loginValidator,
+  authController.loginController
 );
 
 export default authRoute;

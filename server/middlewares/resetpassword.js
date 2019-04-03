@@ -4,48 +4,60 @@ import model from '../models';
 
 const { User } = model;
 
-const { decode, encode } = Authenticate;
+const { decode, encodeEmail } = Authenticate;
 
 const ResetPasswordMiddleware = {
   async validateEmail(req, res, next) {
-    const userEmail = await User.findOne({
-      where: {
-        email: req.body.email,
-      },
-    });
+    try {
+      const userEmail = await User.findOne({
+        where: {
+          email: req.body.email,
+        },
+      });
 
-    if (!userEmail) {
-      return res.status(404).json({
-        error: 'Email not found',
+      if (!userEmail) {
+        return res.status(404).json({
+          error: 'Email not found',
+        });
+      }
+      req.user = userEmail;
+      return next();
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
       });
     }
-    req.user = userEmail;
-    return next();
   },
 
   createToken(req, res, next) {
-    const token = encode(req.body.email);
+    const token = encodeEmail(req.body.email);
     req.token = token;
     return next();
   },
 
   async mailer(req, res) {
-    const linkUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset/${
-      req.token
-    }/password`;
+    try {
+      const linkUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset/${
+        req.token
+      }/password`;
 
-    await notification.forgetPassword(req.body.email, linkUrl);
+      await notification.forgetPassword(req.body.email, linkUrl);
 
-    return res.status(200).json({
-      status: 200,
-      data: [
-        {
-          message: 'Check your email for password reset link',
-          email: req.body.email,
-          token: req.token,
-        },
-      ],
-    });
+      return res.status(200).json({
+        status: 200,
+        data: [
+          {
+            message: 'Check your email for password reset link',
+            email: req.body.email,
+            token: req.token,
+          },
+        ],
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: error.message,
+      });
+    }
   },
 
   async validateToken(req, res, next) {

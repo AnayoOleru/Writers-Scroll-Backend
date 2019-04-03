@@ -2,7 +2,7 @@ import db from '../models';
 import authHelper from '../helpers/auth';
 
 const { User } = db;
-const error = { status: 403, message: 'invalid username and/or password' };
+const error = { status: 401, message: 'invalid username and/or password' };
 
 const loginController = async (req, res) => {
   try {

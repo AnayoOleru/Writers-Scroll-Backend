@@ -14,6 +14,7 @@ const likeArticle = {
         !validations.verifyUUID(userId)
       ) {
         res.status(404).json({
+          status: 404,
           message: 'Id does not exist',
         });
       }
@@ -39,19 +40,22 @@ const likeArticle = {
       // Check if user has like an article before
       if (userLike) {
         result = await likeHelper.removeLike(user, article);
-        res.status(201).json({
+        res.status(200).json({
+          status: 200,
           message: 'Successfully remove like',
           data: result,
         });
       } else {
         result = await likeHelper.addLike(user, article);
-        res.status(200).json({
+        res.status(201).json({
+          status: 201,
           message: 'Successfuly add like',
           data: result,
         });
       }
     } catch (error) {
       res.status(500).json({
+        status: 500,
         message: 'Ops! something went wrong try again',
       });
     }

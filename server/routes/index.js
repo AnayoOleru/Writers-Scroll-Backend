@@ -13,7 +13,6 @@ router.use(getArticles);
 router.use(profileRoute);
 router.use(articleRoute);
 router.use('/auth', authRoute);
-
 router.use(profileRoute, likeArticle);
 
 export default router;

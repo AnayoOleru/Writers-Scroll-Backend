@@ -1,5 +1,5 @@
 import model from '../models';
-import likeHelper from '../helpers/likesHelpers';
+import likeHelper from '../helpers/likeHelpers';
 import validations from '../helpers/validations';
 
 const { Article, User } = model;

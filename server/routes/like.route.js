@@ -1,5 +1,5 @@
 import express from 'express';
-import likeArticle from '../controllers/like.controllers';
+import likeArticle from '../controllers/likesControllers';
 
 const router = express.Router();
 

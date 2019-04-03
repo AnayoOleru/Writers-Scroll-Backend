@@ -12,7 +12,7 @@ const likeHelper = {
       },
     });
   },
-  // Remove a like from the  like table
+  // Remove a like from the like table
   async removeLike(userId, articleId) {
     await Like.destroy({
       where: {

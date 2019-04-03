@@ -53,7 +53,7 @@ const loginController = async (req, res) => {
         bio,
         image,
       },
-      message: 'login was successfull',
+      message: 'Login was successfull',
     });
   } catch (err) {
     return res.send({

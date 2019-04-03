@@ -56,7 +56,10 @@ const loginController = async (req, res) => {
       message: 'login was successfull',
     });
   } catch (err) {
-    return res.send({ status: 500, message: 'server error, please try later' });
+    return res.send({
+      status: 500,
+      message: 'Server error, please try again later',
+    });
   }
 };
 

@@ -50,4 +50,27 @@ describe('PROFILE', () => {
         done();
       });
   });
+
+  it('should respond with user based on query string', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/profile?first_name=Ameachi`)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        const { first_name: firstname } = res.body.data[0];
+        expect(firstname).to.equal('Ameachi');
+        done();
+      });
+  });
+
+  it('should respond with error as not a serchable parameter', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/profile?firstname=Ameachi`)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.error).to.equal('invalid query sring');
+        done();
+      });
+  });
 });

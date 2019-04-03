@@ -46,6 +46,39 @@ const controller = {
       data: [profile],
     });
   },
+
+  async getProfileByField(req, res) {
+    try {
+      if (!validations.validProfileQueryString(req.query)) {
+        return res.status(400).json({
+          error: 'invalid query sring',
+        });
+      }
+      const users = await User.findAll({
+        where: req.query,
+        attributes: [
+          'first_name',
+          'last_name',
+          'title',
+          'phone_number',
+          'email',
+          'is_reviewer',
+          'research_field',
+          'createdAt',
+          'updatedAt',
+        ],
+      });
+
+      return res.status(200).json({
+        data: users,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error,
+        message: 'Oops! There seem to be a database error',
+      });
+    }
+  },
 };
 
 export default controller;

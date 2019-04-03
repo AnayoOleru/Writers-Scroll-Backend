@@ -6,5 +6,6 @@ const { profileController } = controllers;
 const router = express.Router();
 
 router.get('/profile/:id', profileController.getUserProfile);
+router.get('/profile', profileController.getProfileByField);
 
 export default router;

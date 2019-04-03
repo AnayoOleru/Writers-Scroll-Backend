@@ -2,7 +2,7 @@ module.exports = {
   up: queryInterface =>
     queryInterface.bulkInsert('Notifications', [
       {
-        id: '3473a764-53fe-11e9-8647-d663bd873t93',
+        id: '3473a764-53fe-11e9-8647-d663bd873d92',
         user_id: '57c515a1-890d-412f-8ca1-0a5390123dca',
         article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
         message:

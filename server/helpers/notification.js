@@ -13,16 +13,16 @@ const notification = {
    * @returns {*} sends an email to the author
    */
   async sendEmailNotificationComment(articleTitle, authorId) {
-    const email = await User.findOne({
+    const authorEmail = await User.findOne({
       where: { id: authorId },
       attributes: ['email'],
     });
-    const subject = 'New notification from Authors Haven';
-    const authorEmail = email;
-    const message = template(
+    const templateSubject = 'New notification from Authors Haven';
+    const templateEmail = authorEmail;
+    const templateMessage = template(
       `<h1>Your article ${articleTitle} - has a new comment.</h1>`
     );
-    sendEmail(authorEmail, subject, message);
+    sendEmail(templateEmail, templateSubject, templateMessage);
     // in-app notification
     pusher.trigger('channel', 'event', {
       message: `Your article ${articleTitle} has a new comment`,
@@ -48,11 +48,11 @@ const notification = {
         },
       ],
     });
-    const subject = 'New Notification on Authors Haven';
-    const followersEmail = followers.User.email;
-    const message = template(`<h1>${articleTitle}</h1>`);
+    const templateSubject = 'New Notification on Authors Haven';
+    const templateFollowersEmail = followers.User.email;
+    const templateMessage = template(`<h1>${articleTitle}</h1>`);
 
-    sendEmail(followersEmail, subject, message);
+    sendEmail(templateFollowersEmail, templateSubject, templateMessage);
 
     // in-app notification
     pusher.trigger('channel', 'event', {

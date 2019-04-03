@@ -3,18 +3,26 @@ import Joi from 'joi';
 const validations = {
   /**
    * @description Validate UUIDs
-   * @param {string} uuid
+   * @params {string} uuids
    * @returns {boolean} valid uuid
    */
-  verifyUUID(uuid) {
+  verifyUUID(...args) {
+    let valid = true;
     const schema = Joi.string().guid({
       version: ['uuidv4'],
     });
 
-    const { error } = Joi.validate(uuid, schema);
-    if (error) {
+    Object.keys(args).forEach(uuid => {
+      const { error } = Joi.validate(args[uuid], schema);
+      if (error) {
+        valid = false;
+      }
+    });
+
+    if (!valid) {
       return false;
     }
+
     return true;
   },
 };

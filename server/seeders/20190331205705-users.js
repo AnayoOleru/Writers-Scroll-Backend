@@ -9,7 +9,8 @@ module.exports = {
         phone_number: '(539) 301-8799',
         email: 'anayo@mail.com',
         bio: 'Worked as a lecturer...',
-        password: '12345678',
+        password:
+          '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
         is_activated: true,
         image_url: 'https://picsum.photos/200/300',
         is_admin: true,
@@ -25,7 +26,8 @@ module.exports = {
         phone_number: '(927) 451-2337',
         email: 'ameachichuks@gmail.com',
         bio: 'Worked as a lecturer...',
-        password: '12345678',
+        password:
+          '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
         is_activated: true,
         image_url: 'https://picsum.photos/200/300/?random',
         is_admin: false,
@@ -41,7 +43,8 @@ module.exports = {
         phone_number: '(934) 975-1645',
         email: 'sojida@gmail.com',
         bio: 'Worked as a lecturer...',
-        password: '12345678',
+        password:
+          '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
         is_activated: true,
         image_url: 'https://picsum.photos/g/200/300',
         is_admin: false,

@@ -1,3 +1,4 @@
+import notification from '../helpers/notifications';
 import Authenticate from '../helpers/auth';
 import model from '../models';
 

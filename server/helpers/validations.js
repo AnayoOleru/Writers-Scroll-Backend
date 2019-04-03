@@ -102,6 +102,13 @@ const validations = {
         .min(6)
         .required()
         .error(() => 'Password is required'),
+      confirmPassword: Joi.string()
+        .strict()
+        .trim()
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .min(6)
+        .required()
+        .error(() => 'confirmPassword is required'),
     });
 
     const { error } = Joi.validate(req.body, schema);

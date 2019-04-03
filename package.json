@@ -14,7 +14,7 @@
     "test": "export NODE_ENV=test && nyc  --reporter=html --reporter=text mocha tests/**/*.test.js --timeout 20000 --require @babel/register --exit",
     "eslint:check": "node_modules/eslint/bin/eslint.js \"server/**/*.js\"",
     "prettier:check": "prettier --check \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
-    "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --check \"./tests/**/*.js\"",
+    "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --write \"./tests/**/*.js\"",
     "check:lint-prettier": "npm run eslint:check && npm run prettier:check",
     "pretest": "export NODE_ENV=test && npm run check:lint-prettier && npm run db:reset",
     "coverage": "nyc report --reporter=text-lcov | coveralls"

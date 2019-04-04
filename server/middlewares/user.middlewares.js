@@ -45,4 +45,6 @@ const loginValidator = (req, res, next) => {
   return next();
 };
 
-export default { signUpValidator, loginValidator };
+const authValidator = { signUpValidator, loginValidator };
+
+export default authValidator;

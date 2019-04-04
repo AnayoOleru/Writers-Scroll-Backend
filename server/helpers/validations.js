@@ -1,4 +1,5 @@
 import Joi from 'joi';
+import Authenticate from './auth';
 
 const validations = {
   /**
@@ -49,6 +50,64 @@ const validations = {
 
     return valid;
   },
+  verifyAuthHeader(req) {
+    if (!req.headers.authorization) {
+      return { error: 'error' };
+    }
+    const token = req.headers.authorization;
+    const payload = Authenticate.decode(token);
+    if (!payload) {
+      return { error: 'Invalid token' };
+    }
+    return payload;
+  },
+
+  /**
+   * @method verifyUser
+   * @description Verifies the token provided by the user
+   * @param {*} req
+   * @param {*} res
+   * @returns {*} - JSON response object
+   */
+
+  verifyUser(req, res, next) {
+    const payload = validations.verifyAuthHeader(req);
+    let error;
+    let status;
+    if (!payload || payload === 'error') {
+      status = 401;
+      error = 'You are not authorized';
+    }
+    if (payload.error === 'Invalid token') {
+      status = 403;
+      error = 'Forbidden';
+    }
+    if (error) {
+      return res.status(status).json({ status, error });
+    }
+    req.user = payload;
+    return next();
+  },
+  /**
+   * @method verifyAdmin
+   * @description Verifies the token provided by the Admin
+   * @param {*} req
+   * @param {*} res
+   * @param {*} next
+   * @returns {*} - JSON response object
+   */
+  verifyAdmin(req, res, next) {
+    const payload = validations.verifyAuthHeader(req);
+    const { isAdmin } = payload;
+    if (!isAdmin) {
+      return res.status(403).json({
+        status: 403,
+        error: 'You are not authorized to access this endpoint.',
+      });
+    }
+    return next();
+  },
+
   validEditableProfileBody(body) {
     let valid = true;
     const editableProfileFields = [

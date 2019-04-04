@@ -1,4 +1,5 @@
 import model from '../models';
+import authHelper from '../helpers/auth';
 
 const { User, Followers } = model;
 
@@ -14,38 +15,42 @@ const followUnfollowUser = {
    * @return {*} object
    */
   async followUser(req, res) {
-    const { followeeId } = req.body;
     try {
       // Get user you want to follow
-      const followee = await User.findOne({
-        where: {
-          id: followeeId,
-        },
+      const token = authHelper.encode({
+        id: '7142e4ff-366d-46cc-9384-40eadb3b2626',
+        email: 'sojida@gmail.com',
+        isAdmin: false,
       });
-      if (!followee) {
+      const decodToken = authHelper.decode(token);
+      const { id: followerId } = decodToken.userObj;
+      const { followeeId } = req.body;
+      const checkFollowee = await User.findOne({
+        where: { id: followerId },
+      });
+      if (!checkFollowee) {
         return res.status(404).json({
           status: 404,
           message: `User does not exist`,
         });
       }
-      if (followee.id === followeeId) {
+      if (checkFollowee.id === followerId) {
         return res.status(403).json({
           status: 403,
           message: 'Sorry, You cant follow yourself',
         });
       }
-
       const followUserRecord = await Followers.findOne({
         where: {
-          user_id: followee.id,
-          follower_id: followeeId,
+          followee_id: checkFollowee.id,
+          follower_id: followerId,
         },
       });
 
       // Check if user is currently following
       if (!followUserRecord) {
         await Followers.create({
-          user_id: followee.id,
+          user_id: checkFollowee.id,
           follower_id: followeeId,
         });
 
@@ -62,7 +67,7 @@ const followUnfollowUser = {
     } catch (error) {
       return res.status(500).json({
         status: 500,
-        message: `Sorry, unable to follow user`,
+        message: `Sorry, something went wrong`,
       });
     }
   },

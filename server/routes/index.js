@@ -5,7 +5,7 @@ import getArticles from './get-articles.routes';
 import profileRoute from './profile.routes';
 import articleRoute from './article.routes';
 import authRoute from './user.routes';
-import followUser from './follow.routes';
+import followUser from './followRoutes';
 
 const router = express.Router();
 

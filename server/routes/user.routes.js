@@ -2,23 +2,20 @@ import express from 'express';
 import controllers from '../controllers';
 import middlewares from '../middlewares';
 
-const { signUpValidator } = middlewares;
+const { authValidator } = middlewares;
 
 const { authController } = controllers;
 const authRoute = express.Router();
 
-authRoute.post('/signup', signUpValidator.signUpValidator);
 authRoute.post(
   '/login',
-  signUpValidator.loginValidator,
+  authValidator.loginValidator,
   authController.loginController
 );
-authRoute.post('/signup', signUpValidator.signUpValidator);
-authRoute.post('/login', signUpValidator.loginValidator);
 
 authRoute.post(
   '/signup',
-  middlewares.signUpValidator,
+  authValidator.signUpValidator,
   authController.signupController
 );
 

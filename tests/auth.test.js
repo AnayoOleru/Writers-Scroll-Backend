@@ -49,3 +49,48 @@ describe('LOGIN CONTROLLER TEST', () => {
       });
   });
 });
+
+describe('SIGNUP CONTROLLER TEST', () => {
+  it('should return a token on successful registration', done => {
+    chai
+      .request(app)
+      .post(`${baseUrl}/signup`)
+      .send({
+        firstname: 'Mrs test',
+        lastname: 'testers',
+        email: 'mrstest@gmail.com',
+        password: 'testing1',
+        confirmPassword: 'testing1',
+      })
+      .end((_err, res) => {
+        const { status, message, user } = res.body;
+        expect(status).to.be.equal(200);
+        expect(res).to.be.a('object');
+        expect(user).to.be.a('object');
+        expect(user).to.have.keys('email', 'token', 'bio', 'image');
+        expect(message).to.be.equal('Registration was successful');
+        done();
+      });
+  });
+  it('should return a token on successful registration', done => {
+    chai
+      .request(app)
+      .post(`${baseUrl}/signup`)
+      .send({
+        firstname: 'Mr test',
+        lastname: 'tester',
+        email: 'test@gmail.com',
+        password: 'testing1',
+        confirmPassword: 'testing1',
+      })
+      .end((_err, res) => {
+        const { status, message, user } = res.body;
+        expect(status).to.be.equal(200);
+        expect(res).to.be.a('object');
+        expect(user).to.be.a('object');
+        expect(user).to.have.keys('email', 'token', 'bio', 'image');
+        expect(message).to.be.equal('Registration was successful');
+        done();
+      });
+  });
+});

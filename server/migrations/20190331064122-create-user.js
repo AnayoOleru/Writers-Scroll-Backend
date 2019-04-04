@@ -54,6 +54,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      is_notified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: true,
+      },
       research_field: {
         type: Sequelize.STRING,
       },

@@ -39,7 +39,6 @@ module.exports = (sequelize, DataTypes) => {
           args: 8,
           msg: 'password length must be at least 8 characters long',
         },
-        isAlphanumeric: true,
       },
     },
     is_activated: {
@@ -60,6 +59,10 @@ module.exports = (sequelize, DataTypes) => {
     is_reported: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
+    },
+    is_notified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
     },
     research_field: {
       type: DataTypes.STRING,

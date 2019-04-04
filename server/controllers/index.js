@@ -1,11 +1,11 @@
 import profileController from './profile.controllers';
 import articleController from './article.controllers';
 import authController from './auth.controller';
-import ResetPasswordController from './resetpassword';
+import ratingController from './rating.controller';
 
 export default {
   profileController,
   articleController,
   authController,
-  ResetPasswordController,
+  ratingController,
 };

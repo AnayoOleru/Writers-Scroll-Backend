@@ -121,7 +121,6 @@ const verifyEmail = async (req, res) => {
       message: 'Account verification was successful',
     });
   } catch (err) {
-    console.log(err);
     return res.send(serverError);
   }
 };

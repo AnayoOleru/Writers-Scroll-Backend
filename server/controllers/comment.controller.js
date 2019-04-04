@@ -1,8 +1,8 @@
-// import search from '../helpers/searchDatabase';
+import search from '../helpers/searchDatabase';
 import model from '../models';
 
 const { Comment } = model;
-// const { databaseError, findArticle } = search;
+const { databaseError, findArticle } = search;
 
 const comments = {
   post: async (req, res) => {
@@ -14,15 +14,15 @@ const comments = {
      */
 
     try {
-      // const article = await findArticle(req.body.article_id);
-      // if (!article) {
-      //   return res.status(404).send({
-      //     status: 404,
-      //     errors: {
-      //       body: ['Article does not exist'],
-      //     },
-      //   });
-      // }
+      const article = await findArticle(req.body.article_id);
+      if (!article) {
+        return res.status(404).send({
+          status: 404,
+          errors: {
+            body: ['Article does not exist'],
+          },
+        });
+      }
       const comment = await Comment.create({
         user_id: req.body.user_id,
         article_id: req.body.article_id,
@@ -33,10 +33,7 @@ const comments = {
         body: comment,
       });
     } catch (err) {
-      res.status(500).json({
-        err,
-      });
-      // databaseError(err, res);
+      databaseError(err, res);
     }
   },
 };

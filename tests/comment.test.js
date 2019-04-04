@@ -8,11 +8,11 @@ const baseUrl = '/api/v1/comment';
 const comment = {
   user_id: '57c515a1-890d-412f-8ca1-0a5395123dca',
   article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
-  body: 'why did the cat cross the road? makes sense?',
+  body: 'A good comment always refereshes the mind',
 };
 
 describe('POST COMMENT', () => {
-  it('should return 422 with invalid or empty payload(user_id)', done => {
+  it('should return 400 with invalid or empty payload(user_id)', done => {
     chai
       .request(app)
       .post(baseUrl)
@@ -22,14 +22,14 @@ describe('POST COMMENT', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(res).to.be.an('object');
         expect(errors.body[0]).to.equal('user_id is required');
         done();
       });
   });
 
-  it('should return 422 with invalid or empty payload(article_id)', done => {
+  it('should return 400 with invalid or empty payload(article_id)', done => {
     chai
       .request(app)
       .post(baseUrl)
@@ -39,13 +39,13 @@ describe('POST COMMENT', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal('article_id is required');
         done();
       });
   });
 
-  it('should return 422 with invalid or empty payload(body)', done => {
+  it('should return 400 with invalid or empty payload(body)', done => {
     chai
       .request(app)
       .post(baseUrl)
@@ -55,7 +55,7 @@ describe('POST COMMENT', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal('body is required');
         done();
       });
@@ -78,7 +78,7 @@ describe('POST COMMENT', () => {
   //     });
   // });
 
-  it('should return 422 error if comment body is more than 250', done => {
+  it('should return 400 error if comment body is more than 250', done => {
     chai
       .request(app)
       .post(baseUrl)
@@ -89,7 +89,7 @@ describe('POST COMMENT', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal(
           'body length must be less than or equal to 250 characters long'
         );

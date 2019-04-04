@@ -67,6 +67,14 @@ const loginController = async (req, res) => {
   }
 };
 
+/**
+ * @description - this method create in a user
+ *
+ * @param {object} req - The request payload sent to the router
+ * @param {object} res - The response payload sent back from the controller
+ *
+ * @returns {object} - object
+ */
 const signupController = async (req, res) => {
   try {
     const { firstname, lastname, email, password } = req.body;
@@ -99,6 +107,14 @@ const signupController = async (req, res) => {
   }
 };
 
+/**
+ * @description - this method logs in a user
+ *
+ * @param {object} req - The request payload sent to the router
+ * @param {object} res - The response payload sent back from the controller
+ *
+ * @returns {object} - object
+ */
 const verifyEmail = async (req, res) => {
   try {
     const { token } = req.params;

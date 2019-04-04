@@ -61,22 +61,22 @@ describe('POST COMMENT', () => {
       });
   });
 
-  // it('should return 404 error if article does not exist', done => {
-  //   chai
-  //     .request(app)
-  //     .post(baseUrl)
-  //     .send({
-  //       user_id: comment.user_id,
-  //       article_id: comment.article_id,
-  //       body: comment.body,
-  //     })
-  //     .end((req, res) => {
-  //       const { status, errors } = res.body;
-  //       expect(status).to.be.equal(404);
-  //       expect(errors.body[0]).to.equal('Article does not exist');
-  //       done();
-  //     });
-  // });
+  it('should return 404 error if article does not exist', done => {
+    chai
+      .request(app)
+      .post(baseUrl)
+      .send({
+        user_id: comment.user_id,
+        article_id: '2139d3af-b8b4-44f6-a49f-9305791700f4',
+        body: comment.body,
+      })
+      .end((req, res) => {
+        const { status, errors } = res.body;
+        expect(status).to.be.equal(404);
+        expect(errors.body[0]).to.equal('Article does not exist');
+        done();
+      });
+  });
 
   it('should return 400 error if comment body is more than 250', done => {
     chai

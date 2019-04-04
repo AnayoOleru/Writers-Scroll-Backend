@@ -1,15 +1,19 @@
 import express from 'express';
 import controllers from '../controllers';
-import Middleware from '../middlewares';
+import middlewares from '../middlewares';
+
+const { signUpValidator } = middlewares;
 
 const authRoute = express.Router();
 const { authController } = controllers;
 
-authRoute.post('/signup', Middleware.signUpValidator);
+authRoute.post('/signup', signUpValidator.signUpValidator);
 authRoute.post(
   '/login',
-  Middleware.loginValidator,
+  signUpValidator.loginValidator,
   authController.loginController
 );
+authRoute.post('/signup', signUpValidator.signUpValidator);
+authRoute.post('/login', signUpValidator.loginValidator);
 
 export default authRoute;

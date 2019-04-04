@@ -3,7 +3,7 @@ import likeHelper from '../helpers/likeHelpers';
 import validations from '../helpers/validations';
 
 const { Article, User } = model;
-const likeArticle = {
+const likeController = {
   async toggleLike(req, res) {
     const { articleId } = req.params;
     const { userId } = req.body;
@@ -60,4 +60,4 @@ const likeArticle = {
     }
   },
 };
-export default likeArticle;
+export default likeController;

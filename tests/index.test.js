@@ -14,4 +14,14 @@ describe('HOMEPAGE', () => {
         done();
       });
   });
+
+  it('should respond with invalid route error', done => {
+    chai
+      .request(app)
+      .get('/thisisaninvalidroute')
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        done();
+      });
+  });
 });

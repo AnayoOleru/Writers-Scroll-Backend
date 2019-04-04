@@ -15,7 +15,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1', routes);
-
+app.all('*', (req, res) => {
+  res.status(404).json({
+    error: 'This route does not exist yet!',
+  });
+});
 app.listen(port, () => {
   // eslint-disable-next-line no-console
   console.log(`App is listen on Port ${port}`);

@@ -11,7 +11,7 @@ const rating = {
 };
 
 describe('POST RATING', () => {
-  it('should return 422 with invalid or empty payload(user_id)', done => {
+  it('should return 400 with invalid or empty payload(user_id)', done => {
     chai
       .request(app)
       .post('/api/v1/rating')
@@ -21,14 +21,14 @@ describe('POST RATING', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(res).to.be.an('object');
         expect(errors.body[0]).to.equal('user_id is required');
         done();
       });
   });
 
-  it('should return 422 with invalid or empty payload(article_id)', done => {
+  it('should return 400 with invalid or empty payload(article_id)', done => {
     chai
       .request(app)
       .post('/api/v1/rating')
@@ -38,13 +38,13 @@ describe('POST RATING', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal('article_id is required');
         done();
       });
   });
 
-  it('should return 422 with invalid or empty payload(rating_value)', done => {
+  it('should return 400 with invalid or empty payload(rating_value)', done => {
     chai
       .request(app)
       .post('/api/v1/rating')
@@ -54,7 +54,7 @@ describe('POST RATING', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal('rating_value is required');
         done();
       });
@@ -77,7 +77,7 @@ describe('POST RATING', () => {
       });
   });
 
-  it('should return 422 error if rating value is not between 0 and 5', done => {
+  it('should return 400 error if rating value is not between 0 and 5', done => {
     chai
       .request(app)
       .post('/api/v1/rating')
@@ -88,7 +88,7 @@ describe('POST RATING', () => {
       })
       .end((req, res) => {
         const { status, errors } = res.body;
-        expect(status).to.be.equal(422);
+        expect(status).to.be.equal(400);
         expect(errors.body[0]).to.equal(
           'rating_value must be less than or equal to 5'
         );

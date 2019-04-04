@@ -61,6 +61,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    is_notified: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: true,
+    },
     research_field: {
       type: DataTypes.STRING,
     },

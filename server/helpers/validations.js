@@ -71,6 +71,18 @@ const validations = {
 
     return valid;
   },
+  validateInput: (err, res, next) => {
+    if (err) {
+      res.status(400).json({
+        status: 400,
+        errors: {
+          body: [err.details[0].message.split('"').join('')],
+        },
+      });
+    } else {
+      next();
+    }
+  },
 };
 
 export default validations;

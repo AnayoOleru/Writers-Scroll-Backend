@@ -3,6 +3,7 @@ import profileController from './profile.controllers';
 import articleController from './article.controllers';
 import authController from './auth.controller';
 import ratingController from './rating.controller';
+import commentController from './comment.controller';
 
 export default {
   profileController,
@@ -10,4 +11,5 @@ export default {
   authController,
   likeController,
   ratingController,
+  commentController,
 };

@@ -7,7 +7,7 @@ const {
   PUSHER_CLUSTER,
 } = process.env;
 
-var pusher = new Pusher({
+const pusher = new Pusher({
   appId: PUSHER_API_ID,
   key: PUSHER_KEY,
   secret: PUSHER_SECRET,

@@ -16,6 +16,7 @@ module.exports = {
         is_admin: true,
         is_reviewer: false,
         is_reported: false,
+        is_notified: true,
         research_field: 'Computer Science',
       },
       {
@@ -33,6 +34,7 @@ module.exports = {
         is_admin: false,
         is_reviewer: false,
         is_reported: false,
+        is_notified: true,
         research_field: 'Chemistry',
       },
       {
@@ -50,6 +52,7 @@ module.exports = {
         is_admin: false,
         is_reviewer: false,
         is_reported: false,
+        is_notified: true,
         research_field: 'Physics',
       },
     ]),

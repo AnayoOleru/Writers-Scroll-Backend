@@ -68,7 +68,7 @@ describe('SIGNUP CONTROLLER TEST', () => {
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('registration was successfull');
+        expect(message).to.be.equal('Registration was successful');
         done();
       });
   });
@@ -89,7 +89,7 @@ describe('SIGNUP CONTROLLER TEST', () => {
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('registration was successfull');
+        expect(message).to.be.equal('Registration was successful');
         done();
       });
   });

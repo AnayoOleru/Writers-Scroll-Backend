@@ -6,6 +6,7 @@ import routes from './routes/index';
 const app = express();
 
 app.use(express.json());
+
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 const port = process.env.PORT || 6000;
 app.use('/api/v1/auth', routes);

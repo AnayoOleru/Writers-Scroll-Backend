@@ -17,8 +17,8 @@
   "basePath": "/api/v1",
   "tags": [
     {
-      "name": "user",
-      "description": "Operations about user",
+      "name": "auth",
+      "description": "Operations about authentication",
       "externalDocs": {
         "description": "Find out more about our store",
         "url": "http://swagger.io"
@@ -27,9 +27,9 @@
   ],
   "schemes": ["https", "http"],
   "paths": {
-    "/user": {
+    "/auth/signup": {
       "post": {
-        "tags": ["user"],
+        "tags": ["auth"],
         "summary": "Signup a user",
         "description": "Create a new user.",
         "operationId": "createUser",
@@ -61,9 +61,37 @@
         }
       }
     },
-    "/user/login": {
-      "get": {
-        "tags": ["user"],
+    "/auth/verification": {
+      "post": {
+        "tags": ["auth"],
+        "summary": "Verify users email",
+        "description": "Verify users email.",
+        "operationId": "verifyUser",
+        "produces": ["application/xml", "application/json"],
+        "parameters": [
+          {
+            "in": "params",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "403": {
+            "description": "Your account has already been verified"
+          },
+          "200": {
+            "description": "Account verification was successful"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": ["auth"],
         "summary": "Logs user into the system",
         "description": "",
         "operationId": "loginUser",

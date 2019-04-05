@@ -6,6 +6,7 @@ const { databaseError, findArticle } = search;
 
 const comments = {
   post: async (req, res) => {
+    const userId = req.user.userObj.id;
     /**
      * @description post comment on article
      * @param {*} req
@@ -24,7 +25,7 @@ const comments = {
         });
       }
       const comment = await Comment.create({
-        user_id: req.body.user_id,
+        user_id: userId,
         article_id: req.body.article_id,
         body: req.body.body,
       });

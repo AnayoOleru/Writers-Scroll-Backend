@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get(
   '/article/:id',
-  validations.verifyUser,
+  validations.verifyToken,
   articleController.getOneArticle
 );
 

@@ -72,7 +72,7 @@ const validations = {
    * @returns {*} - JSON response object
    */
 
-  verifyUser(req, res, next) {
+  verifyToken(req, res, next) {
     const payload = validations.verifyAuthHeader(req);
     let error;
     let status;

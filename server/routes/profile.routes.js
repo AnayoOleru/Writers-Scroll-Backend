@@ -10,18 +10,18 @@ const router = express.Router();
 
 router.get(
   '/profile/:id',
-  validations.verifyUser,
+  validations.verifyToken,
   profileController.getUserProfile
 );
 router.get(
   '/profile',
-  validations.verifyUser,
+  validations.verifyToken,
   profileController.getProfileByField
 );
 
 router.patch(
   '/profile/:id',
-  validations.verifyUser,
+  validations.verifyToken,
   profileMiddleware.validateUpdateProfile,
   profileController.patchProfile
 );

@@ -65,7 +65,7 @@ const validations = {
   },
 
   /**
-   * @method verifyUser
+   * @method verifyToken
    * @description Verifies the token provided by the user
    * @param {*} req
    * @param {*} res

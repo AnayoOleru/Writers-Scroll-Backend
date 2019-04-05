@@ -30,6 +30,7 @@ app.use(
 passport.use(facebookStrategy);
 passport.use(twitterStrategy);
 passport.use(googleStrategy);
+app.use('/api/v1/auth', routes);
 app.get('/', (req, res) => {
   res.send('Welcome to Authors Haven');
 });

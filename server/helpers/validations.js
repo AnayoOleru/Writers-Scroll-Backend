@@ -200,6 +200,9 @@ const validations = {
       next();
     }
   },
+  compareFieldWithToken(field, token) {
+    return field === token;
+  },
 };
 
 export default validations;

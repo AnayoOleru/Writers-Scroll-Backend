@@ -95,6 +95,12 @@ const controller = {
           error: 'id not valid',
         });
       }
+      const { userObj } = req.user;
+      if (!validations.compareFieldWithToken(userObj.id, req.params.id)) {
+        return res.status(403).json({
+          error: 'User does not own this account',
+        });
+      }
 
       const updateBody = req.body;
 

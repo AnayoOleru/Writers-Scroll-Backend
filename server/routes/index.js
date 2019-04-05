@@ -5,14 +5,15 @@ import likeArticle from './like.route';
 import profileRoute from './profile.routes';
 import articleRoute from './article.routes';
 import authRoute from './user.routes';
-import followUser from './followRoutes';
+// import followUser from './followRoutes';
 import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
+import followRoutes from './follow.routes';
 
 const router = express.Router();
 
 router.use(getArticles);
-router.use(followUser);
+router.use(followRoutes);
 router.use(profileRoute);
 router.use(articleRoute);
 router.use(ratingRoute);

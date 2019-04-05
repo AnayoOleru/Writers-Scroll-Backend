@@ -2,6 +2,8 @@ import models from '../models';
 
 const { Keyword } = models;
 const serverError = 'Server error, please try again later';
+const emptyArticleId = 'You need to provide an article ID to proceed';
+const emptytags = 'You need to provide an tags to proceed';
 
 const tagging = {
   /**
@@ -11,6 +13,12 @@ const tagging = {
    * @returns {*}  userId, articleId and keywords in an array.
    */
   async saveArticleTags(articleId, tags) {
+    if (!articleId) {
+      return emptyArticleId;
+    }
+    if (!tags) {
+      return emptytags;
+    }
     try {
       const Articletags = await Keyword.create({
         article_id: articleId,

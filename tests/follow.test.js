@@ -8,7 +8,6 @@ chai.use(chaiHttp);
 let token1;
 let token2;
 let token3;
-let token4;
 describe('TEST USER FOLLOW', () => {
   it('Create a follower', done => {
     chai
@@ -33,7 +32,7 @@ describe('TEST USER FOLLOW', () => {
       .request(app)
       .post('/api/v1/auth/login')
       .send({
-        email: 'anayo@mail.com',
+        email: 'vic3coorp@gmail.com',
         password: '12345678',
       })
       .end((err, res) => {
@@ -122,7 +121,7 @@ describe('TEST USER UNFOLLOW', () => {
       .end((err, res) => {
         const { token } = res.body.user;
         expect(res.status).to.equal(200);
-        token4 = token;
+        token3 = token;
         done();
       });
   });

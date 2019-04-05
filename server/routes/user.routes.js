@@ -3,8 +3,8 @@ import controllers from '../controllers';
 import middlewares from '../middlewares';
 
 const { authValidator } = middlewares;
-
 const { authController } = controllers;
+
 const authRoute = express.Router();
 
 authRoute.post(
@@ -18,5 +18,7 @@ authRoute.post(
   authValidator.signUpValidator,
   authController.signupController
 );
+
+authRoute.patch('/verification/:token', authController.verifyEmail);
 
 export default authRoute;

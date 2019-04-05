@@ -13,4 +13,16 @@ describe('Display articles in pages', () => {
         done();
       });
   });
+
+  it('should display error message because page number is an alphabet', done => {
+    chai
+      .request(app)
+      .get('/api/v1/articles/a')
+      .end((err, res) => {
+        const errorMessage = res.body.error.page[0];
+        expect(errorMessage).to.be.equal('cannot be anything but numbers');
+
+        done();
+      });
+  });
 });

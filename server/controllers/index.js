@@ -4,6 +4,7 @@ import articleController from './article.controllers';
 import followController from './follow.controllers';
 import authController from './auth.controller';
 import ratingController from './rating.controller';
+import ResetPasswordController from './resetpassword';
 import commentController from './comment.controller';
 
 export default {
@@ -13,5 +14,6 @@ export default {
   authController,
   likeController,
   ratingController,
+  ResetPasswordController,
   commentController,
 };

@@ -12,14 +12,24 @@ const rating = {
 
 describe('POST RATING', () => {
   before(async () => {
+    await chai
+      .request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        firstname: 'Adebisi',
+        lastname: 'Adebisi',
+        email: 'bukunmi@gmail.com',
+        password: 'h0ttestt',
+        confirmPassword: 'h0ttestt',
+      });
+
     const userDetails = await chai
       .request(app)
       .post('/api/v1/auth/login')
       .send({
-        email: 'vic3coorp@gmail.com',
-        password: '12345678',
+        email: 'bukunmi@gmail.com',
+        password: 'h0ttestt',
       });
-    console.log(userDetails);
     userToken = userDetails.body.user.token;
   });
   it('should return 401 error when no token is provided', done => {
@@ -33,6 +43,24 @@ describe('POST RATING', () => {
       .end((req, res) => {
         expect(res.status).to.be.equal(401);
         expect(res).to.be.an('object');
+        expect(res.body.error).to.equal('You are not authorized');
+        done();
+      });
+  });
+
+  it('should return 403 error when invalid token is provided', done => {
+    chai
+      .request(app)
+      .post('/api/v1/rating')
+      .set('Authorization', 'eeeee')
+      .send({
+        article_id: rating.article_id,
+        rating_value: rating.rating_value,
+      })
+      .end((req, res) => {
+        expect(res.status).to.be.equal(403);
+        expect(res).to.be.an('object');
+        expect(res.body.error).to.equal('Forbidden');
         done();
       });
   });

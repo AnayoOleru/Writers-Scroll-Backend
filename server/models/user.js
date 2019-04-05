@@ -68,7 +68,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     social: {
-      type: DataTypes.ENUM('facebook', 'twitter', 'google', null),
+      type: DataTypes.ENUM('facebook', 'twitter', 'google', 'local'),
       allowNull: true,
     },
   });

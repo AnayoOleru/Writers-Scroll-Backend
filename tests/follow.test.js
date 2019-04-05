@@ -1,9 +1,7 @@
 import chai, { expect } from 'chai';
-// import dotenv from 'dotenv';÷
 import chaiHttp from 'chai-http';
 import app from '../server/app';
 
-// dotenv.config();
 chai.use(chaiHttp);
 let token1;
 let token2;

@@ -19,4 +19,6 @@ authRoute.post(
   authController.signupController
 );
 
+authRoute.patch('/verification/:token', authController.verifyEmail);
+
 export default authRoute;

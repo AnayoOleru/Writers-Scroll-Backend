@@ -89,6 +89,58 @@ const signupController = async (req, res) => {
   }
 };
 
-const authController = { loginController, signupController };
+const socialCallback = async (accessToken, refreshToken, profile, done) => {
+  try {
+    const { id, displayName, emails, provider, photos } = profile;
+
+    if (!emails) {
+      const userWithNoEmail = { noEmail: true };
+      return done(null, userWithNoEmail);
+    }
+
+    const userEmail = emails[0].value;
+    const names = displayName.split(' ');
+    const profileImage = photos[0].value;
+
+    const [user] = await User.findOrCreate({
+      where: { email: userEmail },
+      defaults: {
+        first_name: names[0],
+        last_name: names[1],
+        password: id,
+        email: userEmail,
+        social: provider,
+        image_url: profileImage,
+      },
+    });
+
+    return done(null, user.dataValues);
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * @description redirects user to the frontend
+ * @param {object} req
+ * @param {object} res
+ * @returns {string} - Frontend url
+ */
+const socialRedirect = async (req, res) => {
+  if (req.user.noEmail) {
+    return res.redirect(`${process.env.FRONTEND_URL}/auth/social?error=${400}`);
+  }
+
+  const { id, email } = req.user;
+  const token = await authHelper.encode({ id, email });
+  return res.redirect(`${process.env.FRONTEND_URL}/auth/social?${token}`);
+};
+
+const authController = {
+  loginController,
+  signupController,
+  socialCallback,
+  socialRedirect,
+};
 
 export default authController;

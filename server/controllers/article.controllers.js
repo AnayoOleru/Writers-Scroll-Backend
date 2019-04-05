@@ -92,6 +92,36 @@ const controller = {
       });
     }
   },
+  async deleteArticle(req, res) {
+    try {
+      if (!validations.verifyUUID(req.params.id)) {
+        return res.status(400).json({
+          error: 'id not valid',
+        });
+      }
+
+      const article = await Article.destroy({
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      if (!article) {
+        return res.status(404).json({
+          error: 'Article not found',
+        });
+      }
+
+      return res.status(200).json({
+        message: 'Article Deleted Successfully',
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error,
+        message: 'Oops! There seem to be a database error',
+      });
+    }
+  },
 };
 
 export default controller;

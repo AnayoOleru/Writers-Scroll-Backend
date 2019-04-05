@@ -22,4 +22,6 @@ router.post(
   articleController.createArticle
 );
 
+router.delete('/article/:id', articleController.deleteArticle);
+
 export default router;

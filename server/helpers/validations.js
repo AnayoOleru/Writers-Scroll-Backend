@@ -31,6 +31,7 @@ const validations = {
     }
     return true;
   },
+
   validProfileQueryString(query) {
     let valid = true;
     const searchableProfileFields = [
@@ -51,30 +52,31 @@ const validations = {
     return valid;
   },
   verifyAuthHeader(req) {
-    if (!req.headers.authorization) {
-      return { error: 'error' };
-    }
-    const token = req.headers.authorization;
-    const payload = Authenticate.decode(token);
-    if (!payload) {
+    try {
+      if (!req.headers.authorization) {
+        return { error: 'error' };
+      }
+      const token = req.headers.authorization;
+      const payload = Authenticate.decode(token);
+      return payload;
+    } catch (err) {
       return { error: 'Invalid token' };
     }
-    return payload;
   },
 
   /**
-   * @method verifyUser
+   * @method verifyToken
    * @description Verifies the token provided by the user
    * @param {*} req
    * @param {*} res
    * @returns {*} - JSON response object
    */
 
-  verifyUser(req, res, next) {
+  verifyToken(req, res, next) {
     const payload = validations.verifyAuthHeader(req);
     let error;
     let status;
-    if (!payload || payload === 'error') {
+    if (!payload || payload.error === 'error') {
       status = 401;
       error = 'You are not authorized';
     }
@@ -130,6 +132,62 @@ const validations = {
 
     return valid;
   },
+
+  verifyEmail(req, res, next) {
+    const schema = Joi.object().keys({
+      email: Joi.string()
+        .email({ minDomainAtoms: 2 })
+        .strict()
+        .trim()
+        .min(2)
+        .required()
+        .error(() => 'Kindly enter a valid email'),
+    });
+    const { error } = Joi.validate(req.body, schema);
+    if (error) {
+      return res.status(400).send({
+        error: `${error.details[0].message}`,
+      });
+    }
+    return next();
+  },
+
+  validatePassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+    const schema = Joi.object().keys({
+      password: Joi.string()
+        .strict()
+        .trim()
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .min(8)
+        .required()
+        .error(() => 'Password is required'),
+      confirmPassword: Joi.string()
+        .strict()
+        .trim()
+        .regex(/^[a-zA-Z0-9]{3,30}$/)
+        .min(8)
+        .required()
+        .error(() => 'confirmPassword is required'),
+    });
+
+    const { error } = Joi.validate(req.body, schema);
+    if (error) {
+      return res.status(400).send({
+        error: `${error.details[0].message}`,
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        status: 400,
+        error: 'Passwords do not match',
+      });
+    }
+
+    return next();
+  },
+
   validateInput: (err, res, next) => {
     if (err) {
       res.status(400).json({

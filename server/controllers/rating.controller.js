@@ -3,9 +3,9 @@ import model from '../models';
 
 const { Rating } = model;
 const { databaseError, findArticle } = search;
-
 const rating = {
   post: async (req, res) => {
+    const userId = req.user.userObj.id;
     /**
      * @description post article Rating
      * @param {*} req
@@ -24,7 +24,7 @@ const rating = {
         });
       }
       const ratingDetails = await Rating.create({
-        user_id: req.body.user_id,
+        user_id: userId,
         article_id: req.body.article_id,
         rating_value: req.body.rating_value,
       });

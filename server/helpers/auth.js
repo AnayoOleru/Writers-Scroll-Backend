@@ -38,6 +38,12 @@ const Authenticate = {
     return token;
   },
 
+  encodeEmail(email) {
+    const secret = process.env.SECRET;
+    const token = jwt.sign({ email }, secret, { expiresIn: '72h' });
+    return token;
+  },
+
   /**
    * @description - this method decodes a token
    *

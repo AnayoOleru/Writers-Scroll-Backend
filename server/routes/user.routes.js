@@ -3,8 +3,8 @@ import controllers from '../controllers';
 import middlewares from '../middlewares';
 
 const { authValidator } = middlewares;
-
 const { authController } = controllers;
+
 const authRoute = express.Router();
 
 authRoute.post(

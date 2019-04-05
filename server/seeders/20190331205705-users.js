@@ -7,7 +7,7 @@ module.exports = {
         last_name: 'Oleru',
         title: 'Prof',
         phone_number: '(539) 301-8799',
-        email: 'anayo@mail.com',
+        email: 'vic3coorp@gmail.com',
         bio: 'Worked as a lecturer...',
         password:
           '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',

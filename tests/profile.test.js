@@ -7,12 +7,12 @@ chai.use(chaiHttp);
 let userAToken;
 let userBToken;
 
-before('login admin', done => {
+before('login user', done => {
   chai
     .request(app)
     .post('/api/v1/auth/login')
     .send({
-      email: 'anayo@mail.com',
+      email: 'vic3coorp@gmail.com',
       password: '12345678',
     })
     .end((err, res) => {

@@ -2,16 +2,27 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../server/app';
 
+let userToken;
 chai.use(chaiHttp);
 
 const rating = {
-  user_id: '57c515a1-890d-412f-8ca1-0a5395123dca',
   article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
   rating_value: 3,
 };
 
 describe('POST RATING', () => {
-  it('should return 400 with invalid or empty payload(user_id)', done => {
+  before(async () => {
+    const userDetails = await chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'vic3coorp@gmail.com',
+        password: '12345678',
+      });
+    console.log(userDetails);
+    userToken = userDetails.body.user.token;
+  });
+  it('should return 401 error when no token is provided', done => {
     chai
       .request(app)
       .post('/api/v1/rating')
@@ -20,10 +31,8 @@ describe('POST RATING', () => {
         rating_value: rating.rating_value,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
+        expect(res.status).to.be.equal(401);
         expect(res).to.be.an('object');
-        expect(errors.body[0]).to.equal('user_id is required');
         done();
       });
   });
@@ -32,8 +41,8 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send({
-        user_id: rating.user_id,
         rating_value: rating.rating_value,
       })
       .end((req, res) => {
@@ -48,8 +57,8 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send({
-        user_id: rating.user_id,
         article_id: rating.article_id,
       })
       .end((req, res) => {
@@ -64,8 +73,8 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send({
-        user_id: rating.user_id,
         article_id: '8139d3af-b8b4-44f6-a49f-9305791700f4',
         rating_value: rating.rating_value,
       })
@@ -81,8 +90,8 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send({
-        user_id: rating.user_id,
         article_id: rating.article_id,
         rating_value: 7,
       })
@@ -100,6 +109,7 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send(rating)
       .end((req, res) => {
         expect(res).to.have.status(201);
@@ -120,6 +130,7 @@ describe('POST RATING', () => {
     chai
       .request(app)
       .post('/api/v1/rating')
+      .set('Authorization', userToken)
       .send(rating)
       .end((req, res) => {
         const { status, errors } = res.body;

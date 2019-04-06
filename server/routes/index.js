@@ -2,7 +2,7 @@ import express from 'express';
 
 import getArticles from './get-articles.routes';
 import resetPasswordRouter from './resetpassword.routes';
-import likeArticle from './like.route';
+import likeRoute from './like.routes';
 import profileRoute from './profile.routes';
 import articleRoute from './article.routes';
 import authRoute from './user.routes';
@@ -19,6 +19,7 @@ router.use(ratingRoute);
 router.use(commentRoute);
 router.use('/auth', authRoute);
 router.use(resetPasswordRouter);
-router.use(profileRoute, likeArticle);
+router.use(profileRoute);
+router.use(likeRoute);
 
 export default router;

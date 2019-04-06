@@ -3,10 +3,17 @@ import likeHelper from '../helpers/likeHelpers';
 import validations from '../helpers/validations';
 
 const { Article, User } = model;
+const serverError = {
+  status: 500,
+  message: 'Server error, please try again later',
+};
 const likeController = {
   async toggleLike(req, res) {
+    // const { articleId } = req.params;
+    // const { userId } = req.body;
+    const token = validations.verifyAuthHeader(req);
+    const { id: userId } = token.userObj;
     const { articleId } = req.params;
-    const { userId } = req.body;
     try {
       // validate article and user Id
       if (
@@ -53,10 +60,7 @@ const likeController = {
         });
       }
     } catch (error) {
-      res.status(500).json({
-        status: 500,
-        message: 'Ops! something went wrong try again',
-      });
+      return res.send(serverError);
     }
   },
 };

@@ -6,12 +6,12 @@ const router = express.Router();
 
 router.post(
   '/follow/:followeeId',
-  validations.verifyUser,
+  validations.verifyToken,
   followController.followUser
 );
 router.delete(
   '/follow/:unFolloweeId',
-  validations.verifyUser,
+  validations.verifyToken,
   followController.unFollowUser
 );
 

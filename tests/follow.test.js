@@ -60,7 +60,7 @@ describe('TEST USER FOLLOW', () => {
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
       .set('authorization', token1)
       .end((err, res) => {
-        expect(res.status).to.equal(406);
+        expect(res.status).to.equal(403);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('You are already following');
         done();
@@ -79,13 +79,13 @@ describe('TEST USER FOLLOW', () => {
         done();
       });
   });
-  it('It should return a 406 if user try to follow him/herself', done => {
+  it('It should return a 403 if user try to follow him/herself', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
       .set('authorization', token2)
       .end((err, res) => {
-        expect(res.status).to.equal(406);
+        expect(res.status).to.equal(403);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('You cant follow yourself');
         done();
@@ -150,13 +150,13 @@ describe('TEST USER UNFOLLOW', () => {
         done();
       });
   });
-  it('It should return a 406 status code if user try to unfollow twice', done => {
+  it('It should return a 404 status code if user try to unfollow twice', done => {
     chai
       .request(app)
       .delete('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
       .set('authorization', token3)
       .end((err, res) => {
-        expect(res.status).to.equal(406);
+        expect(res.status).to.equal(404);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('You are already unfollowing user');
         done();

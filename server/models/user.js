@@ -67,6 +67,10 @@ module.exports = (sequelize, DataTypes) => {
     research_field: {
       type: DataTypes.STRING,
     },
+    social: {
+      type: DataTypes.ENUM('facebook', 'twitter', 'google', 'local'),
+      allowNull: true,
+    },
   });
   User.beforeCreate(user => {
     user.password = authHelpers.hashPassword(user.password);

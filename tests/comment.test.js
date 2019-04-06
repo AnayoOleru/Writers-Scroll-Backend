@@ -2,17 +2,38 @@ import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../server/app';
 
+let userToken;
 chai.use(chaiHttp);
 const baseUrl = '/api/v1/comment';
 
 const comment = {
-  user_id: '57c515a1-890d-412f-8ca1-0a5395123dca',
   article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
   body: 'A good comment always refereshes the mind',
 };
 
 describe('POST COMMENT', () => {
-  it('should return 400 with invalid or empty payload(user_id)', done => {
+  before(async () => {
+    await chai
+      .request(app)
+      .post('/api/v1/auth/signup')
+      .send({
+        firstname: 'Adebisi',
+        lastname: 'Adebisi',
+        email: 'bukunmi@gmail.com',
+        password: 'h0ttestt',
+        confirmPassword: 'h0ttestt',
+      });
+
+    const userDetails = await chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'bukunmi@gmail.com',
+        password: 'h0ttestt',
+      });
+    userToken = userDetails.body.user.token;
+  });
+  it('should return 401 error when no token is provided', done => {
     chai
       .request(app)
       .post(baseUrl)
@@ -21,10 +42,26 @@ describe('POST COMMENT', () => {
         body: comment.body,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
+        expect(res.status).to.be.equal(401);
         expect(res).to.be.an('object');
-        expect(errors.body[0]).to.equal('user_id is required');
+        expect(res.body.error).to.equal('You are not authorized');
+        done();
+      });
+  });
+
+  it('should return 403 error when invalid token is provided', done => {
+    chai
+      .request(app)
+      .post(baseUrl)
+      .set('Authorization', 'eeeee')
+      .send({
+        article_id: comment.article_id,
+        body: comment.body,
+      })
+      .end((req, res) => {
+        expect(res.status).to.be.equal(403);
+        expect(res).to.be.an('object');
+        expect(res.body.error).to.equal('Forbidden');
         done();
       });
   });
@@ -33,8 +70,8 @@ describe('POST COMMENT', () => {
     chai
       .request(app)
       .post(baseUrl)
+      .set('Authorization', userToken)
       .send({
-        user_id: comment.user_id,
         body: comment.body,
       })
       .end((req, res) => {
@@ -49,8 +86,8 @@ describe('POST COMMENT', () => {
     chai
       .request(app)
       .post(baseUrl)
+      .set('Authorization', userToken)
       .send({
-        user_id: comment.user_id,
         article_id: comment.article_id,
       })
       .end((req, res) => {
@@ -65,8 +102,8 @@ describe('POST COMMENT', () => {
     chai
       .request(app)
       .post(baseUrl)
+      .set('Authorization', userToken)
       .send({
-        user_id: comment.user_id,
         article_id: '2139d3af-b8b4-44f6-a49f-9305791700f4',
         body: comment.body,
       })
@@ -82,8 +119,8 @@ describe('POST COMMENT', () => {
     chai
       .request(app)
       .post(baseUrl)
+      .set('Authorization', userToken)
       .send({
-        user_id: comment.user_id,
         article_id: comment.article_id,
         body: new Array(300).join('a'),
       })
@@ -101,6 +138,7 @@ describe('POST COMMENT', () => {
     chai
       .request(app)
       .post(baseUrl)
+      .set('Authorization', userToken)
       .send(comment)
       .end((req, res) => {
         expect(res).to.have.status(201);

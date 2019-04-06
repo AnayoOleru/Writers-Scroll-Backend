@@ -1,3 +1,20 @@
+/**
+ * @swagger
+ * definition:
+ *  rating:
+ *    type: object
+ *    required:
+ *      - article_id
+ *      - rating_value
+ *    properties:
+ *      article_id:
+ *        type: string
+ *        format: uuid
+ *      rating_value:
+ *        type: integer
+ *        format: int64
+ */
+
 module.exports = (sequelize, DataTypes) => {
   const Rating = sequelize.define('Rating', {
     user_id: {

@@ -99,4 +99,130 @@ describe('ARTICLE', () => {
         done();
       });
   });
+
+  it('should respond with success: article published successfully ', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: false,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+        keywords: ['physics', 'chemisty', 'mathematics'],
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.message).to.equal('Article published successfully');
+        done();
+      });
+  });
+
+  it('should respond with success(without keywords): article published successfully ', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: false,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.message).to.equal('Article published successfully');
+        done();
+      });
+  });
+
+  it('should respond with success: article saved to draft', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+        keywords: ['physics', 'chemisty', 'mathematics'],
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.message).to.equal('Article saved to draft');
+        done();
+      });
+  });
+
+  it('should respond with success: slug maker error', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        abstract: 'this is required',
+        category: 'physics',
+        keywords: ['physics', 'chemisty', 'mathematics'],
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.message).to.equal('Article saved to draft');
+        expect(res.body.data.title).to.equal('Draft');
+        done();
+      });
+  });
+
+  it('should respond with error: invalid input for draft', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        abstract: 'this is required',
+        category: 'physics',
+        title: 'This',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it('should respond with error: invalid input for draft', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: false,
+        abstract: 'this is required',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
+
+  it('should respond with error: invalid input for draft', done => {
+    chai
+      .request(app)
+      .post(`/api/v1/article`)
+      .set('Authorization', userAToken)
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        done();
+      });
+  });
 });

@@ -88,9 +88,7 @@ const validEditableProfileBody = body => {
   return valid;
 };
 
-const compareFieldWithToken = (field, token) => {
-  return field === token;
-};
+const compareFieldWithToken = (field, token) => field === token;
 
 const draftPublishMessage = isDraft => {
   if (isDraft) {

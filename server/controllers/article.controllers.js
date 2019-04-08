@@ -79,12 +79,10 @@ const createArticle = async (req, res) => {
     req.body = spaceTrimmer(req.body);
     const article = await Article.create(req.body);
 
-    if (!req.body.is_draft) {
-      if (req.body.keywords) {
-        req.body.keywords.forEach(async keyword => {
-          await tagsHelpers.saveArticleTags(article.id, keyword);
-        });
-      }
+    if (!req.body.is_draft && req.body.keywords) {
+      req.body.keywords.forEach(async keyword => {
+        await tagsHelpers.saveArticleTags(article.id, keyword);
+      });
     }
 
     return res.status(201).json({

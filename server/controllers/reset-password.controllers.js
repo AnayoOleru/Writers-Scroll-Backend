@@ -32,11 +32,10 @@ const updatePassword = async (req, res) => {
   }
 };
 
-const acceptRequest = (req, res) => {
-  return res
+const acceptRequest = (req, res) =>
+  res
     .status(200)
     .redirect(`${req.protocol}://${req.get('host')}/api/v1/auth/reset/message`);
-};
 
 const ResetPasswordController = { updatePassword, acceptRequest };
 

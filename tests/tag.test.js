@@ -1,22 +1,16 @@
-import chai from 'chai';
+import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
 import tagging from '../server/helpers/tagsHelpers';
 
 chai.use(chaiHttp);
 
 describe('Tags', () => {
-  it('should accept an id and string of article tags', done => {
-    tagging.saveArticleTags(1, 'goose');
-    done();
-  });
-
-  it('should return an error when id is empty', done => {
-    tagging.saveArticleTags('goose');
-    done();
-  });
-
-  it('should return an error when tag is empty', done => {
-    tagging.saveArticleTags(1);
-    done();
+  it('should accept an id and string of article tags', async () => {
+    const articleTags = await tagging.saveArticleTags(
+      '7139d3af-b8b4-44f6-a49f-9305791700f4',
+      'Jupiter',
+      'Mecury'
+    );
+    expect(articleTags).to.be.an('object');
   });
 });

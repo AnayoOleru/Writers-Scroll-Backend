@@ -9,8 +9,6 @@ const serverError = {
 };
 const likeController = {
   async toggleLike(req, res) {
-    // const { articleId } = req.params;
-    // const { userId } = req.body;
     const token = validations.verifyAuthHeader(req);
     const { id: userId } = token.userObj;
     const { articleId } = req.params;

@@ -1,6 +1,7 @@
 import models from '../models';
 
 const { Keyword } = models;
+
 const serverError = 'Server error, please try again later';
 
 const tagging = {

@@ -22,4 +22,10 @@ router.post(
   articleController.createArticle
 );
 
+router.delete(
+  '/article/:id',
+  validations.verifyToken,
+  articleController.deleteArticle
+);
+
 export default router;

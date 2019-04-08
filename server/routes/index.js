@@ -8,6 +8,7 @@ import articleRoute from './article.routes';
 import authRoute from './user.routes';
 import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
+import getFollowersRoute from './get-followers.routes';
 
 const router = express.Router();
 
@@ -20,5 +21,6 @@ router.use(commentRoute);
 router.use('/auth', authRoute);
 router.use(resetPasswordRouter);
 router.use(profileRoute, likeArticle);
+router.use(getFollowersRoute);
 
 export default router;

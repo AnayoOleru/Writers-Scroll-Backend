@@ -3,21 +3,70 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 chai.use(chaiHttp);
-const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1MTdhNmVhLTY2MmItNGVlZi1hYjlmLTIwZjg5YmQ3MDk5YyIsImVtYWlsIjoiYW5heW9AbWFpbC5jb20iLCJleHAiOiI3MmgifQ.qFmqZe1NXLW2YxH6pf8bC-spZlafXGlucfsAjT3L6zE';
-describe('LIKE', () => {
-  it('should respond with a 201 for Successfully like an article', done => {
+let token1;
+describe('TEST LIKE', () => {
+  it('lgoin a user', done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'vic3coorp@gmail.com',
+        password: '12345678',
+      })
+      .end((err, res) => {
+        const { token } = res.body.user;
+        expect(res.status).to.equal(200);
+        token1 = token;
+        done();
+      });
+  });
+
+  it('It should return a 201 if a user successfully an article', done => {
     chai
       .request(app)
       .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
-      .set('Authorization', token)
-      .send({
-        userId: '6517a6ea-662b-4eef-ab9f-20f89bd7099c', // Id from the seeder
-      })
+      .set('authorization', token1)
       .end((err, res) => {
-        expect(res.body).to.be.a('object');
-        expect(res.status).to.be.equal(201);
+        expect(res.status).to.equal(201);
+        expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal('Successfuly added like');
+        done();
+      });
+  });
+
+  it('It should return a 200 if a user Unlike an article', done => {
+    chai
+      .request(app)
+      .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('authorization', token1)
+      .end((err, res) => {
+        expect(res.status).to.equal(200);
+        expect(res.body.message).to.be.a('string');
+        expect(res.body.message).to.equal('Successfully removed like');
+        done();
+      });
+  });
+  it('It should return a 403 error for an invalid token', done => {
+    chai
+      .request(app)
+      .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('authorization', 'eeeeeeeeeeeeeee')
+      .end((err, res) => {
+        expect(res.status).to.equal(403);
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.equal('Forbidden');
+        done();
+      });
+  });
+  it('It should return a 401 error for an empty token', done => {
+    chai
+      .request(app)
+      .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('authorization', '')
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.equal('You are not authorized');
         done();
       });
   });

@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import slugMaker from '../server/helpers/slugMaker';
+import slugMaker from '../server/helpers/slug-maker';
 
 const title = 'This is the title of the year';
 

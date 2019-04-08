@@ -54,9 +54,9 @@ describe('PROFILE', () => {
           researchfield,
           createdAt,
           updatedAt,
-        } = res.body.data[0];
-        expect(res.body.data).to.be.a('array');
-        expect(res.body.data[0]).contains({
+        } = res.body.profile;
+        expect(res.body.profile).to.be.a('object');
+        expect(res.body.profile).contains({
           id,
           firstname,
           lastname,
@@ -79,7 +79,7 @@ describe('PROFILE', () => {
       .set('Authorization', userBToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.error).to.equal('id not valid');
+        expect(res.body.errors.body[0]).to.equal('id not valid');
         done();
       });
   });
@@ -91,7 +91,7 @@ describe('PROFILE', () => {
       .set('Authorization', userAToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        const { first_name: firstname } = res.body.data[0];
+        const { first_name: firstname } = res.body.profiles[0];
         expect(firstname).to.equal('Ameachi');
         done();
       });
@@ -104,7 +104,7 @@ describe('PROFILE', () => {
       .set('Authorization', userAToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.error).to.equal('invalid query sring');
+        expect(res.body.errors.body[0]).to.equal('Invalid query string');
         done();
       });
   });
@@ -118,7 +118,7 @@ describe('PROFILE', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
 
-        const { firstname } = res.body.data[0];
+        const { firstname } = res.body.profile;
         expect(firstname).to.equal('Sammy');
         done();
       });
@@ -132,7 +132,9 @@ describe('PROFILE', () => {
       .send({ first_name: 'Sammy' })
       .end((err, res) => {
         expect(res).to.have.status(403);
-        expect(res.body.error).to.equal('User does not own this account');
+        expect(res.body.errors.body[0]).to.equal(
+          'User does not own this account'
+        );
         done();
       });
   });
@@ -144,7 +146,7 @@ describe('PROFILE', () => {
       .send({ first_name: 'Sammy' })
       .end((err, res) => {
         expect(res).to.have.status(401);
-        expect(res.body.error).to.equal('You are not authorized');
+        expect(res.body.errors.body[0]).to.equal('You are not authorized');
         done();
       });
   });
@@ -157,7 +159,7 @@ describe('PROFILE', () => {
       .send({ first_name: 'Sammy' })
       .end((err, res) => {
         expect(res).to.have.status(403);
-        expect(res.body.error).to.equal('Forbidden');
+        expect(res.body.errors.body[0]).to.equal('Forbidden');
         done();
       });
   });
@@ -170,7 +172,7 @@ describe('PROFILE', () => {
       .send({ firstname: 'Sammy' })
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.error).to.equal('invalid input properties');
+        expect(res.body.errors.body[0]).to.equal('invalid input properties');
         done();
       });
   });
@@ -183,7 +185,7 @@ describe('PROFILE', () => {
       .send({})
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.error).to.equal('no input provided');
+        expect(res.body.errors.body[0]).to.equal('No input provided');
         done();
       });
   });
@@ -196,7 +198,7 @@ describe('PROFILE', () => {
       .send({ email: 'Sammy' })
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.message).to.equal('email must be a valid email');
+        expect(res.body.errors.body[0]).to.equal('email must be a valid email');
         done();
       });
   });

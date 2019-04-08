@@ -10,8 +10,9 @@ describe('LOGIN VALIDATOR TEST', () => {
       .post(`${baseUrl}/auth/login`)
       .send({ email: '', password: 'testingpassword' })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'email is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -21,8 +22,9 @@ describe('LOGIN VALIDATOR TEST', () => {
       .post(`${baseUrl}/auth/login`)
       .send({ email: 'test', password: 'testingpassword' })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email must be a valid email');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'email must be a valid email'
+        );
         done(err);
       });
   });
@@ -32,8 +34,7 @@ describe('LOGIN VALIDATOR TEST', () => {
       .post(`${baseUrl}/auth/login`)
       .send({ email: ['test'], password: 'testingpassword' })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email must be a string');
+        expect(res.body.errors.body[0]).to.be.equal('email must be a string');
         done(err);
       });
   });
@@ -43,8 +44,9 @@ describe('LOGIN VALIDATOR TEST', () => {
       .post(`${baseUrl}/auth/login`)
       .send({ email: 'test@gmail.com', password: '' })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('password is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'password is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -54,8 +56,9 @@ describe('LOGIN VALIDATOR TEST', () => {
       .post(`${baseUrl}/auth/login`)
       .send({ email: 'test@gmail.com', password: ['testingpassword'] })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('password must be a string');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'password must be a string'
+        );
         done(err);
       });
   });
@@ -74,8 +77,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'email is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -91,8 +95,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email must be a valid email');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'email must be a valid email'
+        );
         done(err);
       });
   });
@@ -108,8 +113,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('email must be a string');
+        expect(res.body.errors.body[0]).to.be.equal('email must be a string');
         done(err);
       });
   });
@@ -125,8 +129,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('firstname is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'firstname is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -142,8 +147,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('firstname must be a string');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'firstname must be a string'
+        );
         done(err);
       });
   });
@@ -159,8 +165,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('lastname is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'lastname is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -176,8 +183,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('lastname must be a string');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'lastname must be a string'
+        );
         done(err);
       });
   });
@@ -193,8 +201,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testing',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('password is not allowed to be empty');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'password is not allowed to be empty'
+        );
         done(err);
       });
   });
@@ -210,8 +219,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('password must be a string');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'password must be a string'
+        );
         done(err);
       });
   });
@@ -227,8 +237,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testingpassword',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal(
+        expect(res.body.errors.body[0]).to.be.equal(
           'password length must be at least 8 characters long'
         );
         done(err);
@@ -246,8 +255,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: '',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal(
+        expect(res.body.errors.body[0]).to.be.equal(
           'confirmPassword is not allowed to be empty'
         );
         done(err);
@@ -265,8 +273,9 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: ['testingpassword'],
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('confirmPassword must be a string');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'confirmPassword must be a string'
+        );
         done(err);
       });
   });
@@ -282,8 +291,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'testing',
       })
       .end((err, res) => {
-        const { message } = res.body;
-        expect(message).to.be.equal('Passwords do not match');
+        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
         done(err);
       });
   });

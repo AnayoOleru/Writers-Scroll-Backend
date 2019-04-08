@@ -24,7 +24,7 @@ describe('Reset Password', () => {
           message,
           token,
         });
-        done(err);
+        done();
       });
   });
 
@@ -36,10 +36,9 @@ describe('Reset Password', () => {
         email: 'testing@gmail.com',
       })
       .end((err, res) => {
-        const { error } = res.body;
-        expect(res.status).to.be.equal(404);
-        expect(error).to.be.equal('Email not found');
-        done(err);
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.be.equal('Email not found');
+        done();
       });
   });
 
@@ -51,10 +50,11 @@ describe('Reset Password', () => {
         email: 'testinggmail.com',
       })
       .end((err, res) => {
-        const { error } = res.body;
-        expect(res.status).to.be.equal(400);
-        expect(error).to.be.equal('Kindly enter a valid email');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Kindly enter a valid email'
+        );
+        done();
       });
   });
 
@@ -64,10 +64,11 @@ describe('Reset Password', () => {
       .post('/api/v1/auth/reset')
       .send({})
       .end((err, res) => {
-        const { error } = res.body;
-        expect(res.status).to.be.equal(400);
-        expect(error).to.be.equal('Kindly enter a valid email');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Kindly enter a valid email'
+        );
+        done();
       });
   });
 });
@@ -85,7 +86,7 @@ describe('UPDATE Password', () => {
       .end((err, res) => {
         expect(res.status).to.be.equal(200);
         expect(res.body.message).to.be.equal('password reset successful');
-        done(err);
+        done();
       });
   });
 
@@ -98,9 +99,11 @@ describe('UPDATE Password', () => {
         confirmPassword: '12345asdf',
       })
       .end((err, res) => {
-        expect(res.status).to.be.equal(403);
-        expect(res.body.error).to.be.equal('You need to provide a token');
-        done(err);
+        expect(res).to.have.status(403);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'You need to provide a token'
+        );
+        done();
       });
   });
 
@@ -114,10 +117,11 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        console.log(res);
-        expect(res.status).to.be.equal(409);
-        expect(res.body.error).to.be.equal('You cannot use an old password');
-        done(err);
+        expect(res).to.have.status(409);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'You cannot use an old password'
+        );
+        done();
       });
   });
 
@@ -131,9 +135,9 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        expect(res.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Passwords do not match');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
+        done();
       });
   });
 
@@ -146,9 +150,9 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        expect(res.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Password is required');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('Password is required');
+        done();
       });
   });
 
@@ -161,9 +165,11 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        expect(res.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('confirmPassword is required');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'confirmPassword is required'
+        );
+        done();
       });
   });
 
@@ -177,9 +183,9 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        expect(res.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('Password is required');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('Password is required');
+        done();
       });
   });
 
@@ -193,9 +199,11 @@ describe('UPDATE Password', () => {
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
-        expect(res.status).to.be.equal(400);
-        expect(res.body.error).to.be.equal('confirmPassword is required');
-        done(err);
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'confirmPassword is required'
+        );
+        done();
       });
   });
 });

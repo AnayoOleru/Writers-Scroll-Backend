@@ -1,6 +1,6 @@
 import Joi from 'joi';
-import joiFormater from '../helpers/joiFormater';
-import search from '../helpers/searchDatabase';
+import joiFormater from '../helpers/joi-formater';
+import search from '../helpers/search-database';
 import signupSchema from '../joiSchema/signupSchema';
 import loginSchema from '../joiSchema/loginSchema';
 
@@ -16,14 +16,18 @@ const signUpValidator = async (req, res, next) => {
     if (error) {
       const { message } = error.details[0];
       const formatedMessage = joiFormater(message);
-      return res.status(400).send({
-        message: formatedMessage,
+      return res.status(400).json({
+        errors: {
+          body: [formatedMessage],
+        },
       });
     }
     const user = await findUser(email);
     if (user) {
-      return res.status(409).send({
-        message: 'Email already exists',
+      return res.status(409).json({
+        errors: {
+          body: ['Email already exists'],
+        },
       });
     }
   } catch (err) {
@@ -38,8 +42,10 @@ const loginValidator = (req, res, next) => {
   if (error) {
     const { message } = error.details[0];
     const formatedMessage = joiFormater(message);
-    return res.status(400).send({
-      message: formatedMessage,
+    return res.status(400).json({
+      errors: {
+        body: [formatedMessage],
+      },
     });
   }
   return next();

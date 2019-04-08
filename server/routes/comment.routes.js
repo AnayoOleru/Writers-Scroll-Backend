@@ -1,9 +1,8 @@
 import express from 'express';
-
 import controllers from '../controllers';
-import commentValidation from '../joiSchema/commentSchema';
-import validation from '../helpers/validations';
+import middlewares from '../middlewares';
 
+const { tokenValidator, commentMiddleware } = middlewares;
 const { commentController } = controllers;
 
 const router = express.Router();
@@ -38,8 +37,8 @@ const router = express.Router();
 
 router.post(
   '/comment',
-  validation.verifyToken,
-  commentValidation,
+  tokenValidator.verifyToken,
+  commentMiddleware.validateComment,
   commentController.post
 );
 

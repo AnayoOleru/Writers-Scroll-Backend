@@ -14,8 +14,8 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'tes@gmail.com', password: 'test' })
       .end((err, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(401);
+        expect(res).to.have.status(401);
+        const { errors } = res.body;
         expect(res).to.be.a('object');
         expect(errors.body[0]).to.be.equal('invalid username and/or password');
         done();
@@ -27,8 +27,8 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'ameachichuks@gmail.com', password: 'testMaster' })
       .end((err, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(401);
+        const { errors } = res.body;
+        expect(res).to.have.status(401);
         expect(res).to.be.a('object');
         expect(errors.body[0]).to.be.equal('invalid username and/or password');
         done();
@@ -40,12 +40,11 @@ describe('LOGIN CONTROLLER TEST', () => {
       .post(`${baseUrl}/login`)
       .send({ email: 'ameachichuks@gmail.com', password: '12345678' })
       .end((err, res) => {
-        const { status, message, user } = res.body;
-        expect(status).to.be.equal(200);
+        const { user } = res.body;
+        expect(res).to.have.status(200);
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('Login was successful');
         done();
       });
   });
@@ -64,12 +63,11 @@ describe('SIGNUP CONTROLLER TEST', () => {
         confirmPassword: 'testing1',
       })
       .end((_err, res) => {
-        const { status, message, user } = res.body;
-        expect(status).to.be.equal(200);
+        const { user } = res.body;
+        expect(res).to.have.status(200);
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('Registration was successful');
         done();
       });
   });
@@ -85,12 +83,11 @@ describe('SIGNUP CONTROLLER TEST', () => {
         confirmPassword: 'testing1',
       })
       .end((_err, res) => {
-        const { status, message, user } = res.body;
-        expect(status).to.be.equal(200);
+        const { user } = res.body;
+        expect(res).to.have.status(200);
         expect(res).to.be.a('object');
         expect(user).to.be.a('object');
         expect(user).to.have.keys('email', 'token', 'bio', 'image');
-        expect(message).to.be.equal('Registration was successful');
         done();
       });
   });
@@ -103,11 +100,9 @@ describe('EMAIL VERIFICATION TEST', () => {
       .request(app)
       .patch(`${baseUrl}/verification/${token}`)
       .end((_err, res) => {
-        const { status, message } = res.body;
-        expect(status).to.be.equal(200);
+        expect(res).to.have.status(200);
         expect(res).to.be.a('object');
-        expect(res.body).to.have.keys('status', 'message');
-        expect(message).to.be.equal('Account verification was successful');
+        expect(res.body).to.have.key('message');
         done();
       });
   });
@@ -116,9 +111,9 @@ describe('EMAIL VERIFICATION TEST', () => {
       .request(app)
       .patch(`${baseUrl}/verification/${token}`)
       .end((err, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(403);
-        expect(res.body).to.have.keys('status', 'errors');
+        const { errors } = res.body;
+        expect(res).to.have.status(403);
+        expect(res.body).to.have.keys('errors');
         expect(errors).to.have.keys('body');
         expect(errors.body).to.be.a('array');
         expect(errors.body[0]).to.be.equal(

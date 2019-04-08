@@ -1,10 +1,6 @@
 import Joi from 'joi';
 
-import validations from '../helpers/validations';
-
-const rating = (req, res, next) => {
-  const data = req.body;
-
+const ratingSchema = () => {
   const schema = Joi.object().keys({
     article_id: Joi.string()
       .guid({
@@ -16,10 +12,7 @@ const rating = (req, res, next) => {
       .max(5)
       .required(),
   });
-
-  Joi.validate(data, schema, err => {
-    validations.validateInput(err, res, next);
-  });
+  return schema;
 };
 
-export default rating;
+export default ratingSchema;

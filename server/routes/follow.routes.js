@@ -1,17 +1,19 @@
 import express from 'express';
 import followController from '../controllers/follow.controllers';
-import validations from '../helpers/validations';
+import middlewares from '../middlewares';
+
+const { tokenValidator } = middlewares;
 
 const router = express.Router();
 
 router.post(
   '/follow/:followeeId',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   followController.followUser
 );
 router.delete(
   '/follow/:unFolloweeId',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   followController.unFollowUser
 );
 

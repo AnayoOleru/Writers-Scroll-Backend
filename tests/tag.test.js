@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai';
 import chaiHttp from 'chai-http';
-import tagging from '../server/helpers/tagsHelpers';
+import tagging from '../server/helpers/tags-helpers';
 
 chai.use(chaiHttp);
 

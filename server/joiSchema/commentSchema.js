@@ -1,9 +1,6 @@
 import Joi from 'joi';
-import validations from '../helpers/validations';
 
-const comment = (req, res, next) => {
-  const data = req.body;
-
+const commentSchema = () => {
   const schema = Joi.object().keys({
     article_id: Joi.string()
       .guid({
@@ -15,10 +12,7 @@ const comment = (req, res, next) => {
       .max(250)
       .required(),
   });
-
-  Joi.validate(data, schema, err => {
-    validations.validateInput(err, res, next);
-  });
+  return schema;
 };
 
-export default comment;
+export default commentSchema;

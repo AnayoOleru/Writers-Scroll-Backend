@@ -1,8 +1,8 @@
 import express from 'express';
 import controllers from '../controllers';
-import ratingValidation from '../joiSchema/ratingSchema';
-import validation from '../helpers/validations';
+import middlewares from '../middlewares';
 
+const { tokenValidator, ratingMiddleware } = middlewares;
 const { ratingController } = controllers;
 
 const router = express.Router();
@@ -39,8 +39,8 @@ const router = express.Router();
 
 router.post(
   '/rating',
-  validation.verifyToken,
-  ratingValidation,
+  tokenValidator.verifyToken,
+  ratingMiddleware.validateRating,
   ratingController.post
 );
 

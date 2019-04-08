@@ -1,5 +1,6 @@
 import models from '../models';
 import validations from '../helpers/validations';
+import serverError from '../helpers/server-error';
 
 const { Article } = models;
 
@@ -9,8 +10,8 @@ const getArticles = async (req, res) => {
 
     if (page === 0) {
       return res.status(400).json({
-        error: {
-          page: ['cannot be 0'],
+        errors: {
+          body: ['cannot be 0'],
         },
       });
     }
@@ -39,17 +40,14 @@ const getArticles = async (req, res) => {
         articles,
       });
     } catch (e) {
-      const err = e.parent.hint;
-      return res.status(400).json({
-        error: {
-          hint: [err.replace(/[^a-zA-Z. ]/g, '')],
-        },
+      return res.status(500).json({
+        errors: serverError(),
       });
     }
   }
   return res.status(400).json({
-    error: {
-      page: ['cannot be anything but numbers'],
+    errors: {
+      body: ['cannot be anything but numbers'],
     },
   });
 };

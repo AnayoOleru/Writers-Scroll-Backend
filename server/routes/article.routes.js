@@ -1,22 +1,21 @@
 import express from 'express';
 import controllers from '../controllers';
 import middlewares from '../middlewares';
-import validations from '../helpers/validations';
 
 const { articleController } = controllers;
-const { articleMiddleware } = middlewares;
+const { articleMiddleware, tokenValidator } = middlewares;
 
 const router = express.Router();
 
 router.get(
   '/article/:id',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   articleController.getOneArticle
 );
 
 router.post(
   '/article',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   articleMiddleware.validateArticleBody,
   articleMiddleware.checkDraftStatus,
   articleController.createArticle
@@ -24,7 +23,7 @@ router.post(
 
 router.delete(
   '/article/:id',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   articleController.deleteArticle
 );
 

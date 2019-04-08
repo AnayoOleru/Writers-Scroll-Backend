@@ -53,8 +53,7 @@ describe('TEST LIKE', () => {
       .set('authorization', 'eeeeeeeeeeeeeee')
       .end((err, res) => {
         expect(res.status).to.equal(403);
-        expect(res.body.error).to.be.a('string');
-        expect(res.body.error).to.equal('Forbidden');
+        expect(res.body.errors.body[0]).to.be.equal('Forbidden');
         done();
       });
   });
@@ -65,8 +64,7 @@ describe('TEST LIKE', () => {
       .set('authorization', '')
       .end((err, res) => {
         expect(res.status).to.equal(401);
-        expect(res.body.error).to.be.a('string');
-        expect(res.body.error).to.equal('You are not authorized');
+        expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
         done();
       });
   });

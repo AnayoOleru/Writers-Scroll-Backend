@@ -1,27 +1,26 @@
 import express from 'express';
 import controllers from '../controllers';
 import middlewares from '../middlewares';
-import validations from '../helpers/validations';
 
 const { profileController } = controllers;
-const { profileMiddleware } = middlewares;
+const { profileMiddleware, tokenValidator } = middlewares;
 
 const router = express.Router();
 
 router.get(
   '/profile/:id',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   profileController.getUserProfile
 );
 router.get(
   '/profile',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   profileController.getProfileByField
 );
 
 router.patch(
   '/profile/:id',
-  validations.verifyToken,
+  tokenValidator.verifyToken,
   profileMiddleware.validateUpdateProfile,
   profileController.patchProfile
 );

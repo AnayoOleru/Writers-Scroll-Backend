@@ -56,9 +56,9 @@ describe('ARTICLE', () => {
           likescount,
           createdAt,
           updatedAt,
-        } = res.body.data[0];
-        expect(res.body.data).to.be.a('array');
-        expect(res.body.data[0]).contains({
+        } = res.body.article;
+        expect(res.body.article).to.be.a('object');
+        expect(res.body.article).contains({
           id,
           author,
           title,
@@ -83,7 +83,7 @@ describe('ARTICLE', () => {
       .set('Authorization', userAToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.error).to.equal('id not valid');
+        expect(res.body.errors.body[0]).to.equal('id not valid');
         done();
       });
   });
@@ -95,7 +95,7 @@ describe('ARTICLE', () => {
       .set('Authorization', userAToken)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.error).to.equal('Article not found');
+        expect(res.body.errors.body[0]).to.equal('Article not found');
         done();
       });
   });
@@ -127,7 +127,7 @@ describe('ARTICLE', () => {
       .set('Authorization', userBToken)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.error).to.equal('Article not found');
+        expect(res.body.errors.body[0]).to.equal('Article not found');
         done();
       });
   });

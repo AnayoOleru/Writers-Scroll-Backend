@@ -1,65 +1,61 @@
 import model from '../models';
-import likeHelper from '../helpers/likeHelpers';
+import likeHelper from '../helpers/like-helpers';
 import validations from '../helpers/validations';
+import serverError from '../helpers/server-error';
 
 const { Article, User } = model;
-const serverError = {
-  status: 500,
-  message: 'Server error, please try again later',
-};
-const likeController = {
-  async toggleLike(req, res) {
-    const token = validations.verifyAuthHeader(req);
-    const { id: userId } = token.userObj;
-    const { articleId } = req.params;
-    try {
-      // validate article and user Id
-      if (
-        !validations.verifyUUID(articleId) ||
-        !validations.verifyUUID(userId)
-      ) {
-        return res.status(400).json({
-          message: 'id not valid',
-        });
-      }
 
-      // Find an article by Id
-      const article = await Article.findOne({
-        where: {
-          id: articleId,
+const toggleLike = async (req, res) => {
+  const token = validations.verifyAuthHeader(req);
+  const { id: userId } = token.userObj;
+  const { articleId } = req.params;
+  try {
+    // validate article and user Id
+    if (!validations.verifyUUID(articleId) || !validations.verifyUUID(userId)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
         },
       });
-      req.article = article;
-
-      const user = await User.findOne({
-        where: {
-          id: userId,
-        },
-      });
-      req.user = user;
-
-      // Get user like record
-      const userLike = await likeHelper.getUserLike(user, article);
-      let result;
-      // Check if user has like an article before
-      if (userLike) {
-        result = await likeHelper.removeLike(user, article);
-        res.status(200).json({
-          status: 200,
-          message: 'Successfully removed like',
-          data: result,
-        });
-      } else {
-        result = await likeHelper.addLike(user, article);
-        res.status(201).json({
-          status: 201,
-          message: 'Successfuly added like',
-          data: result,
-        });
-      }
-    } catch (error) {
-      return res.send(serverError);
     }
-  },
+
+    // Find an article by Id
+    const article = await Article.findOne({
+      where: {
+        id: articleId,
+      },
+    });
+    req.article = article;
+
+    const user = await User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    req.user = user;
+
+    // Get user like record
+    const userLike = await likeHelper.getUserLike(user, article);
+    let result;
+    // Check if user has like an article before
+    if (userLike) {
+      result = await likeHelper.removeLike(user, article);
+      return res.status(200).json({
+        message: 'Successfully removed like',
+        data: result,
+      });
+    }
+    result = await likeHelper.addLike(user, article);
+    return res.status(201).json({
+      message: 'Successfuly added like',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
 };
+
+const likeController = { toggleLike };
 export default likeController;

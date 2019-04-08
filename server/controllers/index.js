@@ -4,7 +4,7 @@ import articleController from './article.controllers';
 import followController from './follow.controllers';
 import authController from './auth.controller';
 import ratingController from './rating.controller';
-import ResetPasswordController from './resetpassword';
+import ResetPasswordController from './reset-password.controllers';
 import commentController from './comment.controller';
 import getFollowersController from './get-followers.controllers';
 

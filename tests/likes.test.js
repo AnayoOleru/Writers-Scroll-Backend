@@ -46,4 +46,28 @@ describe('TEST LIKE', () => {
         done();
       });
   });
+  it('It should return a 403 error for an invalid token', done => {
+    chai
+      .request(app)
+      .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('authorization', 'eeeeeeeeeeeeeee')
+      .end((err, res) => {
+        expect(res.status).to.equal(403);
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.equal('Forbidden');
+        done();
+      });
+  });
+  it('It should return a 401 error for an empty token', done => {
+    chai
+      .request(app)
+      .post('/api/v1/likes/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('authorization', '')
+      .end((err, res) => {
+        expect(res.status).to.equal(401);
+        expect(res.body.error).to.be.a('string');
+        expect(res.body.error).to.equal('You are not authorized');
+        done();
+      });
+  });
 });

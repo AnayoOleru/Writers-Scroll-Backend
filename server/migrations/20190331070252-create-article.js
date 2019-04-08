@@ -18,18 +18,16 @@ module.exports = {
       },
       slug: {
         type: Sequelize.STRING,
+        unique: true,
       },
       abstract: {
         type: Sequelize.TEXT,
-        allowNull: false,
       },
       body: {
         type: Sequelize.TEXT,
-        allowNull: false,
       },
       category: {
         type: Sequelize.STRING,
-        allowNull: false,
       },
       image_url: {
         type: Sequelize.STRING,

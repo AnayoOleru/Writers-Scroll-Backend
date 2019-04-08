@@ -61,6 +61,10 @@ module.exports = {
       research_field: {
         type: Sequelize.STRING,
       },
+      social: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

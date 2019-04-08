@@ -104,6 +104,23 @@ describe('UPDATE Password', () => {
       });
   });
 
+  it('should not update password when new password is the same as previously forgotten password', done => {
+    chai
+      .request(app)
+      .post('/api/v1/auth/new_password')
+      .send({
+        password: '12345asdf',
+        confirmPassword: '12345asdf',
+      })
+      .set('Authorization', emailToken)
+      .end((err, res) => {
+        console.log(res);
+        expect(res.status).to.be.equal(409);
+        expect(res.body.error).to.be.equal('You cannot use an old password');
+        done(err);
+      });
+  });
+
   it('should not update password when the fields dont match', done => {
     chai
       .request(app)

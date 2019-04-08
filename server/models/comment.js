@@ -1,3 +1,19 @@
+/**
+ * @swagger
+ * definition:
+ *  comment:
+ *    type: object
+ *    required:
+ *      - article_id
+ *      - body
+ *    properties:
+ *      article_id:
+ *        type: string
+ *        format: uuid
+ *      body:
+ *        type: string
+ */
+
 module.exports = (sequelize, DataTypes) => {
   const Comment = sequelize.define('Comment', {
     id: {

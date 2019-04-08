@@ -3,8 +3,6 @@ import models from '../models';
 const { Keyword } = models;
 
 const serverError = 'Server error, please try again later';
-// const emptyArticleId = 'You need to provide an article ID to proceed';
-// const emptyTags = 'You need to provide an tags to proceed';
 
 const tagging = {
   /**

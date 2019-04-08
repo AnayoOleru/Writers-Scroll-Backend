@@ -79,5 +79,19 @@ module.exports = (sequelize, DataTypes) => {
   User.beforeUpdate(user => {
     user.password = authHelpers.hashPassword(user.password);
   });
+
+  User.associate = models => {
+    const { Follower } = models;
+
+    User.hasMany(Follower, {
+      foreignKey: 'followee_id',
+      as: 'followee',
+    });
+
+    User.hasMany(Follower, {
+      foreignKey: 'follower_id',
+      as: 'follower',
+    });
+  };
   return User;
 };

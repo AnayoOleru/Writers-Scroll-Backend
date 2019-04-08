@@ -203,6 +203,13 @@ const validations = {
   compareFieldWithToken(field, token) {
     return field === token;
   },
+  draftPublishMessage(isDraft) {
+    if (isDraft) {
+      return 'Article saved to draft';
+    }
+
+    return 'Article published successfully';
+  },
 };
 
 export default validations;

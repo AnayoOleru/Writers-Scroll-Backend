@@ -50,7 +50,7 @@ const controller = {
     } catch (error) {
       return res.status(500).json({
         error,
-        message: 'Oops! There seem to be a database error',
+        message: 'Oops! There seems to be a database error',
       });
     }
   },
@@ -83,7 +83,7 @@ const controller = {
     } catch (error) {
       return res.status(500).json({
         error,
-        message: 'Oops! There seem to be a database error',
+        message: 'Oops! There seems to be a database error',
       });
     }
   },
@@ -95,13 +95,6 @@ const controller = {
           error: 'id not valid',
         });
       }
-      const { userObj } = req.user;
-      if (!validations.compareFieldWithToken(userObj.id, req.params.id)) {
-        return res.status(403).json({
-          error: 'User does not own this account',
-        });
-      }
-
       const updateBody = req.body;
 
       const userProfile = await User.findOne({
@@ -115,6 +108,14 @@ const controller = {
           error: 'no user found',
         });
       }
+
+      const { userObj } = req.user;
+      if (!validations.compareFieldWithToken(userObj.id, req.params.id)) {
+        return res.status(403).json({
+          error: 'User does not own this account',
+        });
+      }
+
       const user = await userProfile.update(updateBody);
 
       const profile = profiler(user);
@@ -125,7 +126,7 @@ const controller = {
     } catch (error) {
       return res.status(500).json({
         error,
-        message: 'Oops! There seem to be a database error',
+        message: 'Oops! There seems to be a database error',
       });
     }
   },

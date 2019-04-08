@@ -17,18 +17,16 @@ module.exports = (sequelize, DataTypes) => {
     },
     slug: {
       type: DataTypes.STRING,
+      unique: true,
     },
     abstract: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     body: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false,
     },
     image_url: {
       type: DataTypes.STRING,

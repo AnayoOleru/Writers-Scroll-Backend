@@ -60,15 +60,11 @@ const controller = {
   },
   async createArticle(req, res) {
     try {
-      req.body.slug = slugMaker(req.body, '**');
+      req.body.slug = slugMaker(req.body.title);
       if (!req.body.slug) {
         return res.status(400).json({
-          error: 'Article must have body or title',
+          error: 'Article must have title',
         });
-      }
-
-      if (!req.body.title) {
-        req.body.title = 'Draft';
       }
 
       const { userObj } = req.user;

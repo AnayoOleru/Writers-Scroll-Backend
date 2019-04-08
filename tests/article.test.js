@@ -159,26 +159,6 @@ describe('ARTICLE', () => {
       });
   });
 
-  it('should respond with success: slug maker error', done => {
-    chai
-      .request(app)
-      .post(`/api/v1/article`)
-      .set('Authorization', userAToken)
-      .send({
-        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
-        is_draft: true,
-        abstract: 'this is required',
-        category: 'physics',
-        keywords: ['physics', 'chemisty', 'mathematics'],
-      })
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body.message).to.equal('Article saved to draft');
-        expect(res.body.data.title).to.equal('Draft');
-        done();
-      });
-  });
-
   it('should respond with error: invalid input for draft', done => {
     chai
       .request(app)

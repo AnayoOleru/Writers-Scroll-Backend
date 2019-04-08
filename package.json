@@ -72,6 +72,7 @@
     "sendgrid": "^5.2.3",
     "sequelize": "^5.2.1",
     "sequelize-cli": "^5.4.0",
+    "swagger-jsdoc": "^3.2.8",
     "swagger-ui-express": "^4.0.2",
     "yarn": "^1.15.2"
   },

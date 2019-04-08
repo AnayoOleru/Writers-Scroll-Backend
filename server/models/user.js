@@ -1,4 +1,5 @@
 import authHelpers from '../helpers/auth';
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {

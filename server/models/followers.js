@@ -1,5 +1,5 @@
 'use strict';
-module.exports = (sequelize, DataTypes) => {
+export default (sequelize, DataTypes) => {
   const Followers = sequelize.define('Follower', {
     id: {
       allowNull: false,
@@ -17,9 +17,18 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  Followers.associate = models =>
-    Followers.belongsTo(models.User, {
-      foreignKey: 'id',
+  Followers.associate = models => {
+    const { User } = models;
+
+    Followers.belongsTo(User, {
+      foreignKey: 'followee_id',
+      as: 'followee',
     });
+
+    Followers.belongsTo(User, {
+      foreignKey: 'follower_id',
+      as: 'follower',
+    });
+  };
   return Followers;
 };

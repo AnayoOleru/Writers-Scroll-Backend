@@ -1,5 +1,8 @@
 import model from '../models';
 import validations from '../helpers/validations';
+import slugMaker from '../helpers/slugMaker';
+import spaceTrimmer from '../helpers/spaceTrimmer';
+import tagsHelpers from '../helpers/tagsHelpers';
 
 const { Article } = model;
 
@@ -51,7 +54,41 @@ const controller = {
     } catch (error) {
       return res.status(500).json({
         error,
-        message: 'Oops! There seem to be a database error',
+        message: 'Oops! There seems to be a database error',
+      });
+    }
+  },
+  async createArticle(req, res) {
+    try {
+      req.body.slug = slugMaker(req.body.title);
+      if (!req.body.slug) {
+        return res.status(400).json({
+          error: 'Article must have title',
+        });
+      }
+
+      const { userObj } = req.user;
+      req.body.user_id = userObj.id;
+
+      req.body = spaceTrimmer(req.body);
+      const article = await Article.create(req.body);
+
+      if (!req.body.is_draft) {
+        if (req.body.keywords) {
+          req.body.keywords.forEach(async keyword => {
+            await tagsHelpers.saveArticleTags(article.id, keyword);
+          });
+        }
+      }
+
+      return res.status(201).json({
+        message: validations.draftPublishMessage(article.is_draft),
+        data: article,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        error,
+        message: 'Oops! There seems to be a database error',
       });
     }
   },

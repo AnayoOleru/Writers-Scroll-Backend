@@ -5,11 +5,7 @@ const { User, Article } = model;
 
 const findUser = async email => {
   try {
-    const user = await User.findOne({ where: { email } });
-    if (user) {
-      return user;
-    }
-    return null;
+    return await User.findOne({ where: { email } });
   } catch (err) {
     return err;
   }
@@ -17,11 +13,7 @@ const findUser = async email => {
 
 const findArticle = async id => {
   try {
-    const article = await Article.findOne({ where: { id } });
-    if (article) {
-      return article;
-    }
-    return null;
+    return await Article.findOne({ where: { id } });
   } catch (err) {
     return err;
   }

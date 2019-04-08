@@ -1,12 +1,11 @@
 import express from 'express';
 
 import getArticles from './get-articles.routes';
-import resetPasswordRouter from './resetpassword.routes';
 import likeRoute from './like.routes';
+import resetPasswordRouter from './reset-password.routes';
 import profileRoute from './profile.routes';
 import articleRoute from './article.routes';
 import authRoute from './user.routes';
-// import followUser from './followRoutes';
 import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
 import followRoutes from './follow.routes';

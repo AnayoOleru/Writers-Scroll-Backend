@@ -1,16 +1,12 @@
 import db from '../models';
 import authHelper from '../helpers/auth';
-import searchDatabase from '../helpers/searchDatabase';
-import emailSender from '../helpers/emailSender';
+import searchDatabase from '../helpers/search-database';
+import notifications from '../helpers/notifications';
+import serverError from '../helpers/server-error';
 
 const { findUser } = searchDatabase;
 const { User } = db;
 const error = ['invalid username and/or password'];
-const serverError = {
-  status: 500,
-  message: 'Server error, please try again later',
-};
-const status = 401;
 
 /**
  * @description - this method logs in a user
@@ -26,8 +22,7 @@ const loginController = async (req, res) => {
     const user = await User.findOne({ where: { email } });
 
     if (!user) {
-      return res.send({
-        status,
+      return res.status(401).json({
         errors: {
           body: error,
         },
@@ -43,27 +38,26 @@ const loginController = async (req, res) => {
     const verifyPassword = authHelper.comparePassword(hashedPassword, password);
 
     if (!verifyPassword) {
-      return res.send({
-        status,
+      return res.status(401).json({
         errors: {
           body: error,
         },
       });
     }
-    const token = authHelper.encode({ id, email, isAdmin });
+    const token = authHelper.encode({ id, isAdmin });
 
-    return res.send({
-      status: 200,
+    return res.status(200).json({
       user: {
         email,
         token,
         bio,
         image,
       },
-      message: 'Login was successful',
     });
   } catch (err) {
-    return res.send(serverError);
+    return res.status(500).json({
+      errors: serverError(),
+    });
   }
 };
 
@@ -85,25 +79,25 @@ const signupController = async (req, res) => {
       password,
     });
 
-    if (!user) return res.send({ status, errors: { body: error } });
+    if (!user) return res.status(401).json({ errors: { body: error } });
 
     const { id, is_admin: isAdmin, bio, image_url: image } = user;
-    const token = authHelper.encode({ id, email, isAdmin });
+    const token = authHelper.encode({ id, isAdmin });
 
     const verificationToken = authHelper.encode({ email });
     const verificationLink = `${req.protocol}://${req.get(
       'host'
     )}/api/v1/auth/verification/${verificationToken}`;
 
-    await emailSender.signupEmail(email, verificationLink);
+    await notifications.signupEmail(email, verificationLink);
 
-    return res.send({
-      status: 200,
+    return res.status(200).json({
       user: { email, token, bio, image },
-      message: 'Registration was successful',
     });
   } catch (err) {
-    return res.send(serverError);
+    return res.status(500).json({
+      errors: serverError(),
+    });
   }
 };
 
@@ -123,8 +117,7 @@ const verifyEmail = async (req, res) => {
 
     const user = await findUser(email);
     if (user.is_activated) {
-      return res.send({
-        status: 403,
+      return res.status(403).json({
         errors: {
           body: ['Your account has already been verified'],
         },
@@ -132,12 +125,13 @@ const verifyEmail = async (req, res) => {
     }
     const updateValue = { is_activated: true };
     await user.update(updateValue);
-    return res.send({
-      status: 200,
+    return res.status(200).json({
       message: 'Account verification was successful',
     });
   } catch (err) {
-    return res.send(serverError);
+    return res.status(500).json({
+      errors: serverError(),
+    });
   }
 };
 

@@ -1,7 +1,11 @@
+import Joi from 'joi';
 import notification from '../helpers/notifications';
 import Authenticate from '../helpers/auth';
 import model from '../models';
+import resetPassword from '../joiSchema/confirmPasswordSchema';
+import serverError from '../helpers/server-error';
 
+const { resetPasswordSchema } = resetPassword;
 const { User } = model;
 
 const { decode, encodeEmail, comparePassword } = Authenticate;
@@ -9,6 +13,14 @@ const { decode, encodeEmail, comparePassword } = Authenticate;
 const ResetPasswordMiddleware = {
   async validateEmail(req, res, next) {
     try {
+      const { error } = Joi.validate(req.body, resetPasswordSchema.emailSchema);
+      if (error) {
+        return res.status(400).send({
+          errors: {
+            body: [error.details[0].message],
+          },
+        });
+      }
       const userEmail = await User.findOne({
         where: {
           email: req.body.email,
@@ -17,14 +29,16 @@ const ResetPasswordMiddleware = {
 
       if (!userEmail) {
         return res.status(404).json({
-          error: 'Email not found',
+          errors: {
+            body: ['Email not found'],
+          },
         });
       }
       req.user = userEmail;
       return next();
     } catch (error) {
       return res.status(500).json({
-        message: error.message,
+        errors: serverError(),
       });
     }
   },
@@ -55,7 +69,7 @@ const ResetPasswordMiddleware = {
       });
     } catch (error) {
       return res.status(500).json({
-        message: error.message,
+        errors: serverError(),
       });
     }
   },
@@ -66,8 +80,9 @@ const ResetPasswordMiddleware = {
     } catch (error) {
       if (error) {
         return res.status(406).json({
-          status: 406,
-          error: 'Oops, something went wrong',
+          errors: {
+            body: ['Oops, something went wrong'],
+          },
         });
       }
     }
@@ -78,8 +93,9 @@ const ResetPasswordMiddleware = {
     const token = req.headers.authorization;
     if (!token) {
       return res.status(403).json({
-        status: 403,
-        error: 'You need to provide a token',
+        errors: {
+          body: ['You need to provide a token'],
+        },
       });
     }
 
@@ -89,8 +105,9 @@ const ResetPasswordMiddleware = {
     } catch (err) {
       if (err) {
         return res.status(403).json({
-          status: 403,
-          error: 'user authentication failed',
+          errors: {
+            body: ['user authentication failed'],
+          },
         });
       }
     }
@@ -109,8 +126,35 @@ const ResetPasswordMiddleware = {
 
     if (oldPass) {
       return res.status(409).json({
-        status: 409,
-        error: 'You cannot use an old password',
+        errors: {
+          body: ['You cannot use an old password'],
+        },
+      });
+    }
+
+    return next();
+  },
+
+  validatePassword(req, res, next) {
+    const { password, confirmPassword } = req.body;
+
+    const { error } = Joi.validate(
+      req.body,
+      resetPasswordSchema.passwordSchema
+    );
+    if (error) {
+      return res.status(400).send({
+        errors: {
+          body: [error.details[0].message],
+        },
+      });
+    }
+
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        errors: {
+          body: ['Passwords do not match'],
+        },
       });
     }
 

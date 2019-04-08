@@ -61,10 +61,8 @@ describe('GET FOLLOWERS', () => {
       .get('/api/v1/followers')
       .set('Authorization', token2)
       .end((err, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(200);
-        expect(errors.body[0]).to.equal('Your followers list is empty');
-
+        expect(res.status).to.be.equal(200);
+        expect(res.body.followers).to.be.a('array');
         done();
       });
   });

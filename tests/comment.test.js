@@ -42,9 +42,9 @@ describe('POST COMMENT', () => {
         body: comment.body,
       })
       .end((req, res) => {
-        expect(res.status).to.be.equal(401);
+        expect(res).to.have.status(401);
         expect(res).to.be.an('object');
-        expect(res.body.error).to.equal('You are not authorized');
+        expect(res.body.errors.body[0]).to.equal('You are not authorized');
         done();
       });
   });
@@ -59,9 +59,9 @@ describe('POST COMMENT', () => {
         body: comment.body,
       })
       .end((req, res) => {
-        expect(res.status).to.be.equal(403);
+        expect(res).to.have.status(403);
         expect(res).to.be.an('object');
-        expect(res.body.error).to.equal('Forbidden');
+        expect(res.body.errors.body[0]).to.equal('Forbidden');
         done();
       });
   });
@@ -75,9 +75,8 @@ describe('POST COMMENT', () => {
         body: comment.body,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal('article_id is required');
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('article_id is required');
         done();
       });
   });
@@ -91,9 +90,8 @@ describe('POST COMMENT', () => {
         article_id: comment.article_id,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal('body is required');
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('body is required');
         done();
       });
   });
@@ -108,8 +106,8 @@ describe('POST COMMENT', () => {
         body: comment.body,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(404);
+        const { errors } = res.body;
+        expect(res).to.have.status(404);
         expect(errors.body[0]).to.equal('Article does not exist');
         done();
       });
@@ -125,9 +123,8 @@ describe('POST COMMENT', () => {
         body: new Array(300).join('a'),
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal(
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal(
           'body length must be less than or equal to 250 characters long'
         );
         done();
@@ -143,7 +140,6 @@ describe('POST COMMENT', () => {
       .end((req, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
-        expect(res.body).to.have.keys('status', 'body');
         done();
       });
   });

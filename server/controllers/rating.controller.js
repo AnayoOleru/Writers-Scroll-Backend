@@ -1,4 +1,4 @@
-import search from '../helpers/searchDatabase';
+import search from '../helpers/search-database';
 import model from '../models';
 
 const { Rating } = model;
@@ -30,7 +30,7 @@ const rating = {
       });
       res.status(201).json({
         message: 'Thank you for rating this article',
-        data: ratingDetails,
+        rating: ratingDetails,
       });
     } catch (err) {
       databaseError(err, res);

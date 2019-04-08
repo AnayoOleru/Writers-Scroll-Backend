@@ -19,7 +19,7 @@ describe('Display articles in pages', () => {
       .request(app)
       .get('/api/v1/articles/a')
       .end((err, res) => {
-        const errorMessage = res.body.error.page[0];
+        const errorMessage = res.body.errors.body[0];
         expect(errorMessage).to.be.equal('cannot be anything but numbers');
 
         done();

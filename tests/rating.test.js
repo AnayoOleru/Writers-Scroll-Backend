@@ -43,7 +43,7 @@ describe('POST RATING', () => {
       .end((req, res) => {
         expect(res.status).to.be.equal(401);
         expect(res).to.be.an('object');
-        expect(res.body.error).to.equal('You are not authorized');
+        expect(res.body.errors.body[0]).to.equal('You are not authorized');
         done();
       });
   });
@@ -60,7 +60,7 @@ describe('POST RATING', () => {
       .end((req, res) => {
         expect(res.status).to.be.equal(403);
         expect(res).to.be.an('object');
-        expect(res.body.error).to.equal('Forbidden');
+        expect(res.body.errors.body[0]).to.equal('Forbidden');
         done();
       });
   });
@@ -74,9 +74,8 @@ describe('POST RATING', () => {
         rating_value: rating.rating_value,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal('article_id is required');
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('article_id is required');
         done();
       });
   });
@@ -90,9 +89,8 @@ describe('POST RATING', () => {
         article_id: rating.article_id,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal('rating_value is required');
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('rating_value is required');
         done();
       });
   });
@@ -107,9 +105,8 @@ describe('POST RATING', () => {
         rating_value: rating.rating_value,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(404);
-        expect(errors.body[0]).to.equal('Article does not exist');
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.equal('Article does not exist');
         done();
       });
   });
@@ -124,9 +121,8 @@ describe('POST RATING', () => {
         rating_value: 7,
       })
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(400);
-        expect(errors.body[0]).to.equal(
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal(
           'rating_value must be less than or equal to 5'
         );
         done();
@@ -142,8 +138,8 @@ describe('POST RATING', () => {
       .end((req, res) => {
         expect(res).to.have.status(201);
         expect(res.body.message).to.equal('Thank you for rating this article');
-        expect(res.body.data).to.be.an('object');
-        expect(res.body.data).to.have.all.keys(
+        expect(res.body.rating).to.be.an('object');
+        expect(res.body.rating).to.have.all.keys(
           'user_id',
           'article_id',
           'rating_value',
@@ -161,8 +157,8 @@ describe('POST RATING', () => {
       .set('Authorization', userToken)
       .send(rating)
       .end((req, res) => {
-        const { status, errors } = res.body;
-        expect(status).to.be.equal(409);
+        const { errors } = res.body;
+        expect(res).to.have.status(409);
         expect(errors.body[0]).to.equal(
           'You have already rated this article, thank you!!!'
         );

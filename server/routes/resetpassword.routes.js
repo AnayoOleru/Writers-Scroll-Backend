@@ -30,6 +30,7 @@ resetPasswordRouter.post(
   '/new_password',
   validations.validatePassword,
   ResetPasswordMiddleware.verifyEmailToken,
+  ResetPasswordMiddleware.isOldPassword,
   ResetPasswordController.updatePassword
 );
 

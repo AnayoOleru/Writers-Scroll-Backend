@@ -4,7 +4,7 @@ import model from '../models';
 
 const { User } = model;
 
-const { decode, encodeEmail } = Authenticate;
+const { decode, encodeEmail, comparePassword } = Authenticate;
 
 const ResetPasswordMiddleware = {
   async validateEmail(req, res, next) {
@@ -93,6 +93,25 @@ const ResetPasswordMiddleware = {
           error: 'user authentication failed',
         });
       }
+    }
+
+    return next();
+  },
+
+  async isOldPassword(req, res, next) {
+    const userEmail = await User.findOne({
+      where: {
+        email: req.user.email,
+      },
+    });
+
+    const oldPass = comparePassword(userEmail.password, req.body.password);
+
+    if (oldPass) {
+      return res.status(409).json({
+        status: 409,
+        error: 'You cannot use an old password',
+      });
     }
 
     return next();

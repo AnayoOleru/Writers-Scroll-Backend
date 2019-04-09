@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Comments', {
+    return queryInterface.createTable('Like_comments', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -12,27 +12,19 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      article_id: {
+      comment_id: {
         type: Sequelize.UUID,
         allowNull: false,
-      },
-      body: {
-        type: Sequelize.TEXT,
-      },
-      likes_count: {
-        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.fn('now'),
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Comments'),
+  down: queryInterface => queryInterface.dropTable('Like_comments'),
 };

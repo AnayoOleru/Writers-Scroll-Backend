@@ -12,6 +12,8 @@ const router = express.Router();
  *
  * /comment:
  *   post:
+ *     tags:
+ *       - comment
  *     description: authenticated user can comment on an article
  *     produces:
  *       - application/json

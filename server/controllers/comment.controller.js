@@ -59,6 +59,14 @@ const toggleLike = async (req, res) => {
         id: commentId,
       },
     });
+    if (!comment) {
+      return res.status(404).json({
+        errors: {
+          body: ['comment id does not exist'],
+        },
+      });
+    }
+
     req.comment = comment;
 
     const user = await User.findOne({
@@ -67,11 +75,9 @@ const toggleLike = async (req, res) => {
       },
     });
     req.user = user;
-
     // Get user like record
-    const userLike = await likeHelper.getLike(user, comment);
+    const userLike = await likeHelper.getUserLike(user, comment);
     let result;
-
     // Check if user has like a comment before
     if (userLike) {
       result = await likeHelper.removeLike(user, comment);
@@ -86,7 +92,6 @@ const toggleLike = async (req, res) => {
       data: result,
     });
   } catch (error) {
-    console.log(error, '-------');
     return res.status(500).json({
       errors: serverError(),
     });

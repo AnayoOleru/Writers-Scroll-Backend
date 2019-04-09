@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   LikeComment.associate = models => {
     LikeComment.belongsTo(models.User, {
-      foreignKey: 'user_id',
+      foreignKey: 'id',
     });
     LikeComment.belongsTo(models.Comment, {
-      foreignKey: 'comment_id',
+      foreignKey: 'user_id',
     });
   };
   return LikeComment;

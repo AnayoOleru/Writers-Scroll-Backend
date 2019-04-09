@@ -260,7 +260,7 @@ describe('REPORT ARTICLE VALIDATION TEST', () => {
         done(err);
       });
   });
-  it('Should throw error if commnet is not empty', done => {
+  it('Should throw error if commentt is not empty', done => {
     chai
       .request(app)
       .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
@@ -330,7 +330,7 @@ describe('REPORT ARTICLE', () => {
           'createdAt',
           'reviewer_comment'
         );
-        expect(res.body.message).to.equal('Aricle was reported successfully');
+        expect(res.body.message).to.equal('Article was reported successfully');
         done();
       });
   });

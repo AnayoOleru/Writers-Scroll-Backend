@@ -167,7 +167,7 @@ const reportArticle = async (req, res) => {
 
     res.status(200).json({
       reported,
-      message: 'Aricle was reported successfully',
+      message: 'Article was reported successfully',
     });
   } catch (error) {
     return res.status(500).json({

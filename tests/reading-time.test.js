@@ -15,13 +15,13 @@ const article2 = {
     'Lorem ipsum dolor sit amet consectetur adipiscinge. Ut pulvinar maximus nulla in fermentum. Vivamus eu arcu suscipit, tempor nisi sed, auctor arcu. Nulla gravida lacinia risus a vehicula. Nulla est arcu, auctor sit amet condimentum nomentum mi, sed lobortis dolor. Nam imperdiet orci posuere arcu semper lobortis. Nulla pellentesque sem sed pharetra blandit. Maecenas suscipit lacinia ornare. Lorem ipsum dolor sit amet consectetur adipiscing elit. Proin quis metus sed turpis pulvinar tristique. Ut pulvinar maximus nulla in fermentum.',
 };
 
-describe('Slugmaker test', () => {
-  it('should return slug', done => {
+describe('Cacluate time test', () => {
+  it('should return calculated', done => {
     expect(readingTime(article1.abstract, article1.title)).to.equal(1);
     done();
   });
 
-  it('should return with false', done => {
+  it('should return calculated', done => {
     expect(readingTime(article2.abstract, article2.title)).to.equal(1);
     done();
   });

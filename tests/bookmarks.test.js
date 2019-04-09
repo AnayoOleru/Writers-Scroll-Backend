@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 chai.use(chaiHttp);
-let token1;
+let userToken;
 describe('TEST BOOKMARK ROUTE', () => {
   it('logs in a user', done => {
     chai
@@ -16,7 +16,7 @@ describe('TEST BOOKMARK ROUTE', () => {
       .end((err, res) => {
         const { token } = res.body.user;
         expect(res.status).to.equal(200);
-        token1 = token;
+        userToken = token;
         done();
       });
   });
@@ -25,7 +25,7 @@ describe('TEST BOOKMARK ROUTE', () => {
     chai
       .request(app)
       .post('/api/v1/bookmarks/7139d3af-b8b4-44f6-a49f-9305791700f4')
-      .set('authorization', token1)
+      .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
@@ -38,7 +38,7 @@ describe('TEST BOOKMARK ROUTE', () => {
     chai
       .request(app)
       .post('/api/v1/bookmarks/7139d3af-b8b4-44f6-a49f-9305791700f4')
-      .set('authorization', token1)
+      .set('authorization', userToken)
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.be.a('string');
@@ -65,6 +65,20 @@ describe('TEST BOOKMARK ROUTE', () => {
       .end((err, res) => {
         expect(res.status).to.equal(401);
         expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
+        done();
+      });
+  });
+
+  it('should have correct bookmark counts', done => {
+    chai
+      .request(app)
+      .get('/api/v1/article/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        const { bookmarkcount } = res.body.article;
+        expect(res.body.article).to.be.a('object');
+        expect(bookmarkcount).to.be.equal(54);
         done();
       });
   });

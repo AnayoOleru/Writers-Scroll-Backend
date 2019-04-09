@@ -32,10 +32,10 @@ const toggleBookmark = async (req, res) => {
     });
     req.user = user;
 
-    const userLike = await bookmarkHelper.getUserBookmarks(user, article);
+    const userBookmark = await bookmarkHelper.getUserBookmarks(user, article);
     let result;
 
-    if (userLike) {
+    if (userBookmark) {
       result = await bookmarkHelper.removeBookmark(user, article);
       return res.status(200).json({
         message: 'Successfully removed Bookmark',

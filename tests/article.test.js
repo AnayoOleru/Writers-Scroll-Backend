@@ -43,35 +43,9 @@ describe('ARTICLE', () => {
       .set('Authorization', userBToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        const {
-          id,
-          author,
-          title,
-          slug,
-          abstract,
-          body,
-          category,
-          imageurl,
-          bookmarkcount,
-          likescount,
-          createdAt,
-          updatedAt,
-        } = res.body.article;
+        const { id } = res.body.article;
         expect(res.body.article).to.be.a('object');
-        expect(res.body.article).contains({
-          id,
-          author,
-          title,
-          slug,
-          abstract,
-          body,
-          category,
-          imageurl,
-          bookmarkcount,
-          likescount,
-          createdAt,
-          updatedAt,
-        });
+        expect(id).to.equal('7139d3af-b8b4-44f6-a49f-9305791700f4');
         done();
       });
   });

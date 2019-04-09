@@ -12,19 +12,22 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      reported_id: {
+      reported_user_id: {
         type: Sequelize.UUID,
         allowNull: false,
       },
-      article_id: {
+      reported_article_id: {
         type: Sequelize.UUID,
         allowNull: false,
+      },
+      reporter_reason: {
+        type: Sequelize.STRING,
       },
       reporter_comment: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
       },
       reviewer_comment: {
-        type: Sequelize.TEXT,
+        type: Sequelize.STRING,
       },
       status: {
         type: Sequelize.STRING,

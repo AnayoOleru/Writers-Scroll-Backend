@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Reported = sequelize.define('Reported_article', {
+  const Reported = sequelize.define('Reported_articles', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -11,13 +11,16 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    reported_id: {
+    reported_user_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    article_id: {
+    reported_article_id: {
       type: DataTypes.UUID,
       allowNull: false,
+    },
+    reporter_reason: {
+      type: DataTypes.STRING,
     },
     reporter_comment: {
       type: DataTypes.STRING,
@@ -27,15 +30,17 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
+      defaultValue: 'pending',
       allowNull: false,
     },
   });
   Reported.associate = models => {
     Reported.belongsTo(models.Article, {
-      foreignKey: 'article_id',
+      foreignKey: 'reported_article_id',
     });
     Reported.belongsTo(models.User, {
-      foreignKey: 'id',
+      foreignKey: 'reporter_id',
+      foreignKey: 'reported_user_id',
     });
   };
 

@@ -4,8 +4,10 @@ import slugMaker from '../helpers/slug-maker';
 import spaceTrimmer from '../helpers/space-trimmer';
 import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
+import serchDatabase from '../helpers/search-database';
 
-const { Article } = model;
+const { findArticle } = serchDatabase;
+const { Article, User, Reported_articles: ReportedArticle } = model;
 
 /**
  * @description Get Article
@@ -132,6 +134,53 @@ const deleteArticle = async (req, res) => {
     });
   }
 };
-const controller = { getOneArticle, createArticle, deleteArticle };
+
+const reportArticle = async (req, res) => {
+  try {
+    const { reason, comment } = req.body;
+    const { articleId } = req.params;
+    const { id: reporterId } = req.user.userObj;
+
+    // check if the article id has a relationship in the users table
+    const { user_id: reportedUserId } = await findArticle(articleId);
+
+    if (!reportedUserId) {
+      res.status(404).json({
+        errors: {
+          body: ['Article not found'],
+        },
+      });
+    }
+    const reported = await ReportedArticle.create({
+      reporter_id: reporterId,
+      reported_user_id: reportedUserId,
+      reported_article_id: articleId,
+      reporter_reason: reason,
+      reporter_comment: comment,
+    });
+
+    // once a user is reported, then the user should not be able to review an article
+    await User.update(
+      { is_reviewer: false, is_reported: true },
+      { where: { id: reportedUserId } }
+    );
+
+    res.status(200).json({
+      reported,
+      message: 'Aricle was reported successfully',
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
+const controller = {
+  getOneArticle,
+  createArticle,
+  deleteArticle,
+  reportArticle,
+};
 
 export default controller;

@@ -229,3 +229,109 @@ describe('ARTICLE', () => {
       });
   });
 });
+
+describe('REPORT ARTICLE VALIDATION TEST', () => {
+  it('Should throw error if reason is not empty', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('reason is required');
+        done(err);
+      });
+  });
+  it('Should throw error if reason is not a string', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        reason: ['that reason'],
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('reason must be a string');
+        done(err);
+      });
+  });
+  it('Should throw error if commnet is not empty', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        reason: 'that reason',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('comment is required');
+        done(err);
+      });
+  });
+  it('Should throw error if reason is not a string', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        reason: 'that reason',
+        comment: ['the reason i stated up there'],
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('comment must be a string');
+        done(err);
+      });
+  });
+});
+
+describe('REPORT ARTICLE', () => {
+  it('should throw an error if user is not authorized', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .send({
+        reason: 'that reason',
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
+        done();
+      });
+  });
+  it('should respond with the reported article', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        reason: 'that reason',
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body).to.have.keys('reported', 'message');
+        expect(res.body.reported).to.have.keys(
+          'id',
+          'status',
+          'reporter_id',
+          'reported_user_id',
+          'reported_article_id',
+          'reporter_reason',
+          'reporter_comment',
+          'updatedAt',
+          'createdAt',
+          'reviewer_comment'
+        );
+        expect(res.body.message).to.equal('Aricle was reported successfully');
+        done();
+      });
+  });
+});

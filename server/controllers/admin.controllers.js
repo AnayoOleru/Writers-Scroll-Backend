@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import model from '../models';
 import serverError from '../helpers/server-error';
 import validations from '../helpers/validations';

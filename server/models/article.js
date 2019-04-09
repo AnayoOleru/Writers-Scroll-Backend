@@ -33,9 +33,11 @@ module.exports = (sequelize, DataTypes) => {
     },
     bookmark_count: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     likes_count: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     is_reported: {
       type: DataTypes.BOOLEAN,

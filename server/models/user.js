@@ -81,7 +81,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = models => {
-    const { Follower } = models;
+    const { Follower, Article } = models;
 
     User.hasMany(Follower, {
       foreignKey: 'followee_id',
@@ -91,6 +91,10 @@ module.exports = (sequelize, DataTypes) => {
     User.hasMany(Follower, {
       foreignKey: 'follower_id',
       as: 'follower',
+    });
+    User.hasMany(Article, {
+      foreignKey: 'user_id',
+      as: 'author',
     });
   };
   return User;

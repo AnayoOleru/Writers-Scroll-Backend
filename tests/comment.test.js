@@ -11,7 +11,7 @@ const comment = {
   body: 'A good comment always refereshes the mind',
 };
 
-describe('POST COMMENT', () => {
+describe.only('POST COMMENT', () => {
   before(async () => {
     await chai
       .request(app)
@@ -140,6 +140,39 @@ describe('POST COMMENT', () => {
       .end((req, res) => {
         expect(res).to.have.status(201);
         expect(res.body).to.be.an('object');
+        done();
+      });
+  });
+});
+
+describe.only('GET COMMENTS', () => {
+  it('should respond with the comments and its history', done => {
+    chai
+      .request(app)
+      .get('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/history')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.comment).to.be.a('array');
+        expect(res.body.comment[0]).have.to.have.all.keys(
+          'id',
+          'user_id',
+          'article_id',
+          'body',
+          'createdAt',
+          'updatedAt',
+          'updatedComments'
+        );
+        expect(res.body.comment[0].updatedComments[0]).to.have.all.keys(
+          'id',
+          'body',
+          'comment_id',
+          'updatedAt',
+          'createdAt'
+        );
+        expect(res.body.comment[0].updatedComments[0].body).equal(
+          'deep write up'
+        );
         done();
       });
   });

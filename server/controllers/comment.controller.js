@@ -1,7 +1,8 @@
 import search from '../helpers/search-database';
 import model from '../models';
+import validations from '../helpers/validations';
 
-const { Comment } = model;
+const { Comment, Comment_history: CommentHistory } = model;
 const { databaseError, findArticle } = search;
 
 const post = async (req, res) => {
@@ -35,6 +36,46 @@ const post = async (req, res) => {
   }
 };
 
-const comments = { post };
+const getCommentAndHistories = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+  const editHistory = await Comment.findAll({
+    where: {
+      id: req.params.commentid,
+    },
+    include: [
+      {
+        model: CommentHistory,
+        as: 'updatedComments',
+        attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
+      },
+    ],
+  });
+
+  return res.status(200).json({
+    comment: editHistory,
+  });
+};
+
+const comments = { post, getCommentAndHistories };
 
 export default comments;

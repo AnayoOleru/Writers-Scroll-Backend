@@ -42,4 +42,10 @@ router.post(
   commentController.post
 );
 
+router.get(
+  '/comment/:commentid/history',
+  tokenValidator.verifyToken,
+  commentController.getCommentAndHistories
+);
+
 export default router;

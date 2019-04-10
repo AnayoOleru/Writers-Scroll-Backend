@@ -8,6 +8,7 @@ import articleRoute from './article.routes';
 import authRoute from './user.routes';
 import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
+import likeComment from './like-comment.routes';
 import followRoutes from './follow.routes';
 import getFollowersRoute from './get-followers.routes';
 
@@ -56,6 +57,7 @@ router.use(profileRoute);
 router.use(articleRoute);
 router.use(ratingRoute);
 router.use(commentRoute);
+router.use(likeComment);
 router.use('/auth', authRoute);
 router.use(resetPasswordRouter);
 router.use(profileRoute);

@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     likes_count: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     is_reported: {
       type: DataTypes.BOOLEAN,

@@ -53,6 +53,7 @@ const toggleLike = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       errors: serverError(),
+      error,
     });
   }
 };

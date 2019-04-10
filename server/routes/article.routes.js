@@ -28,6 +28,14 @@ router.post(
   articleController.reportArticle
 );
 
+router.patch(
+  '/article/:id',
+  tokenValidator.verifyToken,
+  articleMiddleware.validateArticleBody,
+  articleMiddleware.checkDraftStatus,
+  articleController.editAticle
+);
+
 router.delete(
   '/article/:id',
   tokenValidator.verifyToken,

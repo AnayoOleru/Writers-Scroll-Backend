@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     likes_count: {
       type: DataTypes.INTEGER,
+      defaultValue: 0,
     },
     is_reported: {
       type: DataTypes.BOOLEAN,
@@ -45,10 +46,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    reading_time: {
+      type: DataTypes.INTEGER,
+    },
   });
   Article.associate = models =>
     Article.belongsTo(models.User, {
       foreignKey: 'user_id',
+      as: 'author',
     });
   return Article;
 };

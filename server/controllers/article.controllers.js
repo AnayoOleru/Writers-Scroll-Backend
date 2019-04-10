@@ -178,11 +178,61 @@ const reportArticle = async (req, res) => {
   }
 };
 
+const editAticle = async (req, res) => {
+  try {
+    if (!validations.verifyUUID(req.params.id)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+    const updateBody = spaceTrimmer(req.body);
+
+    const articleToBeUpdated = await Article.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+
+    if (!articleToBeUpdated) {
+      return res.status(404).json({
+        errors: {
+          body: ['Article not found'],
+        },
+      });
+    }
+
+    const { userObj } = req.user;
+    if (
+      !validations.compareFieldWithToken(userObj.id, articleToBeUpdated.user_id)
+    ) {
+      return res.status(403).json({
+        errors: {
+          body: ['User does not own this article'],
+        },
+      });
+    }
+
+    const updatedArticle = await articleToBeUpdated.update(updateBody);
+
+    return res.status(200).json({
+      message: 'Article Updated Successfully',
+      article: updatedArticle,
+    });
+  } catch (err) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
 const controller = {
   getOneArticle,
   createArticle,
   deleteArticle,
   reportArticle,
+  editAticle,
 };
 
 export default controller;

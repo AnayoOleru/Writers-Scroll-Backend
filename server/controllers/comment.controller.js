@@ -1,7 +1,11 @@
 import search from '../helpers/search-database';
 import model from '../models';
+import likeHelper from '../helpers/like-comment-helpers';
+import validations from '../helpers/validations';
+import serverError from '../helpers/server-error';
 
-const { Comment } = model;
+const { User, Comment } = model;
+
 const { databaseError, findArticle } = search;
 
 const post = async (req, res) => {
@@ -35,6 +39,65 @@ const post = async (req, res) => {
   }
 };
 
-const comments = { post };
+const toggleLike = async (req, res) => {
+  const token = validations.verifyAuthHeader(req);
+  const { id: userId } = token.userObj;
+  const { commentId } = req.params;
+  try {
+    // validate commentId and user Id
+    if (!validations.verifyUUID(commentId) || !validations.verifyUUID(userId)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+
+    // Find a comment by Id
+    const comment = await Comment.findOne({
+      where: {
+        id: commentId,
+      },
+    });
+    if (!comment) {
+      return res.status(404).json({
+        errors: {
+          body: ['comment id does not exist'],
+        },
+      });
+    }
+
+    req.comment = comment;
+
+    const user = await User.findOne({
+      where: {
+        id: userId,
+      },
+    });
+    req.user = user;
+    // Get user like record
+    const userLike = await likeHelper.getUserLike(user, comment);
+    let result;
+    // Check if user has like a comment before
+    if (userLike) {
+      result = await likeHelper.removeLike(user, comment);
+      return res.status(200).json({
+        message: 'Successfully removed like',
+        data: result,
+      });
+    }
+    result = await likeHelper.addLike(user, comment);
+    return res.status(201).json({
+      message: 'Successfuly added like',
+      data: result,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
+const comments = { post, toggleLike };
 
 export default comments;

@@ -8,7 +8,9 @@ import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
 
 const { findArticle } = serchDatabase;
-const { Article, User, Reported_articles: ReportedArticle } = model;
+const { Article, User, Reported_articles: ReportedArticle, Highlight } = model;
+
+console.log(model.Highlight, '>>>>>>>>>>>>>>>>>>>>>>>');
 
 /**
  * @description Get Article
@@ -227,12 +229,40 @@ const editAticle = async (req, res) => {
   }
 };
 
+const createHighlight = async (req, res) => {
+  if (!validations.verifyUUID(req.params.articleId)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  req.body = spaceTrimmer(req.body);
+  req.body.article_id = req.params.articleId;
+  req.body.user_id = req.user.userObj.id;
+  console.log(req.body);
+
+  const highlight = await Highlight.create({
+    article_id: req.params.articleId,
+    user_id: req.user.userObj.id,
+    comment: req.body.comment,
+    start_position: req.body.start_position,
+    end_postion: req.body.end_postion,
+  });
+
+  return res.status(200).json({
+    highlight,
+  });
+};
+
 const controller = {
   getOneArticle,
   createArticle,
   deleteArticle,
   reportArticle,
   editAticle,
+  createHighlight,
 };
 
 export default controller;

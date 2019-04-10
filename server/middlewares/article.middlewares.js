@@ -3,6 +3,7 @@ import joiFormater from '../helpers/joi-formater';
 import articleSchema from '../joiSchema/articleSchema';
 import publishArticleSchema from '../joiSchema/publishArticleSchema';
 import reportArticleSchema from '../joiSchema/reportArticleSchema';
+import highlightSchema from '../joiSchema/highlightSchema';
 import validations from '../helpers/validations';
 
 const checkDraftStatus = (req, res, next) => {
@@ -72,10 +73,35 @@ const reportArticleValidator = (req, res, next) => {
   return next();
 };
 
+const validateHighlight = (req, res, next) => {
+  if (!Object.keys(req.body).length) {
+    return res.status(400).json({
+      errors: {
+        body: ['No input provided'],
+      },
+    });
+  }
+
+  const { error } = Joi.validate(req.body, highlightSchema());
+
+  if (error) {
+    const { message } = error.details[0];
+    const formatedMessage = joiFormater(message);
+    return res.status(400).send({
+      errors: {
+        body: [formatedMessage],
+      },
+    });
+  }
+
+  return next();
+};
+
 const middleware = {
   checkDraftStatus,
   validateArticleBody,
   reportArticleValidator,
+  validateHighlight,
 };
 
 export default middleware;

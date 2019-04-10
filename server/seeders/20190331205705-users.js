@@ -34,7 +34,7 @@ module.exports = {
         is_admin: true,
         is_reviewer: false,
         is_reported: false,
-        is_notified: true,
+        is_notified: false,
         research_field: 'Chemistry',
       },
       {
@@ -52,7 +52,7 @@ module.exports = {
         is_admin: false,
         is_reviewer: false,
         is_reported: false,
-        is_notified: true,
+        is_notified: false,
         research_field: 'Physics',
       },
       {
@@ -79,7 +79,7 @@ module.exports = {
         last_name: 'Daniel',
         title: 'Dr',
         phone_number: '(934) 975-1648',
-        email: 'peter@gmail.com',
+        email: 'adesojitest22@gmail.com',
         bio: 'Worked as a lecturer...',
         password:
           '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
@@ -106,7 +106,7 @@ module.exports = {
         is_admin: false,
         is_reviewer: false,
         is_reported: false,
-        is_notified: true,
+        is_notified: false,
         research_field: 'Physics',
       },
     ]),

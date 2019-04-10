@@ -29,6 +29,21 @@ const getOneArticle = async (req, res) => {
       where: {
         id: req.params.id,
       },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: [
+            'id',
+            'first_name',
+            'last_name',
+            'title',
+            'phone_number',
+            'email',
+            'bio',
+          ],
+        },
+      ],
     });
 
     if (!article) {
@@ -39,23 +54,8 @@ const getOneArticle = async (req, res) => {
       });
     }
 
-    const articleObj = {
-      id: article.id,
-      author: article.user_id,
-      title: article.title,
-      slug: article.slug,
-      abstract: article.abstract,
-      body: article.body,
-      category: article.category,
-      imageurl: article.image_url,
-      bookmarkcount: article.bookmark_count,
-      likescount: article.likes_count,
-      createdAt: article.createdAt,
-      updatedAt: article.updatedAt,
-    };
-
     return res.status(200).json({
-      article: articleObj,
+      article,
     });
   } catch (error) {
     return res.status(500).json({

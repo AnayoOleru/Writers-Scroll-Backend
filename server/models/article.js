@@ -50,6 +50,7 @@ module.exports = (sequelize, DataTypes) => {
   Article.associate = models =>
     Article.belongsTo(models.User, {
       foreignKey: 'user_id',
+      as: 'author',
     });
   return Article;
 };

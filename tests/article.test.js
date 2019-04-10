@@ -191,6 +191,7 @@ describe('ARTICLE', () => {
         done();
       });
   });
+
   it('should respond with success: article deleted', done => {
     chai
       .request(app)
@@ -199,6 +200,83 @@ describe('ARTICLE', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.message).to.equal('Article Deleted Successfully');
+        done();
+      });
+  });
+
+  it('should respond with success: article edited', done => {
+    chai
+      .request(app)
+      .patch(`/api/v1/article/7139d3af-b8b4-44f6-a49f-9305791700f4`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.equal('Article Updated Successfully');
+        done();
+      });
+  });
+
+  it('should respond with error: invalid id', done => {
+    chai
+      .request(app)
+      .patch(`/api/v1/article/7139d3af-b8b4-44f6-a49f-9305791700f*`)
+      .set('Authorization', userAToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('id not valid');
+        done();
+      });
+  });
+
+  it('should respond with error: user does not own this account', done => {
+    chai
+      .request(app)
+      .patch(`/api/v1/article/7139d3af-b8b4-44f6-a49f-9305791700f4`)
+      .set('Authorization', userBToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: true,
+        title: 'This is the slug we have for you',
+        abstract: 'this is required',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.errors.body[0]).to.equal(
+          'User does not own this article'
+        );
+        done();
+      });
+  });
+
+  it('should respond with error: invalid input', done => {
+    chai
+      .request(app)
+      .patch(`/api/v1/article/7139d3af-b8b4-44f6-a49f-9305791700f4`)
+      .set('Authorization', userBToken)
+      .send({
+        body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
+        is_draft: false,
+        title: 'This is the slug we have for you',
+        category: 'physics',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('abstract is required');
         done();
       });
   });

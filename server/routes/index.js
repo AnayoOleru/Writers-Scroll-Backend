@@ -10,6 +10,7 @@ import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
 import followRoutes from './follow.routes';
 import getFollowersRoute from './get-followers.routes';
+import statisticRoute from './statistic.routes';
 
 const router = express.Router();
 
@@ -61,6 +62,7 @@ router.use(resetPasswordRouter);
 router.use(profileRoute);
 router.use(likeRoute);
 router.use(profileRoute);
+router.use(getFollowersRoute);
 router.use(getFollowersRoute);
 
 export default router;

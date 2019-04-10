@@ -1,9 +1,9 @@
 import model from '../models';
 import validations from '../helpers/validations';
-import profiler from '../helpers/profiler';
+import profileHelper from '../helpers/profiler';
 import serverError from '../helpers/server-error';
 
-const { User } = model;
+const { User, Follower } = model;
 
 /**
  * @description Get User Profile
@@ -25,6 +25,32 @@ const getUserProfile = async (req, res) => {
       where: {
         id: req.params.id,
       },
+      attributes: [
+        'id',
+        'first_name',
+        'last_name',
+        'title',
+        'phone_number',
+        'email',
+        'is_reviewer',
+        'research_field',
+        'createdAt',
+        'updatedAt',
+      ],
+    });
+
+    const isFollower = await Follower.findOne({
+      where: {
+        followee_id: req.user.userObj.id,
+        follower_id: req.params.id,
+      },
+    });
+
+    const isFollowing = await Follower.findOne({
+      where: {
+        follower_id: req.user.userObj.id,
+        followee_id: req.params.id,
+      },
     });
 
     if (!user) {
@@ -35,10 +61,10 @@ const getUserProfile = async (req, res) => {
       });
     }
 
-    const profile = profiler(user);
-
     return res.status(200).json({
-      profile,
+      profile: user,
+      isFollower: profileHelper.followStatus(isFollower),
+      isFollowing: profileHelper.followStatus(isFollowing),
     });
   } catch (error) {
     return res.status(500).json({
@@ -59,6 +85,7 @@ const getProfileByField = async (req, res) => {
     const users = await User.findAll({
       where: req.query,
       attributes: [
+        'id',
         'first_name',
         'last_name',
         'title',
@@ -117,7 +144,7 @@ const patchProfile = async (req, res) => {
 
     const user = await userProfile.update(updateBody);
 
-    const profile = profiler(user);
+    const profile = profileHelper.profiler(user);
 
     return res.status(200).json({
       profile,

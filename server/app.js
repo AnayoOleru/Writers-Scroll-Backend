@@ -4,7 +4,7 @@ import passport from 'passport';
 import session from 'express-session';
 import dotenv from 'dotenv';
 import routes from './routes/index';
-import swaggerSpec from '../documentation/swagger';
+import swaggerSpec from './documentation/swagger';
 
 import {
   facebookStrategy,

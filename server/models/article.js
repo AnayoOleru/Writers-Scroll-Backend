@@ -47,10 +47,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
+    reading_time: {
+      type: DataTypes.INTEGER,
+    },
   });
   Article.associate = models =>
     Article.belongsTo(models.User, {
       foreignKey: 'user_id',
+      as: 'author',
     });
   return Article;
 };

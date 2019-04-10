@@ -43,31 +43,33 @@ describe('PROFILE', () => {
       .set('Authorization', userAToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        const {
-          id,
-          firstname,
-          lastname,
-          title,
-          phonenumber,
-          email,
-          isreviewer,
-          researchfield,
-          createdAt,
-          updatedAt,
-        } = res.body.profile;
+        const { id } = res.body.profile;
         expect(res.body.profile).to.be.a('object');
-        expect(res.body.profile).contains({
-          id,
-          firstname,
-          lastname,
-          title,
-          email,
-          phonenumber,
-          isreviewer,
-          researchfield,
-          createdAt,
-          updatedAt,
-        });
+        expect(id).to.equal('6517a6ea-662b-4eef-ab9f-20f89bd7099c');
+        done();
+      });
+  });
+
+  it('should respond with the user profile and follower status: true', done => {
+    chai
+      .request(app)
+      .get('/api/v1/profile/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
+      .set('Authorization', userBToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.isFollower).to.equal(false);
+        done();
+      });
+  });
+
+  it('should respond with the user profile and follower status: false', done => {
+    chai
+      .request(app)
+      .get('/api/v1/profile/7142e4ff-366d-46cc-9384-40eadb3b2626')
+      .set('Authorization', userBToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.isFollower).to.equal(true);
         done();
       });
   });

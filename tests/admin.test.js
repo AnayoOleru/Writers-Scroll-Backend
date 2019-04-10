@@ -4,7 +4,7 @@ import app from '../server/app';
 
 chai.use(chaiHttp);
 let token1;
-describe('TEST LIKE', () => {
+describe('TEST FOR ADMIN', () => {
   it('lgoin a user', done => {
     chai
       .request(app)
@@ -57,6 +57,28 @@ describe('TEST LIKE', () => {
       .end((err, res) => {
         expect(res).to.have.status(403);
         expect(res.body.errors.body[0]).to.be.equal('You are already an admin');
+        done();
+      });
+  });
+  it('It should return a 404 error if Id is invalid', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrade')
+      .set('authorization', token1)
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('id not valid');
+        done();
+      });
+  });
+  it('It should return a 401 error for an empty token', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrade')
+      .set('authorization', '')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
         done();
       });
   });

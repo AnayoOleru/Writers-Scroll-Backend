@@ -16,17 +16,9 @@ const { User } = model;
  * @returns {undefined}
  */
 const activateReviewer = async (req, res) => {
-  const adminId = req.user.userObj.id;
+  // const adminId = req.user.userObj.id;
   const userId = req.params.id;
   try {
-    // Is user an admin?
-    if (adminId === userId) {
-      return res.status(403).json({
-        errors: {
-          body: ['You are already an admin'],
-        },
-      });
-    }
     // Is user id correct?
     if (!validations.verifyUUID(req.params.id)) {
       return res.status(400).json({
@@ -65,17 +57,9 @@ const activateReviewer = async (req, res) => {
  * @returns {undefined}
  */
 const deactivateReviewer = async (req, res) => {
-  const adminId = req.user.userObj.id;
+  // const adminId = req.user.userObj.id;
   const userId = req.params.id;
   try {
-    // Is user an admin?
-    if (adminId === userId) {
-      return res.status(400).json({
-        errors: {
-          body: ['User is not a reviewer'],
-        },
-      });
-    }
     // Is user id correct?
     if (!validations.verifyUUID(req.params.id)) {
       return res.status(400).json({

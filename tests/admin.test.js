@@ -5,7 +5,7 @@ import app from '../server/app';
 chai.use(chaiHttp);
 let token1;
 describe('TEST FOR ADMIN', () => {
-  it('lgoin a user', done => {
+  it('login an admin', done => {
     chai
       .request(app)
       .post('/api/v1/auth/login')

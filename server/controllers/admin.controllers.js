@@ -16,7 +16,6 @@ const { User } = model;
  * @returns {undefined}
  */
 const activateReviewer = async (req, res) => {
-  // const adminId = req.user.userObj.id;
   const userId = req.params.id;
   try {
     // Is user id correct?
@@ -57,7 +56,6 @@ const activateReviewer = async (req, res) => {
  * @returns {undefined}
  */
 const deactivateReviewer = async (req, res) => {
-  // const adminId = req.user.userObj.id;
   const userId = req.params.id;
   try {
     // Is user id correct?

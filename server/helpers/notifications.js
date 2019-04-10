@@ -8,23 +8,39 @@ const { User, Follower } = models;
 const forgetPassword = (email, link) => {
   const subject = 'Password Reset';
   const message = template(
-    `<p>You requested for a password reset</p> <p>follow this link to reset your password <a href=${link}>Reset my password</a></p><br><b>Please note that this link expires in 12hours and you can only use it once</b><p>If you didn't request for a password reset, ignore this email and nothing will happen</p>`
+    subject,
+    `<p>You requested for a password reset</p> <p>follow this link to reset your password <a href=${link}>Reset my password</a></p><br><b>Please note that this link expires in 12hours and you can only use it once</b><p>If you didn't request for a password reset, ignore this email and nothing will happen</p>`,
+    email
   );
-
   sendEmail(email, subject, message);
 };
 
 const passwordReset = email => {
   const subject = 'Password was changed';
-  const message = template('<p>Your password was changed successfuly</p>');
-
+  const message = template(
+    subject,
+    '<p>Your password was changed successfuly</p>',
+    email
+  );
   sendEmail(email, subject, message);
 };
 
-const signupEmail = (email, link) => {
-  const titile = 'Welcome to Authors Haven';
-  const body = `<p>click <a href=${link}>here</a> to confirm your email</p>`;
-  sendEmail(email, titile, body);
+/**
+ *
+ * @param {*} email
+ * @param {*} link
+ * @param {*} name
+ * @returns {*} sends an email to a new user
+ */
+const signupEmail = (email, link, name) => {
+  const title = 'Welcome to Authors Haven';
+  const body = `<p>Dear ${name},</p>
+  <p>We are thrilled to have you.</p>
+  <p>At Author’s Haven, we know how much you love to share your thought as an author 
+      That's is why we are here to help you focus on things that matter.</p>
+      <a href="${link}" class="button">Confirm email</a>`;
+  const message = template(title, body, email);
+  sendEmail(email, title, message);
 };
 
 /**
@@ -40,10 +56,10 @@ const sendEmailNotificationComment = async (articleTitle, authorId) => {
   });
   const templateSubject = 'New notification from Authors Haven';
   const templateEmail = authorEmail;
-  const templateMessage = template(
-    `<h1>Your article ${articleTitle} - has a new comment.</h1>`
-  );
-  sendEmail(templateEmail, templateSubject, templateMessage);
+  const templateMessage = `<h1>Your article ${articleTitle} - has a new comment.</h1>`;
+
+  const message = template(templateSubject, templateMessage, templateEmail);
+  sendEmail(templateEmail, templateSubject, message);
   // in-app notification
   pusher.trigger('channel', 'event', {
     message: `Your article ${articleTitle} has a new comment`,
@@ -71,9 +87,14 @@ const sendEmailNotificationArticle = async (articleTitle, userId) => {
   });
   const templateSubject = 'New Notification on Authors Haven';
   const templateFollowersEmail = followers.User.email;
-  const templateMessage = template(`<h1>${articleTitle}</h1>`);
+  const templateMessage = `<h1>${articleTitle}</h1>`;
 
-  sendEmail(templateFollowersEmail, templateSubject, templateMessage);
+  const message = template(
+    templateSubject,
+    templateMessage,
+    templateFollowersEmail
+  );
+  sendEmail(templateFollowersEmail, templateSubject, message);
 
   // in-app notification
   pusher.trigger('channel', 'event', {

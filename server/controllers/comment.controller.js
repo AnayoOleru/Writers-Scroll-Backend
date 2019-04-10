@@ -137,6 +137,53 @@ const toggleLike = async (req, res) => {
   }
 };
 
-const comments = { post, toggleLike, getCommentAndHistories };
+const updateComment = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+
+  const userId = req.user.userObj.id;
+  if (userId !== comment.user_id) {
+    return res.status(403).json({
+      errors: {
+        body: ['You are not authorized to edit this comment'],
+      },
+    });
+  }
+
+  const editComment = await Comment.update(
+    { body: req.body.body },
+    { where: { id: req.params.commentid }, returning: true }
+  );
+
+  await CommentHistory.create({
+    comment_id: comment.id,
+    body: comment.body,
+  });
+
+  res.status(200).json({
+    editedComment: editComment,
+  });
+};
+
+const comments = { post, toggleLike, getCommentAndHistories, updateComment };
 
 export default comments;

@@ -3,6 +3,7 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 let userToken;
+let userToken2;
 chai.use(chaiHttp);
 const baseUrl = '/api/v1/comment';
 
@@ -11,7 +12,7 @@ const comment = {
   body: 'A good comment always refereshes the mind',
 };
 
-describe.only('POST COMMENT', () => {
+describe('POST COMMENT', () => {
   before(async () => {
     await chai
       .request(app)
@@ -24,14 +25,23 @@ describe.only('POST COMMENT', () => {
         confirmPassword: 'h0ttestt',
       });
 
-    const userDetails = await chai
+    const user1 = await chai
       .request(app)
       .post('/api/v1/auth/login')
       .send({
         email: 'bukunmi@gmail.com',
         password: 'h0ttestt',
       });
-    userToken = userDetails.body.user.token;
+    userToken = user1.body.user.token;
+
+    const user2 = await chai
+      .request(app)
+      .post('/api/v1/auth/login')
+      .send({
+        email: 'vic3coorp@gmail.com',
+        password: '12345678',
+      });
+    userToken2 = user2.body.user.token;
   });
   it('should return 401 error when no token is provided', done => {
     chai
@@ -145,7 +155,7 @@ describe.only('POST COMMENT', () => {
   });
 });
 
-describe.only('GET COMMENTS', () => {
+describe('GET COMMENTS', () => {
   it('should respond with the comments and its history', done => {
     chai
       .request(app)
@@ -161,7 +171,8 @@ describe.only('GET COMMENTS', () => {
           'body',
           'createdAt',
           'updatedAt',
-          'updatedComments'
+          'updatedComments',
+          'likes_count'
         );
         expect(res.body.comment[0].updatedComments[0]).to.have.all.keys(
           'id',
@@ -172,6 +183,52 @@ describe.only('GET COMMENTS', () => {
         );
         expect(res.body.comment[0].updatedComments[0].body).equal(
           'deep write up'
+        );
+        done();
+      });
+  });
+});
+
+describe('EDIT COMMENT', () => {
+  it('should respond 403 when the user id does not belong to the logged in user id', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .set('Authorization', userToken)
+      .send({ body: 'This is a new comment' })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.errors.body[0]).to.equal(
+          'You are not authorized to edit this comment'
+        );
+        done();
+      });
+  });
+
+  it('should return 400 with invalid or empty payload(body)', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .set('Authorization', userToken)
+      .send({})
+      .end((req, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('body is required');
+        done();
+      });
+  });
+
+  it('should respond with status code 200 on successful edit of a comment', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .set('Authorization', userToken2)
+      .send({ body: 'This is a new comment' })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.editedComment).to.be.a('array');
+        expect(res.body.editedComment[1][0].body).to.equal(
+          'This is a new comment'
         );
         done();
       });

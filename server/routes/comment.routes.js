@@ -40,7 +40,7 @@ const router = express.Router();
 router.post(
   '/comment',
   tokenValidator.verifyToken,
-  commentMiddleware.validateComment,
+  commentMiddleware.validatePostComment,
   commentController.post
 );
 
@@ -54,6 +54,13 @@ router.get(
   '/comment/:commentid/history',
   tokenValidator.verifyToken,
   commentController.getCommentAndHistories
+);
+
+router.patch(
+  '/comment/:commentid/edit',
+  tokenValidator.verifyToken,
+  commentMiddleware.validateEditComment,
+  commentController.updateComment
 );
 
 export default router;

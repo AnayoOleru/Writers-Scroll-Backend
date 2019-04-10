@@ -5,6 +5,7 @@ import spaceTrimmer from '../helpers/space-trimmer';
 import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
 import serchDatabase from '../helpers/search-database';
+import readingTime from '../helpers/reading-time';
 
 const { findArticle } = serchDatabase;
 const { Article, User, Reported_articles: ReportedArticle } = model;
@@ -79,6 +80,7 @@ const createArticle = async (req, res) => {
     req.body.user_id = userObj.id;
 
     req.body = spaceTrimmer(req.body);
+    req.body.reading_time = readingTime(req.body.abstract, req.body.body);
     const article = await Article.create(req.body);
 
     if (!req.body.is_draft && req.body.keywords) {

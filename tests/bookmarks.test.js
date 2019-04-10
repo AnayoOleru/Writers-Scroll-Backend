@@ -64,9 +64,8 @@ describe('TEST BOOKMARK ROUTE', () => {
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        const { bookmarkcount } = res.body.article;
         expect(res.body.article).to.be.a('object');
-        expect(bookmarkcount).to.be.equal(55);
+        expect(res.body.article.bookmark_count).to.be.equal(55);
         done();
       });
   });
@@ -91,9 +90,8 @@ describe('TEST BOOKMARK ROUTE', () => {
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        const { bookmarkcount } = res.body.article;
         expect(res.body.article).to.be.a('object');
-        expect(bookmarkcount).to.be.equal(22);
+        expect(res.body.article.bookmark_count).to.be.equal(22);
         done();
       });
   });

@@ -16,13 +16,13 @@ const profiler = user => {
   return profile;
 };
 
-const isFollower = obj => {
+const followStatus = obj => {
   if (!obj) {
     return false;
   }
   return true;
 };
 
-const profileHelpers = { profiler, isFollower };
+const profileHelpers = { profiler, followStatus };
 
 export default profileHelpers;

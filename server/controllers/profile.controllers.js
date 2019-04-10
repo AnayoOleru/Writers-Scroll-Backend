@@ -46,6 +46,13 @@ const getUserProfile = async (req, res) => {
       },
     });
 
+    const isFollowing = await Follower.findOne({
+      where: {
+        follower_id: req.user.userObj.id,
+        followee_id: req.params.id,
+      },
+    });
+
     if (!user) {
       return res.status(404).json({
         errors: {
@@ -56,7 +63,8 @@ const getUserProfile = async (req, res) => {
 
     return res.status(200).json({
       profile: user,
-      isFollower: profileHelper.isFollower(isFollower),
+      isFollower: profileHelper.followStatus(isFollower),
+      isFollowing: profileHelper.followStatus(isFollowing),
     });
   } catch (error) {
     return res.status(500).json({

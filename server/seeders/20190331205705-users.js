@@ -31,7 +31,7 @@ module.exports = {
           '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
         is_activated: true,
         image_url: 'https://picsum.photos/200/300/?random',
-        is_admin: false,
+        is_admin: true,
         is_reviewer: false,
         is_reported: false,
         is_notified: true,

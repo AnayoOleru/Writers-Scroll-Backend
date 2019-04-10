@@ -1,5 +1,4 @@
-const template = (title, body, email) => {
-  return `
+const template = (title, body, email) => `
   <html>
   <head>
   <style>
@@ -62,6 +61,5 @@ const template = (title, body, email) => {
     </table>
 </body>
 </html>`;
-};
 
 export default template;

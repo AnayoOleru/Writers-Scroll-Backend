@@ -41,7 +41,7 @@ const verifyToken = (req, res, next) => {
  */
 const verifyAdmin = (req, res, next) => {
   const payload = validations.verifyAuthHeader(req);
-  const { isAdmin } = payload;
+  const { isAdmin } = payload.userObj;
   if (!isAdmin) {
     return res.status(403).json({
       errors: {
@@ -49,6 +49,7 @@ const verifyAdmin = (req, res, next) => {
       },
     });
   }
+  req.user = payload;
   return next();
 };
 

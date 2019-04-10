@@ -81,7 +81,13 @@ const signupController = async (req, res) => {
 
     if (!user) return res.status(401).json({ errors: { body: error } });
 
-    const { id, is_admin: isAdmin, bio, image_url: image } = user;
+    const {
+      id,
+      is_admin: isAdmin,
+      bio,
+      image_url: image,
+      first_name: firstName,
+    } = user;
     const token = authHelper.encode({ id, isAdmin });
 
     const verificationToken = authHelper.encode({ email });
@@ -89,7 +95,7 @@ const signupController = async (req, res) => {
       'host'
     )}/api/v1/auth/verification/${verificationToken}`;
 
-    await notifications.signupEmail(email, verificationLink);
+    await notifications.signupEmail(email, verificationLink, firstName);
 
     return res.status(200).json({
       user: { email, token, bio, image },

@@ -31,6 +31,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
+    likes_count: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
     body: {
       type: DataTypes.STRING,
       allowNull: false,

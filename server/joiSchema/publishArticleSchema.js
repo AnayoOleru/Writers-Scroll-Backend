@@ -8,7 +8,6 @@ const publishArticleSchema = () => {
       .required(),
     abstract: Joi.string()
       .min(5)
-      .max(250)
       .required(),
     body: Joi.string()
       .min(5)

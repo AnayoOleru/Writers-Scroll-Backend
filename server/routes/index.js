@@ -12,6 +12,7 @@ import likeComment from './like-comment.routes';
 import followRoutes from './follow.routes';
 import getFollowersRoute from './get-followers.routes';
 import adminRoute from './admin.routes';
+import bookmarkRoute from './bookmark.routes';
 
 const router = express.Router();
 
@@ -66,5 +67,6 @@ router.use(likeRoute);
 router.use(profileRoute);
 router.use(getFollowersRoute);
 router.use(adminRoute);
+router.use(bookmarkRoute);
 
 export default router;

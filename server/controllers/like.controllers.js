@@ -6,8 +6,7 @@ import serverError from '../helpers/server-error';
 const { Article, User } = model;
 
 const toggleLike = async (req, res) => {
-  const token = validations.verifyAuthHeader(req);
-  const { id: userId } = token.userObj;
+  const userId = req.user.userObj.id;
   const { articleId } = req.params;
   try {
     // validate article and user Id

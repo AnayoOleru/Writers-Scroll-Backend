@@ -387,3 +387,86 @@ describe('REPORT ARTICLE', () => {
       });
   });
 });
+
+describe('ARTICLE', () => {
+  it('should respond with the Highlight', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        start_position: 1,
+        end_position: 5,
+        comment: 'I like this article',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.highlight).to.have.keys(
+          'id',
+          'start_position',
+          'end_position',
+          'comment',
+          'article_id',
+          'user_id',
+          'updatedAt',
+          'createdAt'
+        );
+        done();
+      });
+  });
+  it('should throw an error if user is nn input is provided', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
+        done();
+      });
+  });
+  it('should throw an error if user is not authorized', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .send({
+        start_position: 1,
+        end_position: 5,
+        comment: 'I like this article',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.errors.body[0]).to.be.equal('You are not authorized');
+        done();
+      });
+  });
+  it('should respond with start_position is required', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        end_position: 5,
+        comment: 'I like this article',
+      })
+      .end((err, res) => {
+        expect(res.body.errors.body[0]).to.be.equal(
+          'start_position is required'
+        );
+        done();
+      });
+  });
+  it('should respond with end_position is required', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({
+        start_position: 1,
+        comment: 'I like this article',
+      })
+      .end((err, res) => {
+        expect(res.body.errors.body[0]).to.be.equal('end_position is required');
+        done();
+      });
+  });
+});

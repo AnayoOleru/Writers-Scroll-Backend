@@ -1,5 +1,4 @@
 import model from '../models';
-import validations from '../helpers/validations';
 
 const { User, Follower } = model;
 
@@ -17,10 +16,8 @@ const followController = {
    */
   async followUser(req, res) {
     try {
-      const token = validations.verifyAuthHeader(req);
-      const { id: followerId } = token.userObj;
+      const followerId = req.user.userObj.id;
       const { followeeId } = req.params;
-      // Get followee from followee table
       const findUnFollowee = await User.findOne({ where: { id: followeeId } });
       if (!findUnFollowee) {
         return res.status(404).json({
@@ -67,8 +64,7 @@ const followController = {
 
   async unFollowUser(req, res) {
     try {
-      const token = validations.verifyAuthHeader(req);
-      const { id: followerId } = token.userObj;
+      const followerId = req.user.userObj.id;
       const { unFolloweeId } = req.params;
       const findFollowee = await User.findOne({
         where: { id: unFolloweeId },

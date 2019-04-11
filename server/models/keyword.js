@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
   Keyword.associate = models =>
     Keyword.belongsTo(models.Article, {
       foreignKey: 'article_id',
+      as: 'article',
     });
   return Keyword;
 };

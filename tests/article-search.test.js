@@ -1,20 +1,99 @@
 import chai, { expect } from 'chai';
 import app from '../server/app';
 
-describe('Display articles in pages', () => {
-  const authorName = '6517a6ea-662b-4eef-ab9f-20f89bd7099c';
-  const tag = '';
-  const articleTitle = '';
-  it('should display articles based on the page number', done => {
+describe('Article Search', () => {
+  const authorName = 'a';
+  const keyword = 'react';
+  const articleTitle = 'Deep';
+  it('Display articles by search filters: author, title and keyword', done => {
     chai
       .request(app)
       .get(
-        `/api/v1/articles/search?author=${authorName}&keyword=${tag}&title=${articleTitle}`
+        `/api/v1/search?author=${authorName}&keyword=${keyword}&title=${articleTitle}`
       )
       .end((err, res) => {
-        const { articles } = res.body;
-        expect(res).to.have(200);
-        expect(articles).to.be.a('array');
+        const article = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(article).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filters: author and title', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?author=${authorName}&title=${articleTitle}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filters: author and keyword', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?author=${authorName}&keyword=${keyword}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filters: keyword and title', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?keyword=${keyword}&title=${articleTitle}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filter: author', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?author=${authorName}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filter: keyword', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?keyword=${keyword}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
+
+        done();
+      });
+  });
+  it('Display articles by search filter: title', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/search?title=${articleTitle}`)
+      .end((err, res) => {
+        const articles = res.body;
+
+        expect(res.status).to.equal(200);
+        expect(articles).to.be.a('object');
 
         done();
       });

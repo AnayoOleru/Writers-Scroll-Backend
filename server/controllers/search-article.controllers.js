@@ -2,34 +2,92 @@ import sequelize from 'sequelize';
 import models from '../models';
 import serverError from '../helpers/server-error';
 
-const { Article, User } = models;
+const { Article, User, Keyword } = models;
 
 const searchArticles = async (req, res) => {
   const authorSearchFilter = req.query.author;
   const titleSearchFilter = req.query.title;
+  const keywordSearchFilter = req.query.keyword;
+
+  if (keywordSearchFilter && authorSearchFilter && titleSearchFilter) {
+    try {
+      const searchFilter = sequelize.Op;
+      const filteredArticlesByKeyword = await Keyword.findAll({
+        where: {
+          keyword: {
+            [searchFilter.iLike]: `%${keywordSearchFilter}%`,
+          },
+        },
+        attributes: ['keyword'],
+        include: [
+          {
+            model: Article,
+            as: 'article',
+            where: {
+              title: {
+                [searchFilter.iLike]: `%${titleSearchFilter}%`,
+              },
+            },
+            attributes: [
+              'slug',
+              'title',
+              'body',
+              'createdAt',
+              'updatedAt',
+              'likes_count',
+            ],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                where: {
+                  first_name: {
+                    [searchFilter.iLike]: `%${authorSearchFilter}%`,
+                  },
+                },
+                attributes: ['first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json({
+        filteredArticlesByKeyword,
+      });
+    } catch (e) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
+  }
 
   if (authorSearchFilter && titleSearchFilter) {
     try {
-      const filteredArticlesByAuthorAndTitle = await Article.findAll({
+      const searchFilter = sequelize.Op;
+      const filteredArticlesByAuthorAndTitle = await User.findAll({
         where: {
-          user_id: authorSearchFilter,
-          title: titleSearchFilter,
+          first_name: {
+            [searchFilter.iLike]: `%${authorSearchFilter}%`,
+          },
         },
-        attributes: [
-          'slug',
-          'title',
-          'body',
-          'createdAt',
-          'updatedAt',
-          'likes_count',
-        ],
+        attributes: ['first_name', 'last_name'],
         include: [
           {
-            model: User,
+            model: Article,
+            as: 'author',
             where: {
-              id: authorSearchFilter,
+              title: {
+                [searchFilter.iLike]: `%${titleSearchFilter}%`,
+              },
             },
-            attributes: ['first_name', 'last_name'],
+            attributes: [
+              'slug',
+              'title',
+              'body',
+              'createdAt',
+              'updatedAt',
+              'likes_count',
+            ],
           },
         ],
       });
@@ -43,19 +101,114 @@ const searchArticles = async (req, res) => {
     }
   }
 
+  if (keywordSearchFilter && authorSearchFilter) {
+    try {
+      const searchFilter = sequelize.Op;
+      const filteredArticlesByKeyword = await Keyword.findAll({
+        where: {
+          keyword: {
+            [searchFilter.iLike]: `%${keywordSearchFilter}%`,
+          },
+        },
+        attributes: ['keyword'],
+        include: [
+          {
+            model: Article,
+            as: 'article',
+            attributes: [
+              'slug',
+              'title',
+              'body',
+              'createdAt',
+              'updatedAt',
+              'likes_count',
+            ],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                where: {
+                  first_name: {
+                    [searchFilter.iLike]: `%${authorSearchFilter}%`,
+                  },
+                },
+                attributes: ['first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json({
+        filteredArticlesByKeyword,
+      });
+    } catch (e) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
+  }
+
+  if (keywordSearchFilter && titleSearchFilter) {
+    try {
+      const searchFilter = sequelize.Op;
+      const filteredArticlesByKeyword = await Keyword.findAll({
+        where: {
+          keyword: {
+            [searchFilter.iLike]: `%${keywordSearchFilter}%`,
+          },
+        },
+        attributes: ['keyword'],
+        include: [
+          {
+            model: Article,
+            as: 'article',
+            where: {
+              title: {
+                [searchFilter.iLike]: `%${titleSearchFilter}%`,
+              },
+            },
+            attributes: [
+              'slug',
+              'title',
+              'body',
+              'createdAt',
+              'updatedAt',
+              'likes_count',
+            ],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json({
+        filteredArticlesByKeyword,
+      });
+    } catch (e) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
+  }
+
   if (authorSearchFilter) {
     try {
-      const seachFilter = sequelize.Op;
+      const searchFilter = sequelize.Op;
       const filteredArticlesByAuthor = await User.findAll({
         where: {
           first_name: {
-            [seachFilter.iLike]: `%${authorSearchFilter}%`,
+            [searchFilter.iLike]: `%${authorSearchFilter}%`,
           },
         },
         attributes: ['first_name', 'last_name'],
         include: [
           {
             model: Article,
+            as: 'author',
             attributes: [
               'slug',
               'title',
@@ -72,16 +225,19 @@ const searchArticles = async (req, res) => {
       });
     } catch (e) {
       return res.status(500).json({
-        errors: e,
+        errors: serverError(),
       });
     }
   }
 
   if (titleSearchFilter) {
     try {
+      const searchFilter = sequelize.Op;
       const filteredArticlesByTitle = await Article.findAll({
         where: {
-          title: titleSearchFilter,
+          title: {
+            [searchFilter.iLike]: `%${titleSearchFilter}%`,
+          },
         },
         attributes: [
           'slug',
@@ -94,15 +250,55 @@ const searchArticles = async (req, res) => {
         include: [
           {
             model: User,
-            where: {
-              id: authorSearchFilter,
-            },
+            as: 'author',
             attributes: ['first_name', 'last_name'],
           },
         ],
       });
       return res.status(200).json({
         filteredArticlesByTitle,
+      });
+    } catch (e) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
+  }
+
+  if (keywordSearchFilter) {
+    try {
+      const searchFilter = sequelize.Op;
+      const filteredArticlesByKeyword = await Keyword.findAll({
+        where: {
+          keyword: {
+            [searchFilter.iLike]: `%${keywordSearchFilter}%`,
+          },
+        },
+        attributes: ['keyword'],
+        include: [
+          {
+            model: Article,
+            as: 'article',
+            attributes: [
+              'slug',
+              'title',
+              'body',
+              'createdAt',
+              'updatedAt',
+              'likes_count',
+            ],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
+      return res.status(200).json({
+        filteredArticlesByKeyword,
       });
     } catch (e) {
       return res.status(500).json({

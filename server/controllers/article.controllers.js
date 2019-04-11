@@ -6,6 +6,8 @@ import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
 import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
+import statistic from '../helpers/statistics-storer';
+import auth from '../helpers/auth';
 
 const { findArticle } = serchDatabase;
 const { Article, User, Reported_articles: ReportedArticle } = model;
@@ -18,6 +20,9 @@ const { Article, User, Reported_articles: ReportedArticle } = model;
  */
 const getOneArticle = async (req, res) => {
   try {
+    const token = req.headers.authorization;
+    const getIdFromToken = auth.decode(token);
+
     if (!validations.verifyUUID(req.params.id)) {
       return res.status(400).json({
         errors: {
@@ -54,6 +59,8 @@ const getOneArticle = async (req, res) => {
         },
       });
     }
+
+    await statistic.saveUserStatistic(getIdFromToken.userObj.id, article.id);
 
     return res.status(200).json({
       article,

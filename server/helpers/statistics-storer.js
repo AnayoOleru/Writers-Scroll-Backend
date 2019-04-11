@@ -11,10 +11,11 @@ const { Statistic } = models;
  */
 const saveUserStatistic = async (userId, articleId) => {
   try {
-    await Statistic.create({
+    const storedStatistic = await Statistic.create({
       user_id: userId,
       article_id: articleId,
     });
+    return storedStatistic;
   } catch (err) {
     return serverError();
   }

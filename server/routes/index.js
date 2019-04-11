@@ -66,5 +66,6 @@ router.use(likeRoute);
 router.use(profileRoute);
 router.use(getFollowersRoute);
 router.use(getFollowersRoute);
+router.use(statisticRoute);
 
 export default router;

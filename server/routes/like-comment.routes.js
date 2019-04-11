@@ -2,7 +2,7 @@ import express from 'express';
 import controllers from '../controllers';
 import middlewares from '../middlewares';
 
-const { tokenValidator, commentMiddleware } = middlewares;
+const { tokenValidator } = middlewares;
 const { commentController } = controllers;
 
 const router = express.Router();
@@ -10,17 +10,17 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /comment:
+ * /likeComment/{commentId}:
  *   post:
  *     tags:
  *       - comment
- *     description: authenticated user can comment on an article
+ *     description: authenticated user can like a specific comment on an article
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: body
- *         name: body
- *         description: Required Article comment payload
+ *       - in: path
+ *         name: commentId
+ *         description: ID of the comment to like
  *         required: true
  *         schema:
  *           $ref: '#/definitions/comment'
@@ -36,13 +36,6 @@ const router = express.Router();
  *       500:
  *         description: ran
  */
-
-router.post(
-  '/comment',
-  tokenValidator.verifyToken,
-  commentMiddleware.validateComment,
-  commentController.post
-);
 
 router.post(
   '/likeComment/:commentId',

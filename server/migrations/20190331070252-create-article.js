@@ -34,9 +34,11 @@ module.exports = {
       },
       bookmark_count: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       likes_count: {
         type: Sequelize.INTEGER,
+        defaultValue: 0,
       },
       is_reported: {
         type: Sequelize.BOOLEAN,
@@ -44,6 +46,9 @@ module.exports = {
       is_draft: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
+      },
+      reading_time: {
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

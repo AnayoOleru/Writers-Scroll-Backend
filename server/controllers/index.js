@@ -7,6 +7,8 @@ import ratingController from './rating.controller';
 import ResetPasswordController from './reset-password.controllers';
 import commentController from './comment.controller';
 import getFollowersController from './get-followers.controllers';
+import adminController from './admin.controllers';
+import bookmarkController from './bookmark.controller';
 import searchArticles from './search-article.controllers';
 
 export default {
@@ -19,5 +21,7 @@ export default {
   ResetPasswordController,
   commentController,
   getFollowersController,
+  adminController,
+  bookmarkController,
   searchArticles,
 };

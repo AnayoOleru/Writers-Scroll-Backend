@@ -21,6 +21,21 @@ router.post(
   articleController.createArticle
 );
 
+router.post(
+  '/article/report/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.reportArticleValidator,
+  articleController.reportArticle
+);
+
+router.patch(
+  '/article/:id',
+  tokenValidator.verifyToken,
+  articleMiddleware.validateArticleBody,
+  articleMiddleware.checkDraftStatus,
+  articleController.editAticle
+);
+
 router.delete(
   '/article/:id',
   tokenValidator.verifyToken,

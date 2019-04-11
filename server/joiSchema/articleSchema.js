@@ -6,9 +6,7 @@ const articleSchema = () => {
       .min(5)
       .max(100)
       .required(),
-    abstract: Joi.string()
-      .min(5)
-      .max(250),
+    abstract: Joi.string().min(5),
     body: Joi.string().min(5),
     is_draft: Joi.boolean().required(),
     image_url: Joi.string()

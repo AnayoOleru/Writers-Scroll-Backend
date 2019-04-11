@@ -188,6 +188,54 @@ const updateComment = async (req, res) => {
   });
 };
 
-const comments = { post, toggleLike, getCommentAndHistories, updateComment };
+const deleteComment = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+
+  const userId = req.user.userObj.id;
+  if (userId !== comment.user_id) {
+    return res.status(403).json({
+      errors: {
+        body: ['You are not authorized to delete this comment'],
+      },
+    });
+  }
+
+  const deleteCommentAndHistory = await Comment.destroy({
+    where: { id: req.params.commentid },
+    returning: true,
+  });
+
+  res.status(200).json({
+    deletedComment: deleteCommentAndHistory,
+  });
+};
+
+const comments = {
+  post,
+  toggleLike,
+  getCommentAndHistories,
+  updateComment,
+  deleteComment,
+};
 
 export default comments;

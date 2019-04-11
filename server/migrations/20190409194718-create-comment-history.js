@@ -11,6 +11,11 @@ module.exports = {
       comment_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Comments', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+        onDelete: 'CASCADE',
       },
       body: {
         type: Sequelize.STRING,

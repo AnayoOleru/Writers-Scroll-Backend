@@ -16,4 +16,13 @@ const profiler = user => {
   return profile;
 };
 
-export default profiler;
+const followStatus = obj => {
+  if (!obj) {
+    return false;
+  }
+  return true;
+};
+
+const profileHelpers = { profiler, followStatus };
+
+export default profileHelpers;

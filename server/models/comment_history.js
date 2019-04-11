@@ -16,11 +16,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
-  // Comment_history.associate = models => {
-  //   Comment_history.belongsTo(models.Comment, {
-  //     foreignKey: 'id',
-  //     as: 'updatedComments',
-  //   });
-  // };
   return Comment_history;
 };

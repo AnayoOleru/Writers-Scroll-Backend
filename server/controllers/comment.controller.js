@@ -37,9 +37,11 @@ const getCommentAndHistories = async (req, res) => {
       {
         model: CommentHistory,
         as: 'updatedComments',
+        order: ['body'],
         attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
       },
     ],
+    order: [['updatedComments', 'updatedAt', 'desc']],
   });
 
   return res.status(200).json({
@@ -174,10 +176,12 @@ const updateComment = async (req, res) => {
     { where: { id: req.params.commentid }, returning: true }
   );
 
-  await CommentHistory.create({
-    comment_id: comment.id,
-    body: comment.body,
-  });
+  if (req.body.body !== comment.body) {
+    await CommentHistory.create({
+      comment_id: comment.id,
+      body: comment.body,
+    });
+  }
 
   res.status(200).json({
     editedComment: editComment,

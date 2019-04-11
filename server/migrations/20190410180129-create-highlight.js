@@ -37,5 +37,5 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Highlight'),
+  down: queryInterface => queryInterface.dropTable('Highlights'),
 };

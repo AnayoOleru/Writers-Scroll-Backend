@@ -1,12 +1,53 @@
 import search from '../helpers/search-database';
 import model from '../models';
-import likeHelper from '../helpers/like-comment-helpers';
 import validations from '../helpers/validations';
+import likeHelper from '../helpers/like-comment-helpers';
 import serverError from '../helpers/server-error';
 
-const { User, Comment } = model;
-
+const { User, Comment, Comment_history: CommentHistory } = model;
 const { databaseError, findArticle } = search;
+
+const getCommentAndHistories = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+  const editHistory = await Comment.findAll({
+    where: {
+      id: req.params.commentid,
+    },
+    include: [
+      {
+        model: CommentHistory,
+        as: 'updatedComments',
+        order: ['body'],
+        attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
+      },
+    ],
+    order: [['updatedComments', 'updatedAt', 'desc']],
+  });
+
+  return res.status(200).json({
+    comment: editHistory,
+  });
+};
 
 const post = async (req, res) => {
   const userId = req.user.userObj.id;
@@ -98,6 +139,55 @@ const toggleLike = async (req, res) => {
   }
 };
 
-const comments = { post, toggleLike };
+const updateComment = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+
+  const userId = req.user.userObj.id;
+  if (userId !== comment.user_id) {
+    return res.status(403).json({
+      errors: {
+        body: ['You are not authorized to edit this comment'],
+      },
+    });
+  }
+
+  const editComment = await Comment.update(
+    { body: req.body.body },
+    { where: { id: req.params.commentid }, returning: true }
+  );
+
+  if (req.body.body !== comment.body) {
+    await CommentHistory.create({
+      comment_id: comment.id,
+      body: comment.body,
+    });
+  }
+
+  res.status(200).json({
+    editedComment: editComment,
+  });
+};
+
+const comments = { post, toggleLike, getCommentAndHistories, updateComment };
 
 export default comments;

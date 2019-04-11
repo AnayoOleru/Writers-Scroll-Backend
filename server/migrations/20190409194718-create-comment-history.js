@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Statistics', {
+    return queryInterface.createTable('Comment_histories', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -8,11 +8,13 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         unique: true,
       },
-      user_id: {
+      comment_id: {
         type: Sequelize.UUID,
+        allowNull: false,
       },
-      article_id: {
-        type: Sequelize.UUID,
+      body: {
+        type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -26,5 +28,5 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Statistics'),
+  down: queryInterface => queryInterface.dropTable('Comment_histories'),
 };

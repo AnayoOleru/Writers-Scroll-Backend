@@ -42,4 +42,11 @@ router.delete(
   articleController.deleteArticle
 );
 
+router.post(
+  '/article/highlight/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.validateHighlight,
+  articleController.createHighlight
+);
+
 export default router;

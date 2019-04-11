@@ -1,5 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const Statistic = sequelize.define('Statistic', {
+    id: {
+      allowNull: false,
+      primaryKey: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true,
+    },
     user_id: {
       type: DataTypes.UUID,
     },

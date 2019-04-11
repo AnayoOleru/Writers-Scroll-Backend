@@ -1,8 +1,6 @@
 import moment from 'moment';
 import models from '../models';
 import serverError from '../helpers/server-error';
-import validations from '../helpers/validations';
-import auth from '../helpers/auth';
 
 const { Statistic, Sequelize } = models;
 
@@ -16,23 +14,6 @@ const { Op } = Sequelize;
  */
 const getDailyStatistic = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const checkIfIdIsCorrect = auth.decode(token);
-
-    if (!validations.verifyUUID(req.params.userid)) {
-      return res.status(400).json({
-        errors: {
-          body: ['userId is not valid'],
-        },
-      });
-    }
-    if (req.params.userid !== checkIfIdIsCorrect.userObj.id) {
-      return res.status(401).json({
-        errors: {
-          body: ["Sorry, you cannot access another user's reading statistic"],
-        },
-      });
-    }
     const statisticBox = await Statistic.findAndCountAll({
       where: {
         user_id: req.params.userid,
@@ -67,24 +48,6 @@ const getDailyStatistic = async (req, res) => {
  */
 const getWeeklyStatistic = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const checkIfIdIsCorrect = auth.decode(token);
-
-    if (!validations.verifyUUID(req.params.userid)) {
-      return res.status(400).json({
-        errors: {
-          body: ['userId is not valid'],
-        },
-      });
-    }
-
-    if (req.params.userid !== checkIfIdIsCorrect.userObj.id) {
-      return res.status(401).json({
-        errors: {
-          body: ["Sorry, you cannot access another user's reading statistic"],
-        },
-      });
-    }
     const statisticBox = await Statistic.findAndCountAll({
       where: {
         user_id: req.params.userid,
@@ -120,25 +83,6 @@ const getWeeklyStatistic = async (req, res) => {
  */
 const getMonthlyStatistic = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const checkIfIdIsCorrect = auth.decode(token);
-
-    if (!validations.verifyUUID(req.params.userid)) {
-      return res.status(400).json({
-        errors: {
-          body: ['userId is not valid'],
-        },
-      });
-    }
-
-    if (req.params.userid !== checkIfIdIsCorrect.userObj.id) {
-      return res.status(401).json({
-        errors: {
-          body: ["Sorry, you cannot access another user's reading statistic"],
-        },
-      });
-    }
-
     const statisticBox = await Statistic.findAndCountAll({
       where: {
         user_id: req.params.userid,

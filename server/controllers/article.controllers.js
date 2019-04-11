@@ -7,7 +7,6 @@ import serverError from '../helpers/server-error';
 import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
 import statistic from '../helpers/statistics-storer';
-import auth from '../helpers/auth';
 import notifications from '../helpers/notifications';
 
 const { findArticle } = serchDatabase;

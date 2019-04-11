@@ -35,18 +35,6 @@ describe('GET Authors reading statistic for daily, weekly and monthly', () => {
       });
   });
 
-  it('should respond with 400 when UUID is invalid', done => {
-    chai
-      .request(app)
-      .get('/api/v1/6517a6ea-662b-4eef-ab9f-20f89bd70998c/statistic/daily')
-      .set('Authorization', userToken)
-      .end((err, res) => {
-        expect(res).to.have.status(400);
-        expect(res.body).to.be.an('object');
-        done();
-      });
-  });
-
   it('should respond with 401 when user-id and id on the params are not the same', done => {
     chai
       .request(app)

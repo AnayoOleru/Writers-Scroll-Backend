@@ -21,9 +21,6 @@ const { Article, User, Reported_articles: ReportedArticle, Highlight } = model;
  */
 const getOneArticle = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const getIdFromToken = auth.decode(token);
-
     if (!validations.verifyUUID(req.params.id)) {
       return res.status(400).json({
         errors: {
@@ -61,7 +58,7 @@ const getOneArticle = async (req, res) => {
       });
     }
 
-    await statistic.saveUserStatistic(getIdFromToken.userObj.id, article.id);
+    await statistic.saveUserStatistic(req.user.userObj.id, article.id);
 
     return res.status(200).json({
       article,

@@ -11,6 +11,7 @@ import commentRoute from './comment.routes';
 import likeComment from './like-comment.routes';
 import followRoutes from './follow.routes';
 import getFollowersRoute from './get-followers.routes';
+import statisticRoute from './statistic.routes';
 import adminRoute from './admin.routes';
 import bookmarkRoute from './bookmark.routes';
 
@@ -66,6 +67,8 @@ router.use(profileRoute);
 router.use(likeRoute);
 router.use(profileRoute);
 router.use(getFollowersRoute);
+router.use(getFollowersRoute);
+router.use(statisticRoute);
 router.use(adminRoute);
 router.use(bookmarkRoute);
 

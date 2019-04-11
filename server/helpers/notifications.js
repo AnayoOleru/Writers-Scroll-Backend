@@ -79,28 +79,39 @@ const sendEmailNotificationArticle = async (articleTitle, userId) => {
     include: [
       {
         model: User,
-        required: false,
-        where: { id: Follower.followee_id, isNotified: true },
+        as: 'follower',
+        where: { is_notified: true },
         attributes: ['email', 'first_name'],
+      },
+      {
+        model: User,
+        as: 'followee',
+        attributes: ['first_name'],
       },
     ],
   });
-  const templateSubject = 'New Notification on Authors Haven';
-  const templateFollowersEmail = followers.User.email;
-  const templateMessage = `<h1>${articleTitle}</h1>`;
 
-  const message = template(
-    templateSubject,
-    templateMessage,
-    templateFollowersEmail
-  );
-  sendEmail(templateFollowersEmail, templateSubject, message);
+  followers.forEach(user => {
+    const templateSubject = 'New Notification on Authors Haven';
+    const templateFollowersEmail = user.follower.email;
+    const templateMessage = `
+      <p>${
+        user.followee.first_name
+      } just published a new article <br> <b>${articleTitle}</b></p>`;
 
-  // in-app notification
-  pusher.trigger('channel', 'event', {
-    message: `${
-      followers.User.first_name
-    } has published a new article ${articleTitle}`,
+    const message = template(
+      templateSubject,
+      templateMessage,
+      templateFollowersEmail
+    );
+    sendEmail(templateFollowersEmail, templateSubject, message);
+
+    // in-app notification
+    pusher.trigger('channel', 'event', {
+      message: `${
+        user.follower.first_name
+      } has published a new article ${articleTitle}`,
+    });
   });
 };
 

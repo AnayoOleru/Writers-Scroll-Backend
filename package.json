@@ -17,7 +17,9 @@
     "prettier:fix": "prettier --write \"./server/**/*.js\" && prettier --write \"./tests/**/*.js\"",
     "check:lint-prettier": "npm run eslint:check && npm run prettier:check",
     "pretest": "export NODE_ENV=test && npm run check:lint-prettier && npm run db:reset",
-    "coverage": "nyc report --reporter=text-lcov | coveralls"
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "check:coverage": "nyc check-coverage --lines 90",
+    "posttest": "npm run check:coverage"
   },
   "repository": {
     "type": "git",
@@ -87,6 +89,12 @@
     "*.{js,json,css,md}": [
       "prettier --write",
       "git add"
+    ]
+  },
+  "nyc": {
+    "exclude": [
+      "server/config/*.js",
+      "tests"
     ]
   }
 }

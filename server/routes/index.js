@@ -10,6 +10,7 @@ import ratingRoute from './rating.routes';
 import commentRoute from './comment.routes';
 import followRoutes from './follow.routes';
 import getFollowersRoute from './get-followers.routes';
+import searchArticles from './search-articles.routes';
 
 const router = express.Router();
 
@@ -62,5 +63,6 @@ router.use(profileRoute);
 router.use(likeRoute);
 router.use(profileRoute);
 router.use(getFollowersRoute);
+router.use(searchArticles);
 
 export default router;

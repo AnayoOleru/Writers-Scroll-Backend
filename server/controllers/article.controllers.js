@@ -6,6 +6,7 @@ import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
 import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
+import notifications from '../helpers/notifications';
 
 const { findArticle } = serchDatabase;
 const { Article, User, Reported_articles: ReportedArticle, Highlight } = model;
@@ -87,6 +88,10 @@ const createArticle = async (req, res) => {
       req.body.keywords.forEach(async keyword => {
         await tagsHelpers.saveArticleTags(article.id, keyword);
       });
+    }
+
+    if (!req.body.is_draft) {
+      notifications.sendEmailNotificationArticle(article.title, userObj.id);
     }
 
     return res.status(201).json({

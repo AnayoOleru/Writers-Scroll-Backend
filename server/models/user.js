@@ -46,7 +46,31 @@ import authHelpers from '../helpers/auth';
  *        type: string
  *      confirmPassword:
  *        type: string
- *
+ *  profile:
+ *    type: object
+ *    required:
+ *      - first_name
+ *      - last_name
+ *      - email
+ *      - title
+ *      - bio
+ *      - image_url
+ *      - research_field
+ *    properties:
+ *      firstname:
+ *        type: string
+ *      lastname:
+ *        type: string
+ *      email:
+ *        type: string
+ *      title:
+ *        type: string
+ *      bio:
+ *        type: string
+ *      image_url:
+ *        type: string
+ *      research_field:
+ *        type: string
  */
 
 module.exports = (sequelize, DataTypes) => {

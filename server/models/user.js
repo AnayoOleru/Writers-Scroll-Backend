@@ -1,5 +1,36 @@
 import authHelpers from '../helpers/auth';
 
+/**
+ * @swagger
+ * definition:
+ *  login:
+ *    type: object
+ *    required:
+ *      - username
+ *      - passoword
+ *    properties:
+ *      email:
+ *        type: string
+ *      password:
+ *        type: string
+ *  signup:
+ *    type: object
+ *    required:
+ *      - firstname
+ *      - lastname
+ *      - email
+ *      - password
+ *    properties:
+ *      firstname:
+ *        type: string
+ *      lastname:
+ *        type: string
+ *      email:
+ *        type: string
+ *      password:
+ *        type: string
+ */
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id: {

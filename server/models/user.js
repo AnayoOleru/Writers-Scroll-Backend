@@ -29,6 +29,24 @@ import authHelpers from '../helpers/auth';
  *        type: string
  *      password:
  *        type: string
+ *  password-reset:
+ *    type: object
+ *    required:
+ *      - email
+ *    properties:
+ *      email:
+ *        type: string
+ *  update-password:
+ *    type: object
+ *    required:
+ *      - password
+ *      - confirmPassword
+ *    properties:
+ *      password:
+ *        type: string
+ *      confirmPassword:
+ *        type: string
+ *
  */
 
 module.exports = (sequelize, DataTypes) => {

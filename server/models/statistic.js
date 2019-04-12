@@ -1,3 +1,17 @@
+/**
+ * @swagger
+ * definition:
+ *  Statistic:
+ *    type: object
+ *    required:
+ *      - user_id
+ *      - article_id
+ *    properties:
+ *      user_id:
+ *        type: uuid
+ *      article_id:
+ *        type: uuid
+ */
 module.exports = (sequelize, DataTypes) => {
   const Statistic = sequelize.define('Statistic', {
     id: {

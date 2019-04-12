@@ -52,6 +52,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Comment.hasMany(Comment_history, {
       foreignKey: 'comment_id',
+      onDelete: 'CASCADE',
       as: 'updatedComments',
     });
   };

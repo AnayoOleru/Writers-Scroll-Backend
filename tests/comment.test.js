@@ -234,3 +234,30 @@ describe('EDIT COMMENT', () => {
       });
   });
 });
+
+describe('DELETE COMMENT', () => {
+  it('should respond 403 when the user id does not belong to the logged in user id', done => {
+    chai
+      .request(app)
+      .delete('/api/v1/comment/0b29d287-0ad0-42ca-8f74-3159bbe304af/delete')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.errors.body[0]).to.equal(
+          'You are not authorized to delete this comment'
+        );
+        done();
+      });
+  });
+
+  it('should respond with status code 200 on successful delete of a comment', done => {
+    chai
+      .request(app)
+      .delete('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/delete')
+      .set('Authorization', userToken2)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+});

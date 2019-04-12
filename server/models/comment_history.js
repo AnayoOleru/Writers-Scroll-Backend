@@ -16,5 +16,10 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   });
+  Comment_history.associate = models => {
+    Comment_history.hasMany(models.Comment, {
+      foreignKey: 'id',
+    });
+  };
   return Comment_history;
 };

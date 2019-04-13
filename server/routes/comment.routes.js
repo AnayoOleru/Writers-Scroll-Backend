@@ -83,6 +83,42 @@ router.get(
 /**
  * @swagger
  *
+ *  /comment/{commentid}/replies:
+ *   get:
+ *     tags:
+ *       - comment
+ *     description: get all comments and respective replies to each comment
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: commentid
+ *         description: Requires comment id
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/comment'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: ran
+ */
+
+router.get(
+  '/comment/:commentid/replies',
+  tokenValidator.verifyToken,
+  commentController.getCommentAndReplies
+);
+
+/**
+ * @swagger
+ *
  *  /comment/{commentid}/edit:
  *   patch:
  *     tags:
@@ -114,6 +150,47 @@ router.patch(
   tokenValidator.verifyToken,
   commentMiddleware.validateEditComment,
   commentController.updateComment
+);
+
+/**
+ * @swagger
+ *
+ *  /comment/{commentid}/reply:
+ *   post:
+ *     tags:
+ *       - comment
+ *     description: reply to a specific comment
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: commentid
+ *         description: Requires comment id
+ *         required: true
+ *       - in: body
+ *         name: reply
+ *         description: reply a comment
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/reply-comment'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: ran
+ */
+
+router.post(
+  '/comment/:commentid/reply',
+  tokenValidator.verifyToken,
+  commentMiddleware.validateReplyComment,
+  commentController.replyComment
 );
 
 /**

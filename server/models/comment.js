@@ -12,6 +12,15 @@
  *        format: uuid
  *      body:
  *        type: string
+ *      reply:
+ *        type: string
+ *  reply-comment:
+ *    type: object
+ *    required:
+ *      - reply
+ *    properties:
+ *      reply:
+ *        type: string
  */
 
 module.exports = (sequelize, DataTypes) => {
@@ -53,7 +62,7 @@ module.exports = (sequelize, DataTypes) => {
     Comment.hasMany(Comment_history, {
       foreignKey: 'comment_id',
       onDelete: 'CASCADE',
-      as: 'updatedComments',
+      as: 'histories',
     });
   };
   return Comment;

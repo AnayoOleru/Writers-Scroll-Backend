@@ -25,5 +25,19 @@ const editCommentSchema = () => {
   return schema;
 };
 
-const commentSchema = { postCommentSchema, editCommentSchema };
+const replyCommentSchema = () => {
+  const schema = Joi.object().keys({
+    reply: Joi.string()
+      .min(1)
+      .max(250)
+      .required(),
+  });
+  return schema;
+};
+
+const commentSchema = {
+  postCommentSchema,
+  editCommentSchema,
+  replyCommentSchema,
+};
 export default commentSchema;

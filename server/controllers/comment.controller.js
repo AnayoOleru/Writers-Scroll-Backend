@@ -7,6 +7,59 @@ import serverError from '../helpers/server-error';
 const { User, Comment, Comment_history: CommentHistory } = model;
 const { databaseError, findArticle } = search;
 
+const getCommentAndReplies = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+  const commentReplies = await Comment.findAll({
+    where: {
+      id: req.params.commentid,
+    },
+    include: [
+      {
+        model: CommentHistory,
+        required: false,
+        as: 'histories',
+        order: ['body'],
+        attributes: [
+          'id',
+          'comment_id',
+          'is_reply',
+          'reply',
+          'updatedAt',
+          'createdAt',
+        ],
+        where: {
+          is_reply: true,
+        },
+      },
+    ],
+    order: [['histories', 'updatedAt', 'asc']],
+  });
+
+  return res.status(200).json({
+    commentResponse: commentReplies,
+  });
+};
+
 const getCommentAndHistories = async (req, res) => {
   if (!validations.verifyUUID(req.params.commentid)) {
     return res.status(400).json({
@@ -36,12 +89,16 @@ const getCommentAndHistories = async (req, res) => {
     include: [
       {
         model: CommentHistory,
-        as: 'updatedComments',
+        required: false,
+        as: 'histories',
         order: ['body'],
         attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
+        where: {
+          is_updated: true,
+        },
       },
     ],
-    order: [['updatedComments', 'updatedAt', 'desc']],
+    order: [['histories', 'updatedAt', 'desc']],
   });
 
   return res.status(200).json({
@@ -180,6 +237,7 @@ const updateComment = async (req, res) => {
     await CommentHistory.create({
       comment_id: comment.id,
       body: comment.body,
+      is_updated: true,
     });
   }
 
@@ -230,12 +288,49 @@ const deleteComment = async (req, res) => {
   });
 };
 
+const replyComment = async (req, res) => {
+  if (!validations.verifyUUID(req.params.commentid)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  const comment = await Comment.findOne({
+    where: {
+      id: req.params.commentid,
+    },
+  });
+
+  if (!comment) {
+    return res.status(404).json({
+      errors: {
+        body: ['This comment does not exist'],
+      },
+    });
+  }
+
+  const reply = await CommentHistory.create({
+    comment_id: comment.id,
+    body: comment.body,
+    is_reply: true,
+    reply: req.body.reply,
+  });
+
+  res.status(201).json({
+    response: reply,
+  });
+};
+
 const comments = {
   post,
   toggleLike,
   getCommentAndHistories,
+  getCommentAndReplies,
   updateComment,
   deleteComment,
+  replyComment,
 };
 
 export default comments;

@@ -77,6 +77,7 @@ router.post(
 router.get(
   '/comment/:commentid/history',
   tokenValidator.verifyToken,
+  commentMiddleware.verifyComment,
   commentController.getCommentAndHistories
 );
 
@@ -113,6 +114,7 @@ router.get(
 router.get(
   '/comment/:commentid/replies',
   tokenValidator.verifyToken,
+  commentMiddleware.verifyComment,
   commentController.getCommentAndReplies
 );
 
@@ -149,6 +151,7 @@ router.patch(
   '/comment/:commentid/edit',
   tokenValidator.verifyToken,
   commentMiddleware.validateEditComment,
+  commentMiddleware.verifyComment,
   commentController.updateComment
 );
 
@@ -190,6 +193,7 @@ router.post(
   '/comment/:commentid/reply',
   tokenValidator.verifyToken,
   commentMiddleware.validateReplyComment,
+  commentMiddleware.verifyComment,
   commentController.replyComment
 );
 
@@ -225,6 +229,7 @@ router.post(
 router.delete(
   '/comment/:commentid/delete',
   tokenValidator.verifyToken,
+  commentMiddleware.verifyComment,
   commentController.deleteComment
 );
 

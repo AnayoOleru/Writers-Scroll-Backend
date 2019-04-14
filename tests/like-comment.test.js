@@ -63,7 +63,7 @@ describe('POST LIKE ON SPECIFIC COMMENTS', () => {
       .end((req, res) => {
         expect(res.status).to.be.equal(404);
         expect(res).to.be.an('object');
-        expect(res.body.errors.body[0]).to.equal('comment id does not exist');
+        expect(res.body.errors.body[0]).to.equal('This comment does not exist');
         done();
       });
   });

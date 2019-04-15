@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Personal = sequelize.define('Personal', {
+  const Request = sequelize.define('Request', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: false,
     },
   });
-  Personal.associate = models =>
-    Personal.belongsTo(models.User, {
+  Request.associate = models =>
+    Request.belongsTo(models.User, {
       foreignKey: 'user_id',
     });
-  return Personal;
+  return Request;
 };

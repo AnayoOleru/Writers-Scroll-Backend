@@ -1,10 +1,10 @@
 import model from '../models';
 
-const { Personal } = model;
+const { Request } = model;
 
 const verifyRequest = async (req, res, next) => {
   const userId = req.user.userObj.id;
-  const findOneRequest = await Personal.findOne({
+  const findOneRequest = await Request.findOne({
     where: {
       user_id: userId,
       is_reviewer: false,
@@ -23,7 +23,7 @@ const verifyRequest = async (req, res, next) => {
 };
 const verifyUncheckRequest = async (req, res, next) => {
   const userId = req.user.userObj.id;
-  const findOneRequest = await Personal.findOne({
+  const findOneRequest = await Request.findOne({
     where: {
       user_id: userId,
       is_reviewer: false,

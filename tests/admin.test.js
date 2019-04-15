@@ -82,4 +82,15 @@ describe('TEST FOR ADMIN', () => {
         done();
       });
   });
+  it('It should return all users request', done => {
+    chai
+      .request(app)
+      .get('/api/v1/admin/reviewer')
+      .set('authorization', token1)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.be.equal('Here is a list of users request');
+        done();
+      });
+  });
 });

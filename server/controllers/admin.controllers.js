@@ -2,7 +2,7 @@ import model from '../models';
 import serverError from '../helpers/server-error';
 import validations from '../helpers/validations';
 
-const { User, Personal } = model;
+const { User, Request } = model;
 /**
  *@class Admin
  *@description Admin Controller
@@ -100,7 +100,7 @@ const getAllReviewerRequest = async (req, res) => {
         },
       });
     }
-    const getAllUserRequest = await Personal.findAll({
+    const getAllUserRequest = await Request.findAll({
       where: {
         is_reviewer: false,
         is_reported: false,

@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Personals', {
+    queryInterface.createTable('Requests', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -31,5 +31,5 @@ module.exports = {
         defaultValue: Sequelize.fn('now'),
       },
     }),
-  down: queryInterface => queryInterface.dropTable('Personals'),
+  down: queryInterface => queryInterface.dropTable('Requests'),
 };

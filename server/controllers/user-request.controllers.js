@@ -1,7 +1,7 @@
 import model from '../models';
 import serverError from '../helpers/server-error';
 
-const { User, Personal } = model;
+const { User, Request } = model;
 
 const request = async (req, res) => {
   const userId = req.user.userObj.id;
@@ -21,12 +21,12 @@ const request = async (req, res) => {
         },
       });
     }
-    const requested = await Personal.create({
+    const requested = await Request.create({
       user_id: userId,
       is_reviewer: false,
       is_reported: false,
     });
-    return res.status(240).json({
+    return res.status(201).json({
       message: 'Successfully make a request',
       requested,
     });
@@ -55,7 +55,7 @@ const removeRequest = async (req, res) => {
         },
       });
     }
-    const requested = await Personal.destroy({
+    const requested = await Request.destroy({
       where: {
         user_id: userId,
         is_reviewer: false,
@@ -63,7 +63,7 @@ const removeRequest = async (req, res) => {
       },
     });
     if (requested) {
-      return res.status(240).json({
+      return res.status(200).json({
         message: 'Successfully unchecked request',
       });
     }

@@ -2,7 +2,7 @@ import express from 'express';
 import controllers from '../controllers';
 import middlewares from '../middlewares';
 
-const { tokenValidator } = middlewares;
+const { tokenValidator, commentMiddleware } = middlewares;
 const { commentController } = controllers;
 
 const router = express.Router();
@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /likeComment/{commentId}:
+ * /likeComment/{commentid}:
  *   post:
  *     tags:
  *       - comment
@@ -38,8 +38,9 @@ const router = express.Router();
  */
 
 router.post(
-  '/likeComment/:commentId',
+  '/likeComment/:commentid',
   tokenValidator.verifyToken,
+  commentMiddleware.verifyComment,
   commentController.toggleLike
 );
 export default router;

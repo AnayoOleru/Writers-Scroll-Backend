@@ -6,6 +6,35 @@ const { tokenValidator, uuidMiddleware, userIdMiddleware } = middlewares;
 
 const statisticRoute = express.Router();
 
+/**
+ * @swagger
+ *
+ * /userid/statistic/daily:
+ *   get:
+ *     tags:
+ *       - statistic
+ *     description: get daily statistic of a user reading
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         description: Requires userid
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/statistic'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
 statisticRoute.get(
   '/:userid/statistic/daily',
   tokenValidator.verifyToken,
@@ -13,6 +42,35 @@ statisticRoute.get(
   uuidMiddleware.checkUUID,
   controllers.getDailyStatistic
 );
+/**
+ * @swagger
+ *
+ * /{userid}/statistic/weekly:
+ *   get:
+ *     tags:
+ *       - statistic
+ *     description: get daily statistic of a user reading
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         description: Requires userid
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/statistic'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
 statisticRoute.get(
   '/:userid/statistic/week',
   tokenValidator.verifyToken,
@@ -20,6 +78,35 @@ statisticRoute.get(
   userIdMiddleware.checkIfUserIdIsCorrect,
   controllers.getWeeklyStatistic
 );
+/**
+ * @swagger
+ *
+ * /{userid}/statistic/month:
+ *   get:
+ *     tags:
+ *       - statistic
+ *     description: get daily statistic of a user reading
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: userid
+ *         description: Required userid
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/statistic'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
 statisticRoute.get(
   '/:userid/statistic/month',
   tokenValidator.verifyToken,

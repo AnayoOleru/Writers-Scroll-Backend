@@ -1,3 +1,31 @@
+/**
+ * @swagger
+ * definition:
+ *  reported_article:
+ *    type: object
+ *    required:
+ *      - reported_user_id
+ *      - reporter_reason
+ *      - reporter_comment
+ *      - reviewer_comment
+ *      - status
+ *    properties:
+ *      reporter_id:
+ *        type: string
+ *        format: uuid
+ *      reported_user_id:
+ *        type: string
+ *        format: uuid
+ *      reported_article_id:
+ *        type: string
+ *        format: uuid
+ *      reporter_reason:
+ *        type: string
+ *      reporter_comment:
+ *        type: string
+ *      status:
+ *        type: string
+ */
 module.exports = (sequelize, DataTypes) => {
   const Reported = sequelize.define('Reported_articles', {
     id: {

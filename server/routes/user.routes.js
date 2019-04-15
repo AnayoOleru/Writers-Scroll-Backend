@@ -8,6 +8,35 @@ const { authController } = controllers;
 
 const authRoute = express.Router();
 
+/**
+ * @swagger
+ *
+ * /auth/login:
+ *   post:
+ *     tags:
+ *       - auth
+ *     description: authenticate a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Required user payload
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/login'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
 authRoute.post(
   '/login',
   authValidator.loginValidator,
@@ -43,6 +72,35 @@ authRoute.get(
   authController.socialRedirect
 );
 
+/**
+ * @swagger
+ *
+ * /auth/signup:
+ *   post:
+ *     tags:
+ *       - auth
+ *     description: authenticate a user
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Required user payload
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/signup'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
 authRoute.post(
   '/signup',
   authValidator.signUpValidator,

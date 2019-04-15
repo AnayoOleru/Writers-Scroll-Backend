@@ -12,7 +12,7 @@ const pusher = new Pusher({
   key: PUSHER_KEY,
   secret: PUSHER_SECRET,
   cluster: PUSHER_CLUSTER,
-  encrypted: true,
+  useTLS: true,
 });
 
 export { pusher };

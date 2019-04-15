@@ -52,11 +52,14 @@ const signupEmail = (email, link, name) => {
 const sendEmailNotificationComment = async (articleTitle, authorId) => {
   const authorEmail = await User.findOne({
     where: { id: authorId },
-    attributes: ['email'],
+    attributes: ['email', 'first_name'],
   });
+
   const templateSubject = 'New notification from Authors Haven';
-  const templateEmail = authorEmail;
-  const templateMessage = `<h1>Your article ${articleTitle} - has a new comment.</h1>`;
+  const templateEmail = authorEmail.email;
+  const templateMessage = `<p> ${
+    authorEmail.first_name
+  }, your article " <i>${articleTitle}</i> " has a new comment.</p>`;
 
   const message = template(templateSubject, templateMessage, templateEmail);
   sendEmail(templateEmail, templateSubject, message);

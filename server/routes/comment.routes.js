@@ -34,7 +34,7 @@ const router = express.Router();
  *       403:
  *         description: Forbidden
  *       500:
- *         description: ran
+ *         description: Server error
  */
 
 router.post(

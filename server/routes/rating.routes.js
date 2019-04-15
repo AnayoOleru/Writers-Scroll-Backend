@@ -12,6 +12,8 @@ const router = express.Router();
  *
  * /rating:
  *   post:
+ *     tags:
+ *       - rating
  *     description: authenticated user can rate an article
  *     produces:
  *       - application/json

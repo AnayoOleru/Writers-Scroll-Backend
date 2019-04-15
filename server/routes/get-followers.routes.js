@@ -8,14 +8,62 @@ const { getFollowersController } = controllers;
 
 const router = express.Router();
 
-// Get all users followers
+/**
+ * @swagger
+ *
+ * /followers:
+ *   get:
+ *     tags:
+ *       - follower
+ *     description: User should be able to see his/her followers
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *         schema:
+ *           $ref: '#/definitions/followers'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: server error
+ */
 router.get(
   '/followers',
   tokenValidator.verifyToken,
   getFollowersController.getFollowers
 );
 
-// Get all users following
+/**
+ * @swagger
+ *
+ * /following:
+ *   get:
+ *     tags:
+ *       - following
+ *     description: User should be able to see those his following
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *         schema:
+ *           $ref: '#/definitions/following'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: server error
+ */
 router.get(
   '/following',
   tokenValidator.verifyToken,

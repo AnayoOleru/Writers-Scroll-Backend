@@ -155,7 +155,7 @@ describe('POST COMMENT', () => {
   });
 });
 
-describe('GET COMMENTS', () => {
+describe('GET COMMENTS AND EDITED HISTORY', () => {
   it('should respond with the comments and its history', done => {
     chai
       .request(app)
@@ -171,18 +171,43 @@ describe('GET COMMENTS', () => {
           'body',
           'createdAt',
           'updatedAt',
-          'updatedComments',
+          'histories',
           'likes_count'
         );
-        expect(res.body.comment[0].updatedComments[0]).to.have.all.keys(
+        expect(res.body.comment[0].histories[0]).to.have.all.keys(
           'id',
           'body',
           'comment_id',
           'updatedAt',
           'createdAt'
         );
-        expect(res.body.comment[0].updatedComments[0].body).equal(
-          'deep write up'
+        expect(res.body.comment[0].histories[0].body).equal('deep write up');
+        done();
+      });
+  });
+});
+
+describe('GET COMMENTS AND REPLIES', () => {
+  it('should respond with the comments and its history', done => {
+    chai
+      .request(app)
+      .get('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/replies')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.commentResponse).to.be.a('array');
+        expect(res.body.commentResponse[0]).have.to.have.all.keys(
+          'id',
+          'user_id',
+          'article_id',
+          'likes_count',
+          'body',
+          'createdAt',
+          'updatedAt',
+          'histories'
+        );
+        expect(res.body.commentResponse[0].histories[0].reply).equal(
+          'replying to you'
         );
         done();
       });
@@ -230,6 +255,34 @@ describe('EDIT COMMENT', () => {
         expect(res.body.editedComment[1][0].body).to.equal(
           'This is a new comment'
         );
+        done();
+      });
+  });
+});
+describe('POST REPLY COMMENT', () => {
+  it('should return 400 with invalid or empty payload(reply)', done => {
+    chai
+      .request(app)
+      .post('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/reply')
+      .set('Authorization', userToken)
+      .send({})
+      .end((req, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.equal('reply is required');
+        done();
+      });
+  });
+
+  it('should respond with status code 201 on successful reply of a comment', done => {
+    chai
+      .request(app)
+      .post('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/reply')
+      .set('Authorization', userToken2)
+      .send({ reply: 'This is a new reply' })
+      .end((err, res) => {
+        expect(res).to.have.status(201);
+        expect(res.body.response).to.be.an('object');
+        expect(res.body.response.reply).to.equal('This is a new reply');
         done();
       });
   });

@@ -21,6 +21,18 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      is_updated: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      is_reply: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      reply: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

@@ -78,7 +78,7 @@ describe('ARTICLE', () => {
     chai
       .request(app)
       .post(`/api/v1/article`)
-      .set('Authorization', userAToken)
+      .set('Authorization', userBToken)
       .send({
         body: 'Lorem ipsum dolor sit amet consectetur adipiscing elit',
         is_draft: false,

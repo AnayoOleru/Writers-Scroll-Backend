@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Highlights', {
+    return queryInterface.createTable('Comment_histories', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -8,22 +8,18 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         unique: true,
       },
-      user_id: {
+      comment_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Comments', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+        onDelete: 'CASCADE',
       },
-      article_id: {
-        type: Sequelize.UUID,
-        allowNull: false,
-      },
-      start_position: {
-        type: Sequelize.INTEGER,
-      },
-      end_position: {
-        type: Sequelize.INTEGER,
-      },
-      comment: {
+      body: {
         type: Sequelize.STRING,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,
@@ -37,5 +33,5 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Highlights'),
+  down: queryInterface => queryInterface.dropTable('Comment_histories'),
 };

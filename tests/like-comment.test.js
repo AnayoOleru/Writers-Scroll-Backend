@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 let userToken;
-const baseUrl1 = '/api/v1/likeComment/a83dc585-9cc8-48ad-b1c0-b2df0dd28117';
+const baseUrl1 = '/api/v1/likeComment/0b29d287-0ad0-42ca-8f74-3159bbe304af';
 const invalidComment =
   '/api/v1/likeComment/1a0267aa-dbc2-4b76-a0b0-1d67672febca';
 chai.use(chaiHttp);

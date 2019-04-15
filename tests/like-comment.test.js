@@ -3,7 +3,7 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 let userToken;
-const baseUrl1 = '/api/v1/likeComment/15a2628f-ecf7-4098-8db5-95ecaf24847e';
+const baseUrl1 = '/api/v1/likeComment/0b29d287-0ad0-42ca-8f74-3159bbe304af';
 const invalidComment =
   '/api/v1/likeComment/1a0267aa-dbc2-4b76-a0b0-1d67672febca';
 chai.use(chaiHttp);
@@ -63,7 +63,7 @@ describe('POST LIKE ON SPECIFIC COMMENTS', () => {
       .end((req, res) => {
         expect(res.status).to.be.equal(404);
         expect(res).to.be.an('object');
-        expect(res.body.errors.body[0]).to.equal('comment id does not exist');
+        expect(res.body.errors.body[0]).to.equal('This comment does not exist');
         done();
       });
   });

@@ -1,3 +1,24 @@
+/**
+ * @swagger
+ * definition:
+ *  highlight:
+ *    type: object
+ *    required:
+ *      - user_id
+ *      - start_postion
+ *      - end_position
+ *    properties:
+ *      user_id:
+ *        type: string
+ *        format: uuid
+ *      start_postion:
+ *        type: integer
+ *      end_position:
+ *        type: integer
+ *      comment:
+ *        type: string
+ */
+
 module.exports = (sequelize, DataTypes) => {
   const Highlight = sequelize.define('Highlight', {
     id: {

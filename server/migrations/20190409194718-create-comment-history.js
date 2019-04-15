@@ -11,10 +11,27 @@ module.exports = {
       comment_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Comments', // name of Target model
+          key: 'id', // key in Target model that we're referencing
+        },
+        onDelete: 'CASCADE',
       },
       body: {
         type: Sequelize.STRING,
         allowNull: false,
+      },
+      is_updated: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      is_reply: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
+      reply: {
+        type: Sequelize.STRING,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

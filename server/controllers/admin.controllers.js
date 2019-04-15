@@ -1,8 +1,9 @@
 import model from '../models';
 import serverError from '../helpers/server-error';
+import profileHelper from '../helpers/profiler';
 import validations from '../helpers/validations';
 
-const { User } = model;
+const { User, Request } = model;
 /**
  *@class Admin
  *@description Admin Controller
@@ -31,10 +32,14 @@ const activateReviewer = async (req, res) => {
     });
     // Give user a reveiwer access
     if (findUser) {
-      const userUpgrade = await findUser.update({ is_reviewer: true });
+      const userUpgrade = await findUser.update({
+        is_reviewer: true,
+      });
+
+      const upgradeUser = profileHelper.profiler(userUpgrade);
       return res.status(200).json({
         message: 'You have granted a user reviewer access',
-        user: userUpgrade,
+        user: upgradeUser,
       });
     }
     return res.status(403).json({
@@ -71,10 +76,11 @@ const deactivateReviewer = async (req, res) => {
     });
     // Deactivate user reveiwer access
     if (findUser) {
-      const downgrade = await findUser.update({ is_reviewer: false });
+      const downgradeUser = await findUser.update({ is_reviewer: false });
+      const downgadeUser = profileHelper.profiler(downgradeUser);
       return res.status(200).json({
         message: 'You have removed a user reviewer access',
-        user: downgrade,
+        user: downgadeUser,
       });
     }
     return res.status(403).json({
@@ -89,5 +95,44 @@ const deactivateReviewer = async (req, res) => {
   }
 };
 
-const upgradeDegradeUserReviewer = { activateReviewer, deactivateReviewer };
+const getAllReviewerRequest = async (req, res) => {
+  const userId = req.user.userObj.id;
+  try {
+    // Is user id correct?
+    if (!validations.verifyUUID(userId)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+    const getAllUserRequest = await Request.findAll({
+      where: {
+        is_reviewer: false,
+        is_reported: false,
+      },
+    });
+    if (getAllUserRequest) {
+      return res.status(200).json({
+        message: 'Here is a list of users request',
+        allUsersRequest: getAllUserRequest,
+      });
+    }
+    return res.status(404).json({
+      errors: {
+        body: ['No request found!'],
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
+const upgradeDegradeUserReviewer = {
+  activateReviewer,
+  deactivateReviewer,
+  getAllReviewerRequest,
+};
 export default upgradeDegradeUserReviewer;

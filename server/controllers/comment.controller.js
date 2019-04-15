@@ -2,6 +2,7 @@ import search from '../helpers/search-database';
 import model from '../models';
 import likeHelper from '../helpers/like-comment-helpers';
 import commentHelper from '../helpers/comment-helpers';
+import notifications from '../helpers/notifications';
 
 const { User, Comment, Comment_history: CommentHistory } = model;
 const { databaseError, findArticle } = search;
@@ -48,6 +49,7 @@ const post = async (req, res) => {
       body: req.body.body,
     });
 
+    notifications.sendEmailNotificationComment(article.title, article.user_id);
     res.status(201).json({
       comment,
     });

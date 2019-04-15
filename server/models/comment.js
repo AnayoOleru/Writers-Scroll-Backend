@@ -53,10 +53,10 @@ module.exports = (sequelize, DataTypes) => {
     const { Article, User, Comment_history } = models;
 
     Comment.belongsTo(Article, {
-      foreignKey: 'user_id',
+      foreignKey: 'article_id',
     });
     Comment.belongsTo(User, {
-      foreignKey: 'id',
+      foreignKey: 'user_id',
     });
 
     Comment.hasMany(Comment_history, {

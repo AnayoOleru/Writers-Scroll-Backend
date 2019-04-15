@@ -113,4 +113,12 @@ router.patch(
   profileController.patchProfile
 );
 
+router.get(
+  '/suggested/researchers',
+  tokenValidator.verifyToken,
+  profileMiddleware.getArticleAuthorUserLike,
+  profileMiddleware.getArticleUserCommented,
+  profileMiddleware.getUserStatistics
+);
+
 export default router;

@@ -6,6 +6,7 @@ import tokenValidator from './verify-token.middlewares';
 import ratingMiddleware from './rating.middlewares';
 import commentMiddleware from './comment.middlewares';
 import adminMiddleware from './admin.middlewares';
+import userRequest from './user-request.middleware';
 
 export default {
   authValidator,
@@ -16,4 +17,5 @@ export default {
   ratingMiddleware,
   commentMiddleware,
   adminMiddleware,
+  userRequest,
 };

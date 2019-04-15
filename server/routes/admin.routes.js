@@ -24,4 +24,13 @@ router.patch(
   adminMiddleware.checkAdmin,
   adminController.deactivateReviewer
 );
+
+// get all reviewer request
+router.get(
+  '/admin/reviewer',
+  tokenValidator.verifyToken,
+  tokenValidator.verifyAdmin,
+  adminMiddleware.checkAdmin,
+  adminController.getAllReviewerRequest
+);
 export default router;

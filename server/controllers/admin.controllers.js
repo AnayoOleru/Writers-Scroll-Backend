@@ -2,7 +2,7 @@ import model from '../models';
 import serverError from '../helpers/server-error';
 import validations from '../helpers/validations';
 
-const { User } = model;
+const { User, Personal } = model;
 /**
  *@class Admin
  *@description Admin Controller
@@ -89,5 +89,44 @@ const deactivateReviewer = async (req, res) => {
   }
 };
 
-const upgradeDegradeUserReviewer = { activateReviewer, deactivateReviewer };
+const getAllReviewerRequest = async (req, res) => {
+  const userId = req.user.userObj.id;
+  try {
+    // Is user id correct?
+    if (!validations.verifyUUID(userId)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+    const getAllUserRequest = await Personal.findAll({
+      where: {
+        is_reviewer: false,
+        is_reported: false,
+      },
+    });
+    if (getAllUserRequest) {
+      return res.status(200).json({
+        message: 'Here is a list of users request',
+        allUsersRequest: getAllUserRequest,
+      });
+    }
+    return res.status(404).json({
+      errors: {
+        body: ['No request found!'],
+      },
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
+const upgradeDegradeUserReviewer = {
+  activateReviewer,
+  deactivateReviewer,
+  getAllReviewerRequest,
+};
 export default upgradeDegradeUserReviewer;

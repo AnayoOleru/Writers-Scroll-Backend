@@ -9,6 +9,7 @@ import commentController from './comment.controller';
 import getFollowersController from './get-followers.controllers';
 import adminController from './admin.controllers';
 import bookmarkController from './bookmark.controller';
+import requestController from './user-request.controllers';
 
 export default {
   profileController,
@@ -22,4 +23,5 @@ export default {
   getFollowersController,
   adminController,
   bookmarkController,
+  requestController,
 };

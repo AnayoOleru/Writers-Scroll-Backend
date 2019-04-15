@@ -9,7 +9,7 @@ const searchArticles = async (req, res) => {
     if (!Object.keys(req.query).length) {
       return res.status(400).json({
         errors: {
-          body: ['No input provided'],
+          body: ['No search query provided'],
         },
       });
     }
@@ -44,6 +44,20 @@ const searchArticles = async (req, res) => {
         },
       },
       attributes: ['keyword'],
+      include: [
+        {
+          model: Article,
+          as: 'article',
+          attributes: [
+            'slug',
+            'title',
+            'body',
+            'createdAt',
+            'updatedAt',
+            'likes_count',
+          ],
+        },
+      ],
     });
 
     const authors = User.findAll({
@@ -53,6 +67,20 @@ const searchArticles = async (req, res) => {
         },
       },
       attributes: ['first_name', 'last_name'],
+      include: [
+        {
+          model: Article,
+          as: 'author',
+          attributes: [
+            'slug',
+            'title',
+            'body',
+            'createdAt',
+            'updatedAt',
+            'likes_count',
+          ],
+        },
+      ],
     });
 
     const [articleFilter, keywordFilter, authorFilter] = await Promise.all([

@@ -40,13 +40,13 @@ const toggleLike = async (req, res) => {
     if (userLike) {
       result = await likeHelper.removeLike(user, article);
       return res.status(200).json({
-        message: 'Successfully removed like',
+        message: 'You have successfully disliked an article',
         data: result,
       });
     }
     result = await likeHelper.addLike(user, article);
     return res.status(201).json({
-      message: 'Successfuly added like',
+      message: 'You have successfuly liked an article',
       data: result,
     });
   } catch (error) {

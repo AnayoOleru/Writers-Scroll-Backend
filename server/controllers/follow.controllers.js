@@ -1,4 +1,6 @@
 import model from '../models';
+import serverError from '../helpers/server-error';
+import profileHelper from '../helpers/profiler';
 
 const { User, Follower } = model;
 
@@ -21,14 +23,16 @@ const followController = {
       const findUnFollowee = await User.findOne({ where: { id: followeeId } });
       if (!findUnFollowee) {
         return res.status(404).json({
-          status: 404,
-          message: 'User not found',
+          errors: {
+            body: ['User not found'],
+          },
         });
       }
       if (findUnFollowee.id === followerId) {
         res.status(403).json({
-          status: 403,
-          message: 'You cant follow yourself',
+          errors: {
+            body: ['You cant follow yourself'],
+          },
         });
       }
       // Get follow record
@@ -44,20 +48,20 @@ const followController = {
           followee_id: followeeId,
           follower_id: followerId,
         });
-
+        const userDetails = profileHelper.profiler(findUnFollowee);
         return res.status(201).json({
-          status: 201,
-          message: `Successfully followed user`,
+          message: 'You have Successfully followed user',
+          user: userDetails,
         });
       }
       return res.status(403).json({
-        status: 403,
-        message: 'You are already following',
+        errors: {
+          body: ['You are already following user'],
+        },
       });
     } catch (error) {
       return res.status(500).json({
-        status: 500,
-        message: 'Server error',
+        errors: serverError(),
       });
     }
   },
@@ -72,15 +76,17 @@ const followController = {
       // Check if user exist
       if (!findFollowee) {
         return res.status(404).json({
-          status: 404,
-          message: 'User not found',
+          errors: {
+            body: ['User not found'],
+          },
         });
       }
       // Confirm if the user to be unfollow is the same as logged in user
       if (findFollowee.id === followerId) {
         return res.status(403).json({
-          status: 403,
-          message: 'You cant unfollow yourself',
+          errors: {
+            body: ['You cant unfollow yourself'],
+          },
         });
       }
       // Get follow record.
@@ -94,7 +100,9 @@ const followController = {
       // Confirm if user is already unfollowing
       if (!followRecord) {
         return res.status(404).json({
-          message: 'You are already unfollowing user',
+          errors: {
+            body: ['You are already unfollowing user'],
+          },
         });
       }
       // Unfollow a user
@@ -104,14 +112,14 @@ const followController = {
           followee_id: unFolloweeId,
         },
       });
+      const userDetails = profileHelper.profiler(findFollowee);
       return res.status(200).json({
-        status: 200,
-        message: 'Successfully unfollowed user',
+        message: 'You have successfully unfollowed user',
+        user: userDetails,
       });
     } catch (error) {
       return res.status(500).json({
-        status: 500,
-        message: 'Server error',
+        errors: serverError(),
       });
     }
   },

@@ -36,7 +36,7 @@ const getFollowers = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: 'Successfully retrieved all your followers',
+      message: 'You have successfully retrieved all your followers',
       followers: users,
     });
   } catch (err) {
@@ -83,7 +83,7 @@ const getFollowing = async (req, res) => {
       });
     }
     return res.status(200).json({
-      message: 'Successfully retrieved all users you are following',
+      message: 'You have successfully retrieved all users you are following',
       following: users,
     });
   } catch (errors) {

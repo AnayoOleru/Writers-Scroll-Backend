@@ -1,7 +1,5 @@
 const getAuthorsIdFromArticle = (req, obj) => {
-  const allUserIds = obj.map(item => {
-    return item.Article.author.id;
-  });
+  const allUserIds = obj.map(item => item.Article.author.id);
 
   const uniqueIds = [...new Set(allUserIds)];
 

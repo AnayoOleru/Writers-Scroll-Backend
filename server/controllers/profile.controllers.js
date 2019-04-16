@@ -156,11 +156,10 @@ const patchProfile = async (req, res) => {
   }
 };
 
-const suggestedResearchers = (req, res) => {
-  return res.status(200).json({
+const suggestedResearchers = (req, res) =>
+  res.status(200).json({
     suggestion: req.suggestions,
   });
-};
 
 const controller = {
   getUserProfile,

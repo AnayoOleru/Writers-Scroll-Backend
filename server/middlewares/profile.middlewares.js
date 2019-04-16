@@ -3,8 +3,10 @@ import joiFormater from '../helpers/joi-formater';
 import profileSchema from '../joiSchema/profileSchema';
 import validations from '../helpers/validations';
 import models from '../models';
+import getAuthorsId from '../helpers/aurhors-id-helper';
+import serverError from '../helpers/server-error';
 
-const { Like, User, Article, Comment, Statistic } = models;
+const { Like, User, Article, Comment, Statistic, Bookmark } = models;
 
 const middleware = {
   validateUpdateProfile(req, res, next) {
@@ -39,84 +41,133 @@ const middleware = {
     return next();
   },
 
-  async getArticleAuthorUserLike(req, res, next) {
-    req.suggestions = {};
-    const userId = req.user.userObj.id;
+  async getAuthorOFArticleUserLiked(req, res, next) {
+    try {
+      req.suggestions = {};
+      const userId = req.user.userObj.id;
 
-    const likes = await Like.findAll({
-      where: {
-        user_id: userId,
-      },
-      include: [
-        {
-          model: Article,
-          attributes: ['title'],
-          include: [
-            {
-              model: User,
-              as: 'author',
-              attributes: ['id', 'first_name', 'last_name'],
-            },
-          ],
+      const likes = await Like.findAll({
+        where: {
+          user_id: userId,
         },
-      ],
-    });
+        include: [
+          {
+            model: Article,
+            attributes: ['title'],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['id', 'first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
 
-    req.suggestions.likes = likes;
-    return next();
+      req.suggestions.likes = getAuthorsId(req, likes);
+      return next();
+    } catch (error) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
   },
 
-  async getArticleUserCommented(req, res, next) {
-    const userId = req.user.userObj.id;
+  async getAuthorOfArticleUserBookmarked(req, res, next) {
+    try {
+      const userId = req.user.userObj.id;
 
-    const comments = await Comment.findAll({
-      where: {
-        user_id: userId,
-      },
-      include: [
-        {
-          model: Article,
-          attributes: ['title'],
-          include: [
-            {
-              model: User,
-              as: 'author',
-              attributes: ['id', 'first_name', 'last_name'],
-            },
-          ],
+      const bookmarks = await Bookmark.findAll({
+        where: {
+          user_id: userId,
         },
-      ],
-    });
+        include: [
+          {
+            model: Article,
+            attributes: ['title'],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['id', 'first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
 
-    req.suggestions.comments = comments;
-    return next();
+      req.suggestions.bookmarks = getAuthorsId(req, bookmarks);
+      return next();
+    } catch (err) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
   },
 
-  async getUserStatistics(req, res, next) {
-    const userId = req.user.userObj.id;
+  async getAuthorOfArticleUserCommented(req, res, next) {
+    try {
+      const userId = req.user.userObj.id;
 
-    const statistics = await Statistic.findAll({
-      where: {
-        user_id: userId,
-      },
-      include: [
-        {
-          model: Article,
-          attributes: ['title'],
-          include: [
-            {
-              model: User,
-              as: 'author',
-              attributes: ['id', 'first_name', 'last_name'],
-            },
-          ],
+      const comments = await Comment.findAll({
+        where: {
+          user_id: userId,
         },
-      ],
-    });
+        include: [
+          {
+            model: Article,
+            attributes: ['title'],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['id', 'first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
 
-    req.suggestions.statistics = statistics;
-    res.send(req.suggestions);
-    // return next();
+      req.suggestions.comments = getAuthorsId(req, comments);
+      return next();
+    } catch (error) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
+  },
+
+  async getAuthorOfUserStatistics(req, res, next) {
+    try {
+      const userId = req.user.userObj.id;
+
+      const statistics = await Statistic.findAll({
+        where: {
+          user_id: userId,
+        },
+        include: [
+          {
+            model: Article,
+            attributes: ['title'],
+            include: [
+              {
+                model: User,
+                as: 'author',
+                attributes: ['id', 'first_name', 'last_name'],
+              },
+            ],
+          },
+        ],
+      });
+
+      req.suggestions.statistics = getAuthorsId(req, statistics);
+      return next();
+    } catch (error) {
+      return res.status(500).json({
+        errors: serverError(),
+      });
+    }
   },
 };
 

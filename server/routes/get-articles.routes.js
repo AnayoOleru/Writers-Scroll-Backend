@@ -4,6 +4,6 @@ import Articles from '../controllers/get-articles.controllers';
 
 const router = express.Router();
 
-router.use('/articles/:page', Articles.getArticles);
+router.get('/articles/:page', Articles.getArticles);
 
 export default router;

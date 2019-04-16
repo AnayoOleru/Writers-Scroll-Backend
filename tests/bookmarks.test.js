@@ -95,4 +95,16 @@ describe('TEST BOOKMARK ROUTE', () => {
         done();
       });
   });
+
+  it('should throw a 404 when an article does not exist', done => {
+    chai
+      .request(app)
+      .post('/api/v1/bookmarks/43afd283-c1e9-4d0c-8b4c-f2e7a8a6ac16')
+      .set('Authorization', userToken)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.equal('this article does not exist');
+        done();
+      });
+  });
 });

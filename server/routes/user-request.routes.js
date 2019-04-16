@@ -13,7 +13,7 @@ const router = express.Router();
  *   post:
  *     tags:
  *       - request
- *     description: authenticated user can make a request to becaome a reviewer
+ *     description: authenticated user can make a request to become a reviewer
  *     produces:
  *       - application/json
  *     parameters:

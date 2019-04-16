@@ -95,7 +95,7 @@ const deactivateReviewer = async (req, res) => {
   }
 };
 
-const getAllReviewerRequest = async (req, res) => {
+const getAllReviewerRequests = async (req, res) => {
   const userId = req.user.userObj.id;
   try {
     // Is user id correct?
@@ -106,16 +106,16 @@ const getAllReviewerRequest = async (req, res) => {
         },
       });
     }
-    const getAllUserRequest = await Request.findAll({
+    const getAllUsersRequest = await Request.findAll({
       where: {
         is_reviewer: false,
         is_reported: false,
       },
     });
-    if (getAllUserRequest) {
+    if (getAllUsersRequest) {
       return res.status(200).json({
-        message: 'Here is a list of users request',
-        allUsersRequest: getAllUserRequest,
+        message: 'All users request',
+        allUsersRequest: getAllUsersRequest,
       });
     }
     return res.status(404).json({
@@ -130,9 +130,9 @@ const getAllReviewerRequest = async (req, res) => {
   }
 };
 
-const upgradeDegradeUserReviewer = {
+const usersRequest = {
   activateReviewer,
   deactivateReviewer,
-  getAllReviewerRequest,
+  getAllReviewerRequests,
 };
-export default upgradeDegradeUserReviewer;
+export default usersRequest;

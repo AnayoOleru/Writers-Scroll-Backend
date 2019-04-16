@@ -111,6 +111,6 @@ router.get(
   tokenValidator.verifyToken,
   tokenValidator.verifyAdmin,
   adminMiddleware.checkAdmin,
-  adminController.getAllReviewerRequest
+  adminController.getAllReviewerRequests
 );
 export default router;

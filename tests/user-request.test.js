@@ -45,7 +45,9 @@ describe('POST A REQUEST', () => {
       .set('authorization', userToken1)
       .end((err, res) => {
         expect(res.status).to.equal(201);
-        expect(res.body.message).to.equal('Successfully make a request');
+        expect(res.body.message).to.equal(
+          'You have successfully made a request'
+        );
         done();
       });
   });
@@ -57,7 +59,7 @@ describe('POST A REQUEST', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body.errors.body[0]).to.equal(
-          'You have already make a request'
+          'You have already made a request'
         );
         done();
       });
@@ -71,7 +73,9 @@ describe('POST A REQUEST', () => {
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.be.a('string');
-        expect(res.body.message).to.equal('Successfully unchecked request');
+        expect(res.body.message).to.equal(
+          'You have successfully removed your reviewer request'
+        );
         done();
       });
   });

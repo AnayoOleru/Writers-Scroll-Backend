@@ -15,7 +15,7 @@ const verifyRequest = async (req, res, next) => {
     return res.status(403).json({
       status: 403,
       errors: {
-        body: ['You have already make a request'],
+        body: ['You have already made a request'],
       },
     });
   }

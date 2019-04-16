@@ -27,7 +27,7 @@ const request = async (req, res) => {
       is_reported: false,
     });
     return res.status(201).json({
-      message: 'Successfully make a request',
+      message: 'You have successfully made a request',
       requested,
     });
   } catch (error) {
@@ -64,7 +64,7 @@ const removeRequest = async (req, res) => {
     });
     if (requested) {
       return res.status(200).json({
-        message: 'Successfully unchecked request',
+        message: 'You have successfully removed your reviewer request',
       });
     }
   } catch (error) {

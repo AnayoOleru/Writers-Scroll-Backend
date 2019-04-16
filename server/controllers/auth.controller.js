@@ -35,6 +35,7 @@ const loginController = async (req, res) => {
       bio,
       image_url: image,
       is_reviewer: isReviewer,
+      is_activated: isActivated,
     } = user;
     const verifyPassword = authHelper.comparePassword(hashedPassword, password);
 
@@ -45,7 +46,7 @@ const loginController = async (req, res) => {
         },
       });
     }
-    const token = authHelper.encode({ id, isAdmin, isReviewer });
+    const token = authHelper.encode({ id, isAdmin, isReviewer, isActivated });
 
     return res.status(200).json({
       user: {

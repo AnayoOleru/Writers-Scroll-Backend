@@ -167,10 +167,11 @@ const reportArticle = async (req, res) => {
     const { id: reporterId } = req.user.userObj;
 
     // check if the article id has a relationship in the users table
-    const { user_id: reportedUserId } = await findArticle(articleId);
+    // const { user_id: reportedUserId } = await findArticle(articleId);
+    const reportedArticle = await findArticle(articleId);
 
-    if (!reportedUserId) {
-      res.status(404).json({
+    if (!reportedArticle) {
+      return res.status(404).json({
         errors: {
           body: ['Article not found'],
         },
@@ -178,7 +179,7 @@ const reportArticle = async (req, res) => {
     }
     const reported = await ReportedArticle.create({
       reporter_id: reporterId,
-      reported_user_id: reportedUserId,
+      reported_user_id: reportedArticle.user_id,
       reported_article_id: articleId,
       reporter_reason: reason,
       reporter_comment: comment,
@@ -187,10 +188,10 @@ const reportArticle = async (req, res) => {
     // once a user is reported, then the user should not be able to review an article
     await User.update(
       { is_reviewer: false, is_reported: true },
-      { where: { id: reportedUserId } }
+      { where: { id: reportedArticle.user_id } }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       reported,
       message: 'Article was reported successfully',
     });
@@ -293,6 +294,40 @@ const getUserArticles = async (req, res) => {
       errors: serverError(),
     });
   }
+}
+const reviewArticle = async (req, res) => {
+  const reviewedArticle = await ReportedArticle.findOne({
+    where: {
+      reported_article_id: req.params.articleId,
+    },
+  });
+
+  if (!reviewedArticle) {
+    return res.status(404).json({
+      errors: {
+        body: ['Article not found'],
+      },
+    });
+  }
+
+  if (reviewedArticle.status === 'reviewed') {
+    return res.status(409).json({
+      errors: {
+        body: ['This article has already been reviewed'],
+      },
+    });
+  }
+
+  const values = {
+    reviewer_comment: req.body.reviewer_comment,
+    status: 'reviewed',
+  };
+
+  const updatedReview = await reviewedArticle.update(values);
+
+  return res.status(200).json({
+    updatedReview,
+  });
 };
 
 const controller = {
@@ -303,6 +338,7 @@ const controller = {
   editAticle,
   createHighlight,
   getUserArticles,
+  reviewArticle,
 };
 
 export default controller;

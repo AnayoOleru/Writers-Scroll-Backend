@@ -97,11 +97,41 @@ const validateHighlight = (req, res, next) => {
   return next();
 };
 
+const reviewArticleValidator = (req, res, next) => {
+  const { articleId } = req.params;
+  if (!validations.verifyUUID(articleId)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  if (!req.user.userObj.isReviewer) {
+    return res.status(403).json({
+      errors: {
+        body: ['User is not a reviewer'],
+      },
+    });
+  }
+
+  if (!req.body.reviewer_comment) {
+    return res.status(400).json({
+      errors: {
+        body: ['Reviewer comment is required'],
+      },
+    });
+  }
+
+  return next();
+};
+
 const middleware = {
   checkDraftStatus,
   validateArticleBody,
   reportArticleValidator,
   validateHighlight,
+  reviewArticleValidator,
 };
 
 export default middleware;

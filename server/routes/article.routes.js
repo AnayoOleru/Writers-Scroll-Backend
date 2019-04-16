@@ -122,6 +122,13 @@ router.post(
   articleController.reportArticle
 );
 
+router.patch(
+  '/article/review/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.reviewArticleValidator,
+  articleController.reviewArticle
+);
+
 /**
  * @swagger
  *

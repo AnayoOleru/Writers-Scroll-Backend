@@ -32,7 +32,7 @@ module.exports = {
         is_activated: true,
         image_url: 'https://picsum.photos/200/300/?random',
         is_admin: true,
-        is_reviewer: false,
+        is_reviewer: true,
         is_reported: false,
         is_notified: false,
         research_field: 'Chemistry',

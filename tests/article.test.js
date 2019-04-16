@@ -396,6 +396,40 @@ describe('REPORT ARTICLE', () => {
         done();
       });
   });
+
+  it('should throw an error if id is invalid', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f*')
+      .set('Authorization', userBToken)
+      .send({
+        reason: 'that reason',
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('id not valid');
+        done();
+      });
+  });
+
+  it('should throw an error article not found', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/report/7139d3af-b8b4-44f6-a49f-9305791700f1')
+      .set('Authorization', userBToken)
+      .send({
+        reason: 'that reason',
+        comment: 'the reason i stated up there',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        console.log(res.body);
+        expect(res.body.errors.body[0]).to.be.equal('Article not found');
+        done();
+      });
+  });
+
   it('should respond with the reported article', done => {
     chai
       .request(app)
@@ -504,6 +538,111 @@ describe('ARTICLE', () => {
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal('end_position is required');
+        done();
+      });
+  });
+
+  it('should respond with error: body required', done => {
+    chai
+      .request(app)
+      .post('/api/v1/article/highlight/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({})
+      .end((err, res) => {
+        expect(res.body.errors.body[0]).to.be.equal('No input provided');
+        done();
+      });
+  });
+
+  it('should respond with success: article reviewed', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
+      .set('Authorization', userBToken)
+      .send({
+        reviewer_comment: 'This is not a good report',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.updatedReview).to.be.a('object');
+        expect(res.body.updatedReview.reviewer_comment).to.be.equal(
+          'This is not a good report'
+        );
+        done();
+      });
+  });
+
+  it('should respond with error: article already reviewed', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
+      .set('Authorization', userBToken)
+      .send({
+        reviewer_comment: 'This is not a good report',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(409);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'This article has already been reviewed'
+        );
+        done();
+      });
+  });
+
+  it('should respond with error: reviewer is not a reviewer', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
+      .set('Authorization', userAToken)
+      .send({
+        reviewer_comment: 'This is not a good report',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(403);
+        expect(res.body.errors.body[0]).to.be.equal('User is not a reviewer');
+        done();
+      });
+  });
+
+  it('should respond with error: article not found', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({
+        reviewer_comment: 'This is not a good report',
+      })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.be.equal('Article not found');
+        done();
+      });
+  });
+
+  it('should respond with error: reviewer comment is required', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Reviewer comment is required'
+        );
+        done();
+      });
+  });
+
+  it('should respond with error: id is invalid', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d*')
+      .set('Authorization', userBToken)
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('id not valid');
         done();
       });
   });

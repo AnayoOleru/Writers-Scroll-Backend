@@ -99,6 +99,14 @@ const validateHighlight = (req, res, next) => {
 
 const reviewArticleValidator = (req, res, next) => {
   const { articleId } = req.params;
+  if (!Object.keys(req.body).length) {
+    return res.status(400).json({
+      errors: {
+        body: ['No input provided'],
+      },
+    });
+  }
+
   if (!validations.verifyUUID(articleId)) {
     return res.status(400).json({
       errors: {
@@ -126,12 +134,62 @@ const reviewArticleValidator = (req, res, next) => {
   return next();
 };
 
+const articleStatusValidator = (req, res, next) => {
+  const { articleId } = req.params;
+  if (!Object.keys(req.body).length) {
+    return res.status(400).json({
+      errors: {
+        body: ['No input provided'],
+      },
+    });
+  }
+
+  if (!validations.verifyUUID(articleId)) {
+    return res.status(400).json({
+      errors: {
+        body: ['id not valid'],
+      },
+    });
+  }
+
+  if (!req.user.userObj.isAdmin) {
+    return res.status(401).json({
+      errors: {
+        body: ['User is not an admin'],
+      },
+    });
+  }
+
+  const { status: adminStatus } = req.body;
+
+  if (!adminStatus) {
+    return res.status(400).json({
+      errors: {
+        body: ['Status is required'],
+      },
+    });
+  }
+
+  const status = adminStatus.toLowerCase();
+  if (!(status === 'accepted' || status === 'rejected')) {
+    return res.status(400).json({
+      errors: {
+        body: ['Status can only be accepted or rejected'],
+      },
+    });
+  }
+
+  req.body.status = status;
+  return next();
+};
+
 const middleware = {
   checkDraftStatus,
   validateArticleBody,
   reportArticleValidator,
   validateHighlight,
   reviewArticleValidator,
+  articleStatusValidator,
 };
 
 export default middleware;

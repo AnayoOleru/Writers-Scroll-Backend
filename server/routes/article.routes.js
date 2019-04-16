@@ -129,6 +129,13 @@ router.patch(
   articleController.reviewArticle
 );
 
+router.patch(
+  '/article/status/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.articleStatusValidator,
+  articleController.articleStatus
+);
+
 /**
  * @swagger
  *

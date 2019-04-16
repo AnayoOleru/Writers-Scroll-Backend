@@ -46,5 +46,20 @@ module.exports = {
         image_url: 'https://picsum.photos/200/300',
         is_reported: false,
       },
+      {
+        id: 'fb3def47-153c-40bd-8161-a1c787e083d7',
+        user_id: '57c515a1-890d-412f-8ca1-0a5395123dca',
+        title: 'Article That I will soon delete',
+        slug: 'soon-to-delete-by-reported',
+        abstract:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis metus sed turpis pulvinar tristique. Ut pulvinar maximus nulla in fermentum. Vivamus eu arcu suscipit, tempor nisi sed, auctor arcu.',
+        body:
+          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis metus sed turpis pulvinar tristique. Ut pulvinar maximus nulla in fermentum. Vivamus eu arcu suscipit, tempor nisi sed, auctor arcu. Nulla gravida lacinia risus a vehicula. Nulla est arcu, auctor sit amet condimentum non, porta tristique nisl. In scelerisque sem nec feugiat mollis. Morbi id bibendum est. Duis in fermentum mi, sed lobortis dolor. Nam imperdiet orci posuere arcu semper lobortis. Nulla pellentesque sem sed pharetra blandit. Maecenas suscipit lacinia ornare.',
+        category: 'Computer Science',
+        bookmark_count: 23,
+        likes_count: 3244,
+        image_url: 'https://picsum.photos/200/300',
+        is_reported: false,
+      },
     ]),
 };

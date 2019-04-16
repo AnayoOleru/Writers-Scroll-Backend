@@ -25,11 +25,11 @@ module.exports = {
         id: '3473a764-53fe-11e9-8647-d663bd873d93',
         reporter_id: '7142e4ff-366d-46cc-9384-40eadb3b2626',
         reported_user_id: '6517a6ea-662b-4eef-ab9f-20f89bd7099c',
-        reported_article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
+        reported_article_id: 'fb3def47-153c-40bd-8161-a1c787e083d7',
         reporter_reason: 'Copyright Infringment',
         reporter_comment: 'The article.................',
         reviewer_comment: '',
-        status: 'pending',
+        status: 'reviewed',
       },
     ]),
 };

@@ -7,6 +7,7 @@ chai.use(chaiHttp);
 let userAToken;
 let userBToken;
 let userCToken;
+
 before('login user', done => {
   chai
     .request(app)
@@ -43,6 +44,20 @@ before('login user', done => {
     })
     .end((err, res) => {
       userBToken = res.body.user.token;
+      done();
+    });
+});
+
+before('login user', done => {
+  chai
+    .request(app)
+    .post('/api/v1/auth/login')
+    .send({
+      email: 'sojida@gmail.com',
+      password: '12345678',
+    })
+    .end((err, res) => {
+      userCToken = res.body.user.token;
       done();
     });
 });
@@ -424,7 +439,6 @@ describe('REPORT ARTICLE', () => {
       })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        console.log(res.body);
         expect(res.body.errors.body[0]).to.be.equal('Article not found');
         done();
       });
@@ -624,7 +638,7 @@ describe('ARTICLE', () => {
       .request(app)
       .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d9')
       .set('Authorization', userBToken)
-      .send({})
+      .send({ reviewer_comment: '' })
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal(
@@ -639,10 +653,126 @@ describe('ARTICLE', () => {
       .request(app)
       .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d*')
       .set('Authorization', userBToken)
-      .send({})
+      .send({ reviewer_comment: 'This is not a good report' })
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal('id not valid');
+        done();
+      });
+  });
+
+  it('should respond with error: No input provided', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('No input provided');
+        done();
+      });
+  });
+});
+describe('ARTICLE STATUS', () => {
+  it('should respond with error: No input provided', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({})
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('No input provided');
+        done();
+      });
+  });
+  it('should respond with error: id not invalid', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d*')
+      .set('Authorization', userBToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('id not valid');
+        done();
+      });
+  });
+  it('should respond with error: User is not an admin', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userCToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(401);
+        expect(res.body.errors.body[0]).to.be.equal('User is not an admin');
+        done();
+      });
+  });
+  it('should respond with error: Status is required', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({ status: '' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal('Status is required');
+        done();
+      });
+  });
+  it('should respond with error: Status is required', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({ status: 'unknown' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Status can only be accepted or rejected'
+        );
+        done();
+      });
+  });
+  it('should respond with error: Article not found', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/7139d3af-b8b4-44f6-a49f-9305791700f9')
+      .set('Authorization', userBToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.be.equal('Article not found');
+        done();
+      });
+  });
+  it('should respond with error: Article is not yet reviewed', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/7139d3af-b8b4-44f6-a49f-9305791700f4')
+      .set('Authorization', userBToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Article is not yet reviewed'
+        );
+        done();
+      });
+  });
+  it('should respond with error: Article status should be changed', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fb3def47-153c-40bd-8161-a1c787e083d7')
+      .set('Authorization', userBToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.updatedReview).to.be.a('object');
+        expect(res.body.updatedReview.status).to.be.equal('accepted');
         done();
       });
   });

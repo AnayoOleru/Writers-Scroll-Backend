@@ -167,7 +167,6 @@ const reportArticle = async (req, res) => {
     const { id: reporterId } = req.user.userObj;
 
     // check if the article id has a relationship in the users table
-    // const { user_id: reportedUserId } = await findArticle(articleId);
     const reportedArticle = await findArticle(articleId);
 
     if (!reportedArticle) {
@@ -330,6 +329,57 @@ const reviewArticle = async (req, res) => {
   });
 };
 
+const articleStatus = async (req, res) => {
+  try {
+    const { articleId } = req.params;
+    const reviewedArticle = await ReportedArticle.findOne({
+      where: { reported_article_id: articleId },
+    });
+
+    if (!reviewedArticle) {
+      return res.status(404).json({
+        errors: {
+          body: ['Article not found'],
+        },
+      });
+    }
+
+    if (
+      reviewedArticle.status === 'accepted' ||
+      reviewedArticle.status === 'rejected'
+    ) {
+      return res.status(400).json({
+        errors: {
+          body: ['Article cannot be given a new status'],
+        },
+      });
+    }
+
+    if (reviewedArticle.status !== 'reviewed') {
+      return res.status(400).json({
+        errors: {
+          body: ['Article is not yet reviewed'],
+        },
+      });
+    }
+    const { status } = req.body;
+    if (status === 'accepted') {
+      await Article.destroy({
+        where: { id: articleId },
+      });
+    }
+
+    const updatedReview = await reviewedArticle.update({ status });
+    return res.status(200).json({
+      updatedReview,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
 const controller = {
   getOneArticle,
   createArticle,
@@ -339,6 +389,7 @@ const controller = {
   createHighlight,
   getUserArticles,
   reviewArticle,
+  articleStatus,
 };
 
 export default controller;

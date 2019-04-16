@@ -36,10 +36,10 @@ const activateReviewer = async (req, res) => {
         is_reviewer: true,
       });
 
-      const upgradeUser = profileHelper.profiler(userUpgrade);
+      const userDetails = profileHelper.profiler(userUpgrade);
       return res.status(200).json({
         message: 'You have granted a user reviewer access',
-        user: upgradeUser,
+        user: userDetails,
       });
     }
     return res.status(403).json({
@@ -77,10 +77,10 @@ const deactivateReviewer = async (req, res) => {
     // Deactivate user reveiwer access
     if (findUser) {
       const downgradeUser = await findUser.update({ is_reviewer: false });
-      const downgadeUser = profileHelper.profiler(downgradeUser);
+      const userDetails = profileHelper.profiler(downgradeUser);
       return res.status(200).json({
         message: 'You have removed a user reviewer access',
-        user: downgadeUser,
+        user: userDetails,
       });
     }
     return res.status(403).json({

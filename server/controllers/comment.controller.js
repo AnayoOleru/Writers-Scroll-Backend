@@ -6,7 +6,6 @@ import notifications from '../helpers/notifications';
 
 const { User, Comment, Comment_history: CommentHistory } = model;
 const { databaseError, findArticle } = search;
-
 const getCommentAndReplies = async (req, res) => {
   const commentReplies = await commentHelper.getCommentAndReplies(
     Comment,

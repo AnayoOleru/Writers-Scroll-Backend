@@ -20,7 +20,7 @@ const getCommentAndReplies = async (Comment, CommentHistory, commentid) => {
         {
           model: CommentHistory,
           required: false,
-          as: 'histories',
+          as: 'replies',
           order: ['body'],
           attributes: [
             'id',
@@ -30,9 +30,6 @@ const getCommentAndReplies = async (Comment, CommentHistory, commentid) => {
             'updatedAt',
             'createdAt',
           ],
-          where: {
-            is_reply: true,
-          },
         },
       ],
       order: [['histories', 'updatedAt', 'asc']],
@@ -55,9 +52,6 @@ const getCommentAndHistories = async (Comment, CommentHistory, commentid) => {
           as: 'histories',
           order: ['body'],
           attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
-          where: {
-            is_updated: true,
-          },
         },
       ],
       order: [['histories', 'updatedAt', 'desc']],

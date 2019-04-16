@@ -4,17 +4,22 @@ import likeHelper from '../helpers/like-comment-helpers';
 import commentHelper from '../helpers/comment-helpers';
 import notifications from '../helpers/notifications';
 
-const { User, Comment, Comment_history: CommentHistory } = model;
+const {
+  User,
+  Comment,
+  Comment_history: CommentHistory,
+  Comment_reply: CommentReply,
+} = model;
 const { databaseError, findArticle } = search;
 const getCommentAndReplies = async (req, res) => {
   const commentReplies = await commentHelper.getCommentAndReplies(
     Comment,
-    CommentHistory,
+    CommentReply,
     req.params.commentid
   );
 
   return res.status(200).json({
-    commentResponse: commentReplies,
+    comment: commentReplies,
   });
 };
 
@@ -104,17 +109,16 @@ const updateComment = async (req, res) => {
     await CommentHistory.create({
       comment_id: res.locals.comment.id,
       body: res.locals.comment.body,
-      is_updated: true,
     });
   }
 
   res.status(200).json({
-    editedComment: editComment,
+    editedComment: editComment[1],
   });
 };
 
 const replyComment = async (req, res) => {
-  const reply = await CommentHistory.create({
+  const reply = await CommentReply.create({
     comment_id: res.locals.comment.id,
     body: res.locals.comment.body,
     is_reply: true,

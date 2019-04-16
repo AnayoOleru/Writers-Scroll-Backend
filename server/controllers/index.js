@@ -11,6 +11,7 @@ import getDailyStatistics from './statistics.controller';
 import adminController from './admin.controllers';
 import bookmarkController from './bookmark.controller';
 import requestController from './user-request.controllers';
+import searchArticles from './search-article.controllers';
 
 export default {
   profileController,
@@ -26,4 +27,5 @@ export default {
   adminController,
   bookmarkController,
   requestController,
+  searchArticles,
 };

@@ -1,5 +1,6 @@
 import model from '../models';
 import serverError from '../helpers/server-error';
+import profileHelper from '../helpers/profiler';
 import validations from '../helpers/validations';
 
 const { User, Request } = model;
@@ -31,10 +32,14 @@ const activateReviewer = async (req, res) => {
     });
     // Give user a reveiwer access
     if (findUser) {
-      const userUpgrade = await findUser.update({ is_reviewer: true });
+      const userUpgrade = await findUser.update({
+        is_reviewer: true,
+      });
+
+      const userDetails = profileHelper.profiler(userUpgrade);
       return res.status(200).json({
         message: 'You have granted a user reviewer access',
-        user: userUpgrade,
+        user: userDetails,
       });
     }
     return res.status(403).json({
@@ -71,10 +76,11 @@ const deactivateReviewer = async (req, res) => {
     });
     // Deactivate user reveiwer access
     if (findUser) {
-      const downgrade = await findUser.update({ is_reviewer: false });
+      const downgradeUser = await findUser.update({ is_reviewer: false });
+      const userDetails = profileHelper.profiler(downgradeUser);
       return res.status(200).json({
         message: 'You have removed a user reviewer access',
-        user: downgrade,
+        user: userDetails,
       });
     }
     return res.status(403).json({

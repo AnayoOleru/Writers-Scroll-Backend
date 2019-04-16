@@ -67,7 +67,7 @@ const getWeeklyStatistic = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'Your Reading Statistic This week',
+      message: 'Your Reading Statistic This Week',
       statistic: `${statisticBox.count} article read this week`,
     });
   } catch (err) {
@@ -102,7 +102,7 @@ const getMonthlyStatistic = async (req, res) => {
     }
 
     return res.status(200).json({
-      message: 'Your Reading Statistic This week',
+      message: 'Your Reading Statistic This Month',
       statistic: `${statisticBox.count} article read this month`,
     });
   } catch (err) {

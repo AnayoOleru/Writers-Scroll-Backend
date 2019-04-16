@@ -4,8 +4,7 @@ const articleSchema = () => {
   const schema = Joi.object().keys({
     title: Joi.string()
       .min(5)
-      .max(100)
-      .required(),
+      .max(100),
     abstract: Joi.string().min(5),
     body: Joi.string().min(5),
     is_draft: Joi.boolean().required(),

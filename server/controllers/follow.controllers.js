@@ -31,7 +31,7 @@ const followController = {
       if (findUnFollowee.id === followerId) {
         res.status(403).json({
           errors: {
-            body: ['You cant follow yourself'],
+            body: ["You can't follow yourself"],
           },
         });
       }
@@ -50,13 +50,13 @@ const followController = {
         });
         const userDetails = profileHelper.profiler(findUnFollowee);
         return res.status(201).json({
-          message: 'You have Successfully followed user',
+          message: 'You have Successfully followed this user',
           user: userDetails,
         });
       }
       return res.status(403).json({
         errors: {
-          body: ['You are already following user'],
+          body: ['You are already following this user'],
         },
       });
     } catch (error) {
@@ -85,7 +85,7 @@ const followController = {
       if (findFollowee.id === followerId) {
         return res.status(403).json({
           errors: {
-            body: ['You cant unfollow yourself'],
+            body: ["You can't unfollow yourself"],
           },
         });
       }
@@ -101,7 +101,7 @@ const followController = {
       if (!followRecord) {
         return res.status(404).json({
           errors: {
-            body: ['You are already unfollowing user'],
+            body: ['You are not currently following this user'],
           },
         });
       }
@@ -114,7 +114,7 @@ const followController = {
       });
       const userDetails = profileHelper.profiler(findFollowee);
       return res.status(200).json({
-        message: 'You have successfully unfollowed user',
+        message: 'You have successfully unfollowed this user',
         user: userDetails,
       });
     } catch (error) {

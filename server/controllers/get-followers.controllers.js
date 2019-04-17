@@ -83,7 +83,8 @@ const getFollowing = async (req, res) => {
       });
     }
     return res.status(200).json({
-      message: 'You have successfully retrieved all users you are following',
+      message:
+        'You have successfully retrieved all the users you are following',
       following: users,
     });
   } catch (errors) {

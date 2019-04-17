@@ -49,13 +49,13 @@ describe('TEST USER FOLLOW', () => {
         expect(res.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal(
-          'You have Successfully followed user'
+          'You have Successfully followed this user'
         );
         done();
       });
   });
 
-  it('It should return a 403 if try to follow twice', done => {
+  it('It should return a 403 if a user try to follow twice', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
@@ -63,7 +63,7 @@ describe('TEST USER FOLLOW', () => {
       .end((err, res) => {
         expect(res.status).to.equal(403);
         expect(res.body.errors.body[0]).to.equal(
-          'You are already following user'
+          'You are already following this user'
         );
         done();
       });
@@ -82,18 +82,18 @@ describe('TEST USER FOLLOW', () => {
         done();
       });
   });
-  it('It should return a 403 if user try to follow him/herself', done => {
+  it('It should return a 403 if a user try to follow him/herself', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
       .set('authorization', token2)
       .end((err, res) => {
         expect(res.status).to.equal(403);
-        expect(res.body.errors.body[0]).to.equal('You cant follow yourself');
+        expect(res.body.errors.body[0]).to.equal("You can't follow yourself");
         done();
       });
   });
-  it('It should return a 404 if user is not found', done => {
+  it('It should return a 404 if a user is not found', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099b')
@@ -106,7 +106,7 @@ describe('TEST USER FOLLOW', () => {
   });
 });
 describe('TEST USER UNFOLLOW', () => {
-  it('It should return a 200 status code if user unfollowed successfully', done => {
+  it('It should return a 200 status code if a user unfollowed successfully', done => {
     chai
       .request(app)
       .delete('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
@@ -115,7 +115,7 @@ describe('TEST USER UNFOLLOW', () => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal(
-          'You have successfully unfollowed user'
+          'You have successfully unfollowed this user'
         );
         done();
       });

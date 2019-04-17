@@ -30,7 +30,7 @@ describe('TEST LIKE', () => {
         expect(res.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal(
-          'You have successfuly liked an article'
+          'You have successfuly liked this article'
         );
         done();
       });
@@ -45,7 +45,7 @@ describe('TEST LIKE', () => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal(
-          'You have successfully disliked an article'
+          'You have successfully disliked this article'
         );
         done();
       });

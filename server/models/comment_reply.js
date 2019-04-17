@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Comment_history = sequelize.define('Comment_history', {
+  const Comment_reply = sequelize.define('Comment_reply', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -11,15 +11,15 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
     },
-    body: {
+    reply: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: true,
     },
   });
-  Comment_history.associate = models => {
-    Comment_history.hasMany(models.Comment, {
+  Comment_reply.associate = models => {
+    Comment_reply.hasMany(models.Comment, {
       foreignKey: 'id',
     });
   };
-  return Comment_history;
+  return Comment_reply;
 };

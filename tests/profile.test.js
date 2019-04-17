@@ -204,4 +204,19 @@ describe('PROFILE', () => {
         done();
       });
   });
+
+  it('should respond with an array of suggested followers', done => {
+    chai
+      .request(app)
+      .get(`/api/v1/suggested/researchers`)
+      .set('Authorization', userBToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.suggestion).to.be.a('object');
+        expect(res.body.suggestion.comments).to.be.a('array');
+        expect(res.body.suggestion.likes).to.be.a('array');
+        expect(res.body.suggestion.bookmarks).to.be.a('array');
+        done();
+      });
+  });
 });

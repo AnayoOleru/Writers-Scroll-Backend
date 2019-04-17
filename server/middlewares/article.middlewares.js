@@ -3,6 +3,7 @@ import joiFormater from '../helpers/joi-formater';
 import articleSchema from '../joiSchema/articleSchema';
 import publishArticleSchema from '../joiSchema/publishArticleSchema';
 import reportArticleSchema from '../joiSchema/reportArticleSchema';
+import reviewArticleSchema from '../joiSchema/reviewArticleSchema';
 import highlightSchema from '../joiSchema/highlightSchema';
 import validations from '../helpers/validations';
 
@@ -160,26 +161,17 @@ const articleStatusValidator = (req, res, next) => {
     });
   }
 
-  const { status: adminStatus } = req.body;
+  const { error } = Joi.validate(req.body, reviewArticleSchema);
 
-  if (!adminStatus) {
-    return res.status(400).json({
+  if (error) {
+    const { message } = error.details[0];
+    const formatedMessage = joiFormater(message);
+    return res.status(400).send({
       errors: {
-        body: ['Status is required'],
+        body: [formatedMessage],
       },
     });
   }
-
-  const status = adminStatus.toLowerCase();
-  if (!(status === 'accepted' || status === 'rejected')) {
-    return res.status(400).json({
-      errors: {
-        body: ['Status can only be accepted or rejected'],
-      },
-    });
-  }
-
-  req.body.status = status;
   return next();
 };
 

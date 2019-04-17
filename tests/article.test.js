@@ -464,8 +464,10 @@ describe('REPORT ARTICLE', () => {
           'reported_article_id',
           'reporter_reason',
           'reporter_comment',
+          'admin_comment',
           'updatedAt',
           'createdAt',
+          'reviewer_id',
           'reviewer_comment'
         );
         expect(res.body.message).to.equal('Article was reported successfully');
@@ -572,7 +574,7 @@ describe('ARTICLE', () => {
     chai
       .request(app)
       .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
-      .set('Authorization', userBToken)
+      .set('Authorization', userAToken)
       .send({
         reviewer_comment: 'This is not a good report',
       })
@@ -590,7 +592,7 @@ describe('ARTICLE', () => {
     chai
       .request(app)
       .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
-      .set('Authorization', userBToken)
+      .set('Authorization', userAToken)
       .send({
         reviewer_comment: 'This is not a good report',
       })
@@ -607,7 +609,7 @@ describe('ARTICLE', () => {
     chai
       .request(app)
       .patch('/api/v1/article/review/fa3def47-153a-40bd-8181-a1c787e083d6')
-      .set('Authorization', userAToken)
+      .set('Authorization', userCToken)
       .send({
         reviewer_comment: 'This is not a good report',
       })
@@ -711,6 +713,20 @@ describe('ARTICLE STATUS', () => {
         done();
       });
   });
+  it('should respond with error: Admin Comment is required', done => {
+    chai
+      .request(app)
+      .patch('/api/v1/article/status/fa3def47-153a-40bd-8181-a1c787e083d9')
+      .set('Authorization', userBToken)
+      .send({ status: 'accepted' })
+      .end((err, res) => {
+        expect(res).to.have.status(400);
+        expect(res.body.errors.body[0]).to.be.equal(
+          'admin_comment is required'
+        );
+        done();
+      });
+  });
   it('should respond with error: Status is required', done => {
     chai
       .request(app)
@@ -719,7 +735,9 @@ describe('ARTICLE STATUS', () => {
       .send({ status: '' })
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.errors.body[0]).to.be.equal('Status is required');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'status is not allowed to be empty'
+        );
         done();
       });
   });
@@ -732,7 +750,7 @@ describe('ARTICLE STATUS', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal(
-          'Status can only be accepted or rejected'
+          'status must be one of [accepted, rejected]'
         );
         done();
       });
@@ -742,37 +760,12 @@ describe('ARTICLE STATUS', () => {
       .request(app)
       .patch('/api/v1/article/status/7139d3af-b8b4-44f6-a49f-9305791700f9')
       .set('Authorization', userBToken)
-      .send({ status: 'accepted' })
+      .send({ status: 'accepted', admin_comment: 'yes' })
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.errors.body[0]).to.be.equal('Article not found');
-        done();
-      });
-  });
-  it('should respond with error: Article is not yet reviewed', done => {
-    chai
-      .request(app)
-      .patch('/api/v1/article/status/7139d3af-b8b4-44f6-a49f-9305791700f4')
-      .set('Authorization', userBToken)
-      .send({ status: 'accepted' })
-      .end((err, res) => {
-        expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal(
-          'Article is not yet reviewed'
+          'Article not found or has been reviewed'
         );
-        done();
-      });
-  });
-  it('should respond with error: Article status should be changed', done => {
-    chai
-      .request(app)
-      .patch('/api/v1/article/status/fb3def47-153c-40bd-8161-a1c787e083d7')
-      .set('Authorization', userBToken)
-      .send({ status: 'accepted' })
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.updatedReview).to.be.a('object');
-        expect(res.body.updatedReview.status).to.be.equal('accepted');
         done();
       });
   });

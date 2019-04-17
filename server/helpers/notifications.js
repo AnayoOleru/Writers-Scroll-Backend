@@ -118,12 +118,25 @@ const sendEmailNotificationArticle = async (articleTitle, userId) => {
   });
 };
 
+/**
+ *
+ * @param {*} reportedUserEmail
+ * @param {*} body
+ * @returns {*} sends an email to a new user
+ */
+const reportedArticleNotification = (reportedUserEmail, body) => {
+  const title = 'Reported Article';
+  const message = template(title, body, reportedUserEmail);
+  sendEmail(reportedUserEmail, title, message);
+};
+
 const Notifications = {
   forgetPassword,
   passwordReset,
   signupEmail,
   sendEmailNotificationComment,
   sendEmailNotificationArticle,
+  reportedArticleNotification,
 };
 
 export default Notifications;

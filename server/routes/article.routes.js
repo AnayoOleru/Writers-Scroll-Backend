@@ -122,6 +122,40 @@ router.post(
   articleController.reportArticle
 );
 
+/**
+ * @swagger
+ *
+ * /article/review/{articleId}:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: reviewers can review reported article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: articleId
+ *         description: id of the article
+ *         required: true
+ *       - in: body
+ *         name: article_body
+ *         description: Article body to report
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/reported_article'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+
 router.patch(
   '/article/review/:articleId',
   tokenValidator.verifyToken,

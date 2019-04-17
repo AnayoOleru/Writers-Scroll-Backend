@@ -3,12 +3,10 @@ import validations from '../helpers/validations';
 import slugMaker from '../helpers/slug-maker';
 import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
-import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
 import statistic from '../helpers/statistics-storer';
 import notifications from '../helpers/notifications';
 
-const { findArticle } = serchDatabase;
 const {
   Article,
   User,
@@ -17,7 +15,10 @@ const {
   Like,
   Bookmark,
   Rating,
+  Sequelize,
 } = model;
+
+const { Op } = Sequelize;
 
 /**
  * @description Get Article
@@ -38,6 +39,7 @@ const getOneArticle = async (req, res) => {
     const article = await Article.findOne({
       where: {
         id: req.params.id,
+        is_reported: false,
       },
       include: [
         {
@@ -166,8 +168,16 @@ const reportArticle = async (req, res) => {
     const { articleId } = req.params;
     const { id: reporterId } = req.user.userObj;
 
-    // check if the article id has a relationship in the users table
-    const reportedArticle = await findArticle(articleId);
+    const reportedArticle = await Article.findOne({
+      where: { id: req.params.articleId },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['email'],
+        },
+      ],
+    });
 
     if (!reportedArticle) {
       return res.status(404).json({
@@ -184,10 +194,13 @@ const reportArticle = async (req, res) => {
       reporter_comment: comment,
     });
 
-    // once a user is reported, then the user should not be able to review an article
-    await User.update(
-      { is_reviewer: false, is_reported: true },
-      { where: { id: reportedArticle.user_id } }
+    const messageBody = `<p>your article ${
+      reportedArticle.title
+    } has been reported, and it is going through a review process</p>
+    <p>We will notify you when it is reviewed. Please bear with up</p>`;
+    await notifications.reportedArticleNotification(
+      reportedArticle.author.email,
+      messageBody
     );
 
     return res.status(200).json({
@@ -295,12 +308,10 @@ const getUserArticles = async (req, res) => {
   }
 }
 const reviewArticle = async (req, res) => {
+  const { id: reviewerId } = req.user.userObj;
   const reviewedArticle = await ReportedArticle.findOne({
-    where: {
-      reported_article_id: req.params.articleId,
-    },
+    where: { reported_article_id: req.params.articleId },
   });
-
   if (!reviewedArticle) {
     return res.status(404).json({
       errors: {
@@ -308,7 +319,13 @@ const reviewArticle = async (req, res) => {
       },
     });
   }
-
+  if (reviewedArticle.reported_user_id === reviewerId) {
+    return res.status(403).json({
+      errors: {
+        body: ["you can't review your own article"],
+      },
+    });
+  }
   if (reviewedArticle.status === 'reviewed') {
     return res.status(409).json({
       errors: {
@@ -318,6 +335,7 @@ const reviewArticle = async (req, res) => {
   }
 
   const values = {
+    reviewer_id: reviewerId,
     reviewer_comment: req.body.reviewer_comment,
     status: 'reviewed',
   };
@@ -326,6 +344,7 @@ const reviewArticle = async (req, res) => {
 
   return res.status(200).json({
     updatedReview,
+    message: 'You have successfully reviewed this article',
   });
 };
 
@@ -333,45 +352,55 @@ const articleStatus = async (req, res) => {
   try {
     const { articleId } = req.params;
     const reviewedArticle = await ReportedArticle.findOne({
-      where: { reported_article_id: articleId },
+      where: {
+        [Op.and]: [{ reported_article_id: articleId }, { status: 'reviewed' }],
+      },
+      include: [
+        {
+          model: Article,
+          as: 'article',
+          attributes: ['title'],
+        },
+      ],
     });
 
     if (!reviewedArticle) {
       return res.status(404).json({
         errors: {
-          body: ['Article not found'],
+          body: ['Article not found or has been reviewed'],
         },
       });
     }
 
-    if (
-      reviewedArticle.status === 'accepted' ||
-      reviewedArticle.status === 'rejected'
-    ) {
-      return res.status(400).json({
-        errors: {
-          body: ['Article cannot be given a new status'],
-        },
-      });
-    }
+    const user = User.findOne({
+      where: { id: reviewedArticle.reported_user_id },
+    });
 
-    if (reviewedArticle.status !== 'reviewed') {
-      return res.status(400).json({
-        errors: {
-          body: ['Article is not yet reviewed'],
-        },
-      });
-    }
-    const { status } = req.body;
+    const { status, admin_comment: adminComment } = req.body;
+    let isReported = user.is_reported;
+    let isReviewer = user.is_reviewer;
+
     if (status === 'accepted') {
-      await Article.destroy({
-        where: { id: articleId },
-      });
+      isReported = true;
+      isReviewer = false;
     }
 
-    const updatedReview = await reviewedArticle.update({ status });
+    await User.update(
+      { is_reported: isReported, is_reviewer: isReviewer },
+      { where: { id: reviewedArticle.reported_user_id } }
+    );
+
+    const updatedReview = await reviewedArticle.update({
+      status,
+      admin_comment: adminComment,
+    });
+    const messageBody = `<p>your article ${
+      reviewedArticle.title
+    } has been reviewed and the status is ${status}</p>`;
+    await notifications.reportedArticleNotification(user.email, messageBody);
     return res.status(200).json({
       updatedReview,
+      message: `Article status has been changed to ${status}`,
     });
   } catch (error) {
     return res.status(500).json({

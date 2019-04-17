@@ -32,7 +32,6 @@ const loginController = async (req, res) => {
       id,
       password: hashedPassword,
       is_admin: isAdmin,
-      bio,
       image_url: image,
       is_reviewer: isReviewer,
       is_activated: isActivated,
@@ -46,13 +45,17 @@ const loginController = async (req, res) => {
         },
       });
     }
-    const token = authHelper.encode({ id, isAdmin, isReviewer, isActivated });
+    const token = authHelper.encode({
+      id,
+      email,
+      isAdmin,
+      isReviewer,
+      isActivated,
+    });
 
     return res.status(200).json({
       user: {
-        email,
         token,
-        bio,
         image,
       },
     });

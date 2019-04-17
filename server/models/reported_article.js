@@ -35,6 +35,9 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       unique: true,
     },
+    reviewer_id: {
+      type: DataTypes.UUID,
+    },
     reporter_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -54,6 +57,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     reviewer_comment: {
+      type: DataTypes.STRING,
+    },
+    admin_comment: {
       type: DataTypes.STRING,
     },
     status: {

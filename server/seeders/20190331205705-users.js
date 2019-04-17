@@ -14,7 +14,7 @@ module.exports = {
         is_activated: true,
         image_url: 'https://picsum.photos/200/300',
         is_admin: true,
-        is_reviewer: false,
+        is_reviewer: true,
         is_reported: false,
         is_notified: true,
         research_field: 'Computer Science',

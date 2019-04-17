@@ -23,10 +23,12 @@ const getArticles = async (req, res) => {
 
     try {
       const articles = await Article.findAndCountAll({
+        where: { is_reported: false },
         offset,
         limit: pageSize,
         order: ['title'],
         attributes: [
+          'id',
           'slug',
           'title',
           'body',

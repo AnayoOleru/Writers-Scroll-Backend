@@ -1,7 +1,7 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import passport from 'passport';
-import session from 'express-session';
+import session from 'cookie-session';
 import dotenv from 'dotenv';
 import routes from './routes/index';
 import swaggerSpec from './documentation/swagger';
@@ -60,7 +60,7 @@ app.all('*', (req, res) => {
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`App is listen on Port ${port}`);
+  console.log(`App is listening on Port ${port}`);
 });
 
 export default app;

@@ -89,7 +89,9 @@ describe('TEST FOR ADMIN', () => {
       .set('authorization', token1)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.message).to.be.equal('All users request');
+        expect(res.body.message).to.be.equal(
+          'List of users requesting to be reviewers'
+        );
         done();
       });
   });

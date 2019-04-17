@@ -114,7 +114,7 @@ const getAllReviewerRequests = async (req, res) => {
     });
     if (getAllUsersRequest) {
       return res.status(200).json({
-        message: 'All users request',
+        message: 'List of users requesting to be reviewers',
         allUsersRequest: getAllUsersRequest,
       });
     }

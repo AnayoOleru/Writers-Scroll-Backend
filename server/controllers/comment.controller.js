@@ -112,6 +112,7 @@ const updateComment = async (req, res) => {
     });
   }
 
+  // The editcomment[1] is actually second element from the editComment array
   res.status(200).json({
     editedComment: editComment[1],
   });

@@ -55,7 +55,7 @@ describe('TEST USER FOLLOW', () => {
       });
   });
 
-  it('It should return 403 When a user tries to follow twice', done => {
+  it('It should return 403 if a user tries to follow another user he is already following', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')

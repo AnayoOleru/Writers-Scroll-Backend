@@ -115,8 +115,8 @@ resetPasswordRouter.get('/reset/message', (req, res) => {
  *       500:
  *         description: ran
  */
-resetPasswordRouter.post(
-  '/new_password',
+resetPasswordRouter.patch(
+  '/new-password',
   ResetPasswordMiddleware.validatePassword,
   ResetPasswordMiddleware.verifyEmailToken,
   ResetPasswordMiddleware.isOldPassword,

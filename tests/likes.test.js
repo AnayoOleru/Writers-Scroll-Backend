@@ -29,7 +29,9 @@ describe('TEST LIKE', () => {
       .end((err, res) => {
         expect(res.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
-        expect(res.body.message).to.equal('Successfuly added like');
+        expect(res.body.message).to.equal(
+          'You have successfuly liked this article'
+        );
         done();
       });
   });
@@ -42,7 +44,9 @@ describe('TEST LIKE', () => {
       .end((err, res) => {
         expect(res.status).to.equal(200);
         expect(res.body.message).to.be.a('string');
-        expect(res.body.message).to.equal('Successfully removed like');
+        expect(res.body.message).to.equal(
+          'You have successfully disliked this article'
+        );
         done();
       });
   });

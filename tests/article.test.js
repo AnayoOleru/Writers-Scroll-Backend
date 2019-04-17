@@ -706,7 +706,7 @@ describe('ARTICLE STATUS', () => {
       .set('Authorization', userCToken)
       .send({ status: 'accepted' })
       .end((err, res) => {
-        expect(res).to.have.status(401);
+        expect(res).to.have.status(403);
         expect(res.body.errors.body[0]).to.be.equal('User is not an admin');
         done();
       });

@@ -6,7 +6,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /search?search=a:
+ * /search?filter=a:
  *   get:
  *     tags:
  *       - search

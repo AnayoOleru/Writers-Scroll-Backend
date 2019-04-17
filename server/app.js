@@ -1,21 +1,23 @@
 import express from 'express';
 import swaggerUi from 'swagger-ui-express';
 import passport from 'passport';
-import session from 'express-session';
+import session from 'cookie-session';
 import dotenv from 'dotenv';
 import routes from './routes/index';
 import swaggerSpec from './documentation/swagger';
-
+import middlewares from './middlewares';
 import {
   facebookStrategy,
   twitterStrategy,
   googleStrategy,
 } from './config/passport.service';
 
+const { trimmerMiddleware } = middlewares;
+
 const app = express();
 
 app.use(express.json());
-
+app.use(trimmerMiddleware);
 const port = process.env.PORT || 6000;
 
 const baseUrl = '/api/v1';
@@ -58,7 +60,7 @@ app.all('*', (req, res) => {
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
-  console.log(`App is listen on Port ${port}`);
+  console.log(`App is listening on Port ${port}`);
 });
 
 export default app;

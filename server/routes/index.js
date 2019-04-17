@@ -14,6 +14,8 @@ import getFollowersRoute from './get-followers.routes';
 import statisticRoute from './statistic.routes';
 import adminRoute from './admin.routes';
 import bookmarkRoute from './bookmark.routes';
+import requestRouter from './user-request.routes';
+import searchArticles from './search-articles.routes';
 
 const router = express.Router();
 
@@ -71,5 +73,7 @@ router.use(getFollowersRoute);
 router.use(statisticRoute);
 router.use(adminRoute);
 router.use(bookmarkRoute);
+router.use(requestRouter);
+router.use(searchArticles);
 
 export default router;

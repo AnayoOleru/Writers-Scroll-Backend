@@ -6,8 +6,10 @@ import tokenValidator from './verify-token.middlewares';
 import ratingMiddleware from './rating.middlewares';
 import commentMiddleware from './comment.middlewares';
 import adminMiddleware from './admin.middlewares';
+import userRequest from './user-request.middleware';
 import uuidMiddleware from './uuid.middleware';
 import userIdMiddleware from './user-id-is-correct.middleware';
+import trimmerMiddleware from './trimmer.middlewares';
 
 export default {
   authValidator,
@@ -18,6 +20,8 @@ export default {
   ratingMiddleware,
   commentMiddleware,
   adminMiddleware,
+  userRequest,
   uuidMiddleware,
   userIdMiddleware,
+  trimmerMiddleware,
 };

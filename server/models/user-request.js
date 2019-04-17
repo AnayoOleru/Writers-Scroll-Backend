@@ -1,5 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
-  const Like = sequelize.define('Like', {
+  const Request = sequelize.define('Request', {
     id: {
       allowNull: false,
       primaryKey: true,
@@ -7,22 +7,22 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: DataTypes.UUIDV4,
       unique: true,
     },
-    article_id: {
-      type: DataTypes.UUID,
-      allowNull: false,
-    },
     user_id: {
       type: DataTypes.UUID,
       allowNull: false,
     },
+    is_reviewer: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    is_reported: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
-  Like.associate = models => {
-    Like.belongsTo(models.Article, {
-      foreignKey: 'article_id',
-    });
-    Like.belongsTo(models.User, {
+  Request.associate = models =>
+    Request.belongsTo(models.User, {
       foreignKey: 'user_id',
     });
-  };
-  return Like;
+  return Request;
 };

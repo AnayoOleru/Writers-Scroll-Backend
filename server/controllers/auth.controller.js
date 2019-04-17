@@ -79,15 +79,11 @@ const signupController = async (req, res) => {
       password,
     });
 
-    if (!user) return res.status(401).json({ errors: { body: error } });
+    if (!user) {
+      return res.status(204).json({ errors: { body: ['User not created'] } });
+    }
 
-    const {
-      id,
-      is_admin: isAdmin,
-      bio,
-      image_url: image,
-      first_name: firstName,
-    } = user;
+    const { id, is_admin: isAdmin, first_name: firstName } = user;
     const token = authHelper.encode({ id, isAdmin });
 
     const verificationToken = authHelper.encode({ email });
@@ -98,7 +94,7 @@ const signupController = async (req, res) => {
     await notifications.signupEmail(email, verificationLink, firstName);
 
     return res.status(200).json({
-      user: { email, token, bio, image },
+      user: { email, token },
     });
   } catch (err) {
     return res.status(500).json({

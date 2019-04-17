@@ -81,4 +81,36 @@ router.patch(
   adminMiddleware.checkAdmin,
   adminController.deactivateReviewer
 );
+
+/**
+ * @swagger
+ *
+ * /admin/reviewer:
+ *   get:
+ *     tags:
+ *       - admin
+ *       - auth
+ *     description: Admin can all users that make a request to become a reviewer
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+// get all reviewer request
+router.get(
+  '/admin/reviewer',
+  tokenValidator.verifyToken,
+  tokenValidator.verifyAdmin,
+  adminMiddleware.checkAdmin,
+  adminController.getAllReviewerRequests
+);
 export default router;

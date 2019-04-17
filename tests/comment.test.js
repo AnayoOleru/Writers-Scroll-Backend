@@ -155,7 +155,7 @@ describe('POST COMMENT', () => {
   });
 });
 
-describe('GET COMMENTS AND EDITED HISTORY', () => {
+describe('GET COMMENTS AND EDIT HISTORY', () => {
   it('should respond with the comments and its history', done => {
     chai
       .request(app)
@@ -178,8 +178,7 @@ describe('GET COMMENTS AND EDITED HISTORY', () => {
           'id',
           'body',
           'comment_id',
-          'updatedAt',
-          'createdAt'
+          'updatedAt'
         );
         expect(res.body.comment[0].histories[0].body).equal('deep write up');
         done();
@@ -188,26 +187,20 @@ describe('GET COMMENTS AND EDITED HISTORY', () => {
 });
 
 describe('GET COMMENTS AND REPLIES', () => {
-  it('should respond with the comments and its history', done => {
+  it('should respond with the comments and its replies', done => {
     chai
       .request(app)
       .get('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/replies')
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
-        expect(res.body.commentResponse).to.be.a('array');
-        expect(res.body.commentResponse[0]).have.to.have.all.keys(
+        expect(res.body.comment).to.be.a('array');
+        expect(res.body.comment[0]).have.to.have.all.keys(
           'id',
-          'user_id',
-          'article_id',
           'likes_count',
           'body',
           'createdAt',
-          'updatedAt',
-          'histories'
-        );
-        expect(res.body.commentResponse[0].histories[0].reply).equal(
-          'replying to you'
+          'replies'
         );
         done();
       });
@@ -252,7 +245,7 @@ describe('EDIT COMMENT', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
         expect(res.body.editedComment).to.be.a('array');
-        expect(res.body.editedComment[1][0].body).to.equal(
+        expect(res.body.editedComment[0].body).to.equal(
           'This is a new comment'
         );
         done();

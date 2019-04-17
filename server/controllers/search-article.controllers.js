@@ -13,7 +13,7 @@ const searchArticles = async (req, res) => {
         },
       });
     }
-    const searchFilter = req.query.search;
+    const searchFilter = req.query.filter;
     const articles = Article.findAll({
       where: {
         title: {
@@ -32,7 +32,7 @@ const searchArticles = async (req, res) => {
         {
           model: User,
           as: 'author',
-          attributes: ['first_name', 'last_name'],
+          attributes: ['first_name', 'last_name', 'bio', 'image_url'],
         },
       ],
     });
@@ -56,6 +56,13 @@ const searchArticles = async (req, res) => {
             'updatedAt',
             'likes_count',
           ],
+          include: [
+            {
+              model: User,
+              as: 'author',
+              attributes: ['first_name', 'last_name', 'bio', 'image_url'],
+            },
+          ],
         },
       ],
     });
@@ -66,7 +73,7 @@ const searchArticles = async (req, res) => {
           [sequelize.Op.iLike]: `%${searchFilter}%`,
         },
       },
-      attributes: ['first_name', 'last_name'],
+      attributes: ['first_name', 'last_name', 'bio', 'image_url'],
       include: [
         {
           model: Article,

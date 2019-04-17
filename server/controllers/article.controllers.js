@@ -1,7 +1,6 @@
 import model from '../models';
 import validations from '../helpers/validations';
 import slugMaker from '../helpers/slug-maker';
-import spaceTrimmer from '../helpers/space-trimmer';
 import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
 import serchDatabase from '../helpers/search-database';
@@ -83,7 +82,6 @@ const createArticle = async (req, res) => {
     const { userObj } = req.user;
     req.body.user_id = userObj.id;
 
-    req.body = spaceTrimmer(req.body);
     req.body.reading_time = readingTime(req.body.abstract, req.body.body);
     const article = await Article.create(req.body);
 
@@ -195,7 +193,6 @@ const editAticle = async (req, res) => {
         },
       });
     }
-    const updateBody = spaceTrimmer(req.body);
 
     const articleToBeUpdated = await Article.findOne({
       where: {
@@ -222,7 +219,7 @@ const editAticle = async (req, res) => {
       });
     }
 
-    const updatedArticle = await articleToBeUpdated.update(updateBody);
+    const updatedArticle = await articleToBeUpdated.update(req.body);
 
     return res.status(200).json({
       message: 'Article Updated Successfully',
@@ -244,7 +241,6 @@ const createHighlight = async (req, res) => {
     });
   }
 
-  req.body = spaceTrimmer(req.body);
   req.body.article_id = req.params.articleId;
   req.body.user_id = req.user.userObj.id;
 

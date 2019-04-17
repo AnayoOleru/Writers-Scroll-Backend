@@ -8,7 +8,7 @@ describe('Article Search', () => {
   it('Display articles by search filter', done => {
     chai
       .request(app)
-      .get(`/api/v1/search?search=${articleSearchFilter}`)
+      .get(`/api/v1/search?filter=${articleSearchFilter}`)
       .end((err, res) => {
         const { articleFilter } = res.body;
         expect(res.status).to.equal(200);
@@ -22,7 +22,7 @@ describe('Article Search', () => {
   it('Display author by search filter', done => {
     chai
       .request(app)
-      .get(`/api/v1/search?search=${authorSearchFilter}`)
+      .get(`/api/v1/search?filter=${authorSearchFilter}`)
       .end((err, res) => {
         const { authorFilter } = res.body;
         expect(res.status).to.equal(200);
@@ -35,7 +35,7 @@ describe('Article Search', () => {
   it('Display keyword by search filter', done => {
     chai
       .request(app)
-      .get(`/api/v1/search?search=${keywordSearchFilter}`)
+      .get(`/api/v1/search?filter=${keywordSearchFilter}`)
       .end((err, res) => {
         const { keywordFilter } = res.body;
         expect(res.status).to.equal(200);

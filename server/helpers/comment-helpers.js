@@ -10,32 +10,23 @@ const getComment = async (Comment, commentid) => {
   }
 };
 
-const getCommentAndReplies = async (Comment, CommentHistory, commentid) => {
+const getCommentAndReplies = async (Comment, CommentReply, commentid) => {
   try {
     return await Comment.findAll({
       where: {
         id: commentid,
       },
+      attributes: ['id', 'likes_count', 'body', 'createdAt'],
       include: [
         {
-          model: CommentHistory,
+          model: CommentReply,
           required: false,
-          as: 'histories',
+          as: 'replies',
           order: ['body'],
-          attributes: [
-            'id',
-            'comment_id',
-            'is_reply',
-            'reply',
-            'updatedAt',
-            'createdAt',
-          ],
-          where: {
-            is_reply: true,
-          },
+          attributes: ['id', 'comment_id', 'reply', 'createdAt'],
         },
       ],
-      order: [['histories', 'updatedAt', 'asc']],
+      order: [['replies', 'createdAt', 'asc']],
     });
   } catch (err) {
     return err;
@@ -54,10 +45,7 @@ const getCommentAndHistories = async (Comment, CommentHistory, commentid) => {
           required: false,
           as: 'histories',
           order: ['body'],
-          attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
-          where: {
-            is_updated: true,
-          },
+          attributes: ['id', 'comment_id', 'body', 'updatedAt'],
         },
       ],
       order: [['histories', 'updatedAt', 'desc']],

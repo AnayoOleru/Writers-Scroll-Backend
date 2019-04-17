@@ -1,6 +1,6 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
-    return queryInterface.createTable('Comment_histories', {
+    return queryInterface.createTable('Comment_replies', {
       id: {
         allowNull: false,
         primaryKey: true,
@@ -17,7 +17,7 @@ module.exports = {
         },
         onDelete: 'CASCADE',
       },
-      body: {
+      reply: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -33,5 +33,5 @@ module.exports = {
       },
     });
   },
-  down: queryInterface => queryInterface.dropTable('Comment_histories'),
+  down: queryInterface => queryInterface.dropTable('Comment_replies'),
 };

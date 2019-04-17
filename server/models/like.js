@@ -18,10 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   });
   Like.associate = models => {
     Like.belongsTo(models.Article, {
-      foreignKey: 'user_id',
+      foreignKey: 'article_id',
     });
     Like.belongsTo(models.User, {
-      foreignKey: 'id',
+      foreignKey: 'user_id',
     });
   };
   return Like;

@@ -156,6 +156,16 @@ const patchProfile = async (req, res) => {
   }
 };
 
-const controller = { getUserProfile, getProfileByField, patchProfile };
+const suggestedResearchers = (req, res) =>
+  res.status(200).json({
+    suggestion: req.suggestions,
+  });
+
+const controller = {
+  getUserProfile,
+  getProfileByField,
+  patchProfile,
+  suggestedResearchers,
+};
 
 export default controller;

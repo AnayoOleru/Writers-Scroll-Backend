@@ -25,6 +25,14 @@ const toggleBookmark = async (req, res) => {
     });
     req.article = article;
 
+    if (!article) {
+      return res.status(404).json({
+        errors: {
+          body: ['This article does not exist'],
+        },
+      });
+    }
+
     const user = await User.findOne({
       where: {
         id: userId,

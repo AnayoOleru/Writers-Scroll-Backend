@@ -41,7 +41,7 @@ const middleware = {
     return next();
   },
 
-  async getAuthorOFArticleUserLiked(req, res, next) {
+  async getAuthorOfArticleUserLiked(req, res, next) {
     try {
       req.suggestions = {};
       const userId = req.user.userObj.id;

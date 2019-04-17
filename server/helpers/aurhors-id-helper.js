@@ -3,11 +3,9 @@ const getAuthorsIdFromArticle = (req, obj) => {
 
   const uniqueIds = [...new Set(allUserIds)];
 
-  const removeUserOwnId = uniqueIds.filter(
-    item => item !== req.user.userObj.id
-  );
+  const ids = uniqueIds.filter(item => item !== req.user.userObj.id);
 
-  return removeUserOwnId;
+  return ids;
 };
 
 export default getAuthorsIdFromArticle;

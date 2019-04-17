@@ -116,7 +116,7 @@ router.patch(
 router.get(
   '/suggested/researchers',
   tokenValidator.verifyToken,
-  profileMiddleware.getAuthorOFArticleUserLiked,
+  profileMiddleware.getAuthorOfArticleUserLiked,
   profileMiddleware.getAuthorOfArticleUserBookmarked,
   profileMiddleware.getAuthorOfArticleUserCommented,
   profileMiddleware.getAuthorOfUserStatistics,

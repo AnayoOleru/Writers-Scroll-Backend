@@ -28,7 +28,7 @@ const toggleBookmark = async (req, res) => {
     if (!article) {
       return res.status(404).json({
         errors: {
-          body: ['this article does not exist'],
+          body: ['This article does not exist'],
         },
       });
     }

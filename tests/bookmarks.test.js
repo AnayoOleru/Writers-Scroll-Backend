@@ -103,7 +103,7 @@ describe('TEST BOOKMARK ROUTE', () => {
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(404);
-        expect(res.body.errors.body[0]).to.equal('this article does not exist');
+        expect(res.body.errors.body[0]).to.equal('This article does not exist');
         done();
       });
   });

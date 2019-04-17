@@ -50,7 +50,7 @@ const followController = {
         });
         const userDetails = profileHelper.profiler(findUnFollowee);
         return res.status(201).json({
-          message: 'You have Successfully followed this user',
+          message: 'You have successfully followed this user',
           user: userDetails,
         });
       }

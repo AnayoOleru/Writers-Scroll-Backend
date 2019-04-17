@@ -40,7 +40,7 @@ describe('TEST USER FOLLOW', () => {
       });
   });
 
-  it('It should return a 201 if a user followed successfully', done => {
+  it('should respond 201 when a user follows another user', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
@@ -49,13 +49,13 @@ describe('TEST USER FOLLOW', () => {
         expect(res.status).to.equal(201);
         expect(res.body.message).to.be.a('string');
         expect(res.body.message).to.equal(
-          'You have Successfully followed this user'
+          'You have successfully followed this user'
         );
         done();
       });
   });
 
-  it('It should return a 403 if a user try to follow twice', done => {
+  it('It should return 403 if a user try to follow twice', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')
@@ -106,7 +106,7 @@ describe('TEST USER FOLLOW', () => {
   });
 });
 describe('TEST USER UNFOLLOW', () => {
-  it('It should return a 200 status code if a user unfollowed successfully', done => {
+  it('should respond 200 when a user unfollows another user', done => {
     chai
       .request(app)
       .delete('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89bd7099c')

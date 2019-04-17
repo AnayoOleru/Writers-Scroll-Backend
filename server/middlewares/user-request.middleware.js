@@ -1,6 +1,6 @@
 import model from '../models';
 
-const { Request } = model;
+const { Request, User } = model;
 
 const verifyRequest = async (req, res, next) => {
   const userId = req.user.userObj.id;
@@ -40,4 +40,21 @@ const verifyUncheckRequest = async (req, res, next) => {
   }
   next();
 };
-export default { verifyRequest, verifyUncheckRequest };
+const checkIfRequestExist = async (req, res, next) => {
+  const userId = req.user.userObj.id;
+  const findRequest = await User.findOne({
+    where: {
+      id: userId,
+      is_reviewer: false,
+      is_reported: false,
+      is_requested: true,
+    },
+  });
+  if (findRequest) {
+    return res.status(400).json({
+      message: 'You cannot request to be a reviewer again',
+    });
+  }
+  next();
+};
+export default { verifyRequest, verifyUncheckRequest, checkIfRequestExist };

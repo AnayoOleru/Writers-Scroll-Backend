@@ -143,6 +143,10 @@ module.exports = (sequelize, DataTypes) => {
       research_field: {
         type: DataTypes.STRING,
       },
+      is_requested: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       social: {
         type: DataTypes.ENUM('facebook', 'twitter', 'google', 'local'),
         allowNull: true,

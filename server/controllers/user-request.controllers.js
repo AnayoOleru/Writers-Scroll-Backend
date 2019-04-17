@@ -15,20 +15,19 @@ const request = async (req, res) => {
     });
     if (!findUser) {
       return res.status(400).json({
-        status: 400,
         errors: {
           body: ['You are not allowed to make a request'],
         },
       });
     }
-    const requested = await Request.create({
+    await Request.create({
       user_id: userId,
       is_reviewer: false,
       is_reported: false,
     });
+    await User.update({ is_requested: true }, { where: { id: userId } });
     return res.status(201).json({
       message: 'You have successfully made a request',
-      requested,
     });
   } catch (error) {
     return res.status(500).json({
@@ -49,7 +48,6 @@ const removeRequest = async (req, res) => {
     });
     if (!findUser) {
       return res.status(400).json({
-        status: 400,
         errors: {
           body: ['You are not allowed to delete a request'],
         },

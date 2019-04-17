@@ -153,7 +153,7 @@ const articleStatusValidator = (req, res, next) => {
   }
 
   if (!req.user.userObj.isAdmin) {
-    return res.status(401).json({
+    return res.status(403).json({
       errors: {
         body: ['User is not an admin'],
       },

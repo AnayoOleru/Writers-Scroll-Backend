@@ -8,6 +8,7 @@ import commentMiddleware from './comment.middlewares';
 import adminMiddleware from './admin.middlewares';
 import uuidMiddleware from './uuid.middleware';
 import userIdMiddleware from './user-id-is-correct.middleware';
+import trimmerMiddleware from './trimmer.middlewares';
 
 export default {
   authValidator,
@@ -20,4 +21,5 @@ export default {
   adminMiddleware,
   uuidMiddleware,
   userIdMiddleware,
+  trimmerMiddleware,
 };

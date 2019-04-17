@@ -10,6 +10,7 @@ import getFollowersController from './get-followers.controllers';
 import getDailyStatistics from './statistics.controller';
 import adminController from './admin.controllers';
 import bookmarkController from './bookmark.controller';
+import searchArticles from './search-article.controllers';
 
 export default {
   profileController,
@@ -24,4 +25,5 @@ export default {
   getDailyStatistics,
   adminController,
   bookmarkController,
+  searchArticles,
 };

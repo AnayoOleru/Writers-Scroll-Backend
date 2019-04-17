@@ -7,8 +7,9 @@ describe('Display articles in pages', () => {
       .request(app)
       .get('/api/v1/articles/1')
       .end((err, res) => {
-        const { articles } = JSON.parse(res.text);
-        expect(articles).to.be.a('array');
+        expect(res).to.have.status(200);
+        expect(res.body.articles).to.be.a('array');
+        expect(res.body.articlesCount).to.be.a('number');
 
         done();
       });
@@ -20,7 +21,10 @@ describe('Display articles in pages', () => {
       .get('/api/v1/articles/a')
       .end((err, res) => {
         const errorMessage = res.body.errors.body[0];
-        expect(errorMessage).to.be.equal('cannot be anything but numbers');
+        expect(res).to.have.status(400);
+        expect(errorMessage).to.be.equal(
+          'Page number cannot be anything but numbers'
+        );
 
         done();
       });

@@ -15,27 +15,27 @@ const {
   TWITTER_APP_SECRET,
   GOOGLE_CLIENT_ID,
   GOOGLE_APP_SECRET,
+  BACKEND_URL,
 } = process.env;
 
 const facebookConfig = {
   clientID: FACEBOOK_CLIENT_ID,
   clientSecret: FACEBOOK_CLIENT_SECRET,
-  callbackURL: 'http://localhost:3000/api/v1/auth/facebook/callback',
+  callbackURL: `${BACKEND_URL}/api/v1/auth/facebook/callback`,
   profileFields: ['id', 'emails', 'displayName', 'photos'],
 };
 
 const twitterConfig = {
   consumerKey: TWITTER_APP_ID,
   consumerSecret: TWITTER_APP_SECRET,
-  callbackURL: 'http://localhost:3000/api/v1/auth/twitter/callback',
-
+  callbackURL: `${BACKEND_URL}/api/v1/auth/twitter/callback`,
   includeEmail: true,
 };
 
 const googleConfig = {
   clientID: GOOGLE_CLIENT_ID,
   clientSecret: GOOGLE_APP_SECRET,
-  callbackURL: 'http://localhost:3000/api/v1/auth/google/callback',
+  callbackURL: `${BACKEND_URL}/api/v1/auth/google/callback`,
 };
 
 const facebookStrategy = new FacebookStrategy(

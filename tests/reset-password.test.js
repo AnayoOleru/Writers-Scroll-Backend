@@ -77,7 +77,7 @@ describe('UPDATE Password', () => {
   it('should succesfully update password when fields match', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: '12345asdf',
         confirmPassword: '12345asdf',
@@ -93,7 +93,7 @@ describe('UPDATE Password', () => {
   it('should throw an error when authorization header is missing', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: '12345asdf',
         confirmPassword: '12345asdf',
@@ -110,7 +110,7 @@ describe('UPDATE Password', () => {
   it('should not update password when new password is the same as previously forgotten password', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: '12345asdf',
         confirmPassword: '12345asdf',
@@ -128,7 +128,7 @@ describe('UPDATE Password', () => {
   it('should not update password when the fields dont match', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: '12345asdf',
         confirmPassword: '12345wssasdf',
@@ -144,7 +144,7 @@ describe('UPDATE Password', () => {
   it('should throw an error when password is not provided', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         confirmPassword: '12345wssasdf',
       })
@@ -159,7 +159,7 @@ describe('UPDATE Password', () => {
   it('should throw an error when confirmPassword is not provided', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: '12345wssasdf',
       })
@@ -176,7 +176,7 @@ describe('UPDATE Password', () => {
   it('should throw an error when password is not up to length of 8', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: 'dfd',
         confirmPassword: 'dfdsssnjh',
@@ -192,7 +192,7 @@ describe('UPDATE Password', () => {
   it('should throw an error when confirmPassword is not up to length of 8', done => {
     chai
       .request(app)
-      .post('/api/v1/auth/new_password')
+      .patch('/api/v1/auth/new-password')
       .send({
         password: 'dfddddjk',
         confirmPassword: 'dfd',

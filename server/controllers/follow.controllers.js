@@ -1,6 +1,7 @@
 import model from '../models';
 import serverError from '../helpers/server-error';
 import profileHelper from '../helpers/profiler';
+import validations from '../helpers/validations';
 
 const { User, Follower } = model;
 
@@ -20,6 +21,13 @@ const followController = {
     try {
       const followerId = req.user.userObj.id;
       const { followeeId } = req.params;
+      if (!validations.verifyUUID(followeeId)) {
+        return res.status(400).json({
+          errors: {
+            body: ['id not valid'],
+          },
+        });
+      }
       const findUnFollowee = await User.findOne({ where: { id: followeeId } });
       if (!findUnFollowee) {
         return res.status(404).json({
@@ -70,6 +78,13 @@ const followController = {
     try {
       const followerId = req.user.userObj.id;
       const { unFolloweeId } = req.params;
+      if (!validations.verifyUUID(unFolloweeId)) {
+        return res.status(400).json({
+          errors: {
+            body: ['id not valid'],
+          },
+        });
+      }
       const findFollowee = await User.findOne({
         where: { id: unFolloweeId },
       });

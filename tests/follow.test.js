@@ -69,16 +69,14 @@ describe('TEST USER FOLLOW', () => {
       });
   });
 
-  it('It should return a 500 for server error', done => {
+  it('should return 400 when invalid id is provided', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89')
       .set('authorization', token1)
       .end((err, res) => {
-        expect(res.status).to.equal(500);
-        expect(res.body.errors.body[0]).to.equal(
-          'Server error, Please try again later'
-        );
+        expect(res.status).to.equal(400);
+        expect(res.body.errors.body[0]).to.equal('id not valid');
         done();
       });
   });

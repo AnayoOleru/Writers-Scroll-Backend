@@ -130,9 +130,56 @@ const getAllReviewerRequests = async (req, res) => {
   }
 };
 
+const getAllReviewers = async (req, res) => {
+  const userId = req.user.userObj.id;
+  try {
+    // Is user id correct?
+    if (!validations.verifyUUID(userId)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+    const getReviewers = await User.findAll({
+      where: {
+        is_reviewer: true,
+      },
+      attributes: [
+        'id',
+        'first_name',
+        'last_name',
+        'title',
+        'phone_number',
+        'email',
+        'is_reviewer',
+        'is_reported',
+        'research_field',
+        'createdAt',
+        'updatedAt',
+      ],
+    });
+    if (!getReviewers) {
+      return res.status(404).json({
+        errors: {
+          body: ['No reviewers found!'],
+        },
+      });
+    }
+    return res.status(200).json({
+      message: 'List of users that are reviewers',
+      allReviewers: getReviewers,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
 const usersRequest = {
   activateReviewer,
   deactivateReviewer,
   getAllReviewerRequests,
+  getAllReviewers,
 };
 export default usersRequest;

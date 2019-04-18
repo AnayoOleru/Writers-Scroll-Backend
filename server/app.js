@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import passport from 'passport';
 import session from 'cookie-session';
 import dotenv from 'dotenv';
+import articleJob from './jobs/report-article.jobs';
 import routes from './routes/index';
 import swaggerSpec from './documentation/swagger';
 import middlewares from './middlewares';
@@ -18,6 +19,8 @@ const app = express();
 
 app.use(express.json());
 app.use(trimmerMiddleware);
+
+articleJob();
 const port = process.env.PORT || 6000;
 
 const baseUrl = '/api/v1';

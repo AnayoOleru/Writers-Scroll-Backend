@@ -162,6 +162,12 @@ const deleteArticle = async (req, res) => {
   }
 };
 
+/**
+ * @description Report an article
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reported article
+ */
 const reportArticle = async (req, res) => {
   try {
     const { reason, comment } = req.body;
@@ -194,9 +200,9 @@ const reportArticle = async (req, res) => {
       reporter_comment: comment,
     });
 
-    const messageBody = `<p>your article ${
+    const messageBody = `<p>your article <b>${
       reportedArticle.title
-    } has been reported, and it is going through a review process</p>
+    }</b> has been reported, and it is going through a review process</p>
     <p>We will notify you when it is reviewed. Please bear with up</p>`;
     await notifications.reportedArticleNotification(
       reportedArticle.author.email,
@@ -306,7 +312,14 @@ const getUserArticles = async (req, res) => {
       errors: serverError(),
     });
   }
-}
+};
+
+/**
+ * @description Review reported article
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reviewed article
+ */
 const reviewArticle = async (req, res) => {
   const { id: reviewerId } = req.user.userObj;
   const reviewedArticle = await ReportedArticle.findOne({
@@ -348,6 +361,12 @@ const reviewArticle = async (req, res) => {
   });
 };
 
+/**
+ * @description Reported article status
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reported article status
+ */
 const articleStatus = async (req, res) => {
   try {
     const { articleId } = req.params;
@@ -372,7 +391,7 @@ const articleStatus = async (req, res) => {
       });
     }
 
-    const user = User.findOne({
+    const user = await User.findOne({
       where: { id: reviewedArticle.reported_user_id },
     });
 
@@ -390,13 +409,19 @@ const articleStatus = async (req, res) => {
       { where: { id: reviewedArticle.reported_user_id } }
     );
 
+    await Article.update(
+      { is_reported: isReported },
+      { where: { id: articleId } }
+    );
+
     const updatedReview = await reviewedArticle.update({
       status,
       admin_comment: adminComment,
     });
-    const messageBody = `<p>your article ${
-      reviewedArticle.title
-    } has been reviewed and the status is ${status}</p>`;
+    const messageBody = `<p>your article <b>${
+      reviewedArticle.article.title
+    }</b> has been reviewed and the status is <b>${status}</b></p>
+    <p>Please not that you have to unpublish this article within 2day</p>`;
     await notifications.reportedArticleNotification(user.email, messageBody);
     return res.status(200).json({
       updatedReview,

@@ -66,6 +66,6 @@ router.post(
 router.get(
   '/bookmarks',
   tokenValidator.verifyToken,
-  bookmarkController.userGetTheirBookmarkArticles
+  bookmarkController.getBookMarkedArticlesForUser
 );
 export default router;

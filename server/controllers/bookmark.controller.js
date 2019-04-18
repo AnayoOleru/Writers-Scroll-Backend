@@ -62,7 +62,7 @@ const toggleBookmark = async (req, res) => {
   }
 };
 
-const userGetTheirBookmarkArticles = async (req, res) => {
+const getBookMarkedArticlesForUser = async (req, res) => {
   try {
     const bookmarkedArticles = await Bookmark.findAll({
       where: {
@@ -100,5 +100,5 @@ const userGetTheirBookmarkArticles = async (req, res) => {
   }
 };
 
-const bookmarkController = { toggleBookmark, userGetTheirBookmarkArticles };
+const bookmarkController = { toggleBookmark, getBookMarkedArticlesForUser };
 export default bookmarkController;

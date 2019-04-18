@@ -43,7 +43,7 @@ router.get('/articles/:page', Articles.getArticles);
  *       - application/json
  *     parameters:
  *       - in: query
- *         name: query_string
+ *         name: status
  *         description: Requires status query string
  *         required: true
  *         schema:

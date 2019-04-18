@@ -6,7 +6,7 @@ chai.use(chaiHttp);
 
 let userAToken;
 let userBToken;
-
+let userCToken;
 before('login user', done => {
   chai
     .request(app)
@@ -20,7 +20,19 @@ before('login user', done => {
       done();
     });
 });
-
+before('login user', done => {
+  chai
+    .request(app)
+    .post('/api/v1/auth/login')
+    .send({
+      email: 'james@gmail.com',
+      password: '12345678',
+    })
+    .end((err, res) => {
+      userCToken = res.body.user.token;
+      done();
+    });
+});
 before('login user', done => {
   chai
     .request(app)
@@ -277,6 +289,32 @@ describe('ARTICLE', () => {
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.equal('abstract is required');
+        done();
+      });
+  });
+  it('should respond with error: you have not written any article on this platform', done => {
+    chai
+      .request(app)
+      .get('/api/v1/myArticles')
+      .set('Authorization', userCToken)
+      .end((err, res) => {
+        expect(res).to.have.status(404);
+        expect(res.body.errors.body[0]).to.equal(
+          'You have not written any article on this platform'
+        );
+        done();
+      });
+  });
+  it('should return this user articles', done => {
+    chai
+      .request(app)
+      .get('/api/v1/myArticles')
+      .set('Authorization', userBToken)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.be.equal(
+          'You have successfully retrieved your articles'
+        );
         done();
       });
   });

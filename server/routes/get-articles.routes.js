@@ -1,6 +1,9 @@
 import express from 'express';
 
 import Articles from '../controllers/get-articles.controllers';
+import middlewares from '../middlewares';
+
+const { tokenValidator } = middlewares;
 
 const router = express.Router();
 
@@ -27,5 +30,12 @@ const router = express.Router();
  */
 
 router.get('/articles/:page', Articles.getArticles);
+
+router.get(
+  '/reported-articles',
+  tokenValidator.verifyToken,
+  tokenValidator.isVerifiedReviewer,
+  Articles.getAllReportedArticles
+);
 
 export default router;

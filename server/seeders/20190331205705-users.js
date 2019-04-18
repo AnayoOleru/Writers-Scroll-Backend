@@ -109,5 +109,23 @@ module.exports = {
         is_notified: false,
         research_field: 'Physics',
       },
+      {
+        id: 'c89e0df9-4865-49e1-92ad-b83a2d1c4a4e',
+        first_name: 'Jane',
+        last_name: 'Doe',
+        title: 'Dr',
+        phone_number: '(934) 915-1648',
+        email: 'janedoe@yahoo.com',
+        bio: 'Worked as a lecturer...',
+        password:
+          '$2a$08$FaLCM57LR8X4apZYpKeVb.1XC082FTmkhWp3//j3TVr2XHYg.fuDK',
+        is_activated: true,
+        image_url: 'https://picsum.photos/g/200/300',
+        is_admin: false,
+        is_reviewer: true,
+        is_reported: false,
+        is_notified: false,
+        research_field: 'Physics',
+      },
     ]),
 };

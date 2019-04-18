@@ -45,14 +45,17 @@ router.post(
  * @swagger
  *
  * /bookmarks:
- *   post:
+ *   get:
  *     tags:
- *       - bookmarked article
+ *       - bookmarked
  *     description: authenticated user can get all their bookmarked article
  *     produces:
  *       - application/json
+ *     parameters:
+ *         schema:
+ *           $ref: '#/definitions/bookmarks'
  *     responses:
- *       201:
+ *       200:
  *         description: Success
  *       400:
  *         description: Bad request
@@ -61,7 +64,7 @@ router.post(
  *       403:
  *         description: Forbidden
  *       500:
- *         description: ran
+ *         description: server error
  */
 router.get(
   '/bookmarks',

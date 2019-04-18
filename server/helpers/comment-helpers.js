@@ -16,14 +16,14 @@ const getCommentAndReplies = async (Comment, CommentReply, commentid) => {
       where: {
         id: commentid,
       },
-      attributes: ['id', 'likes_count', 'body', 'createdAt'],
+      attributes: ['id', 'likes_count', 'user_id', 'body', 'createdAt'],
       include: [
         {
           model: CommentReply,
           required: false,
           as: 'replies',
           order: ['body'],
-          attributes: ['id', 'comment_id', 'reply', 'createdAt'],
+          attributes: ['id', 'user_id', 'comment_id', 'reply', 'createdAt'],
         },
       ],
       order: [['replies', 'createdAt', 'asc']],
@@ -39,6 +39,7 @@ const getCommentAndHistories = async (Comment, CommentHistory, commentid) => {
       where: {
         id: commentid,
       },
+      attributes: ['id', 'likes_count', 'user_id', 'body', 'createdAt'],
       include: [
         {
           model: CommentHistory,

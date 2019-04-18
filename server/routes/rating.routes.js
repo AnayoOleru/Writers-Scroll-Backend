@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /rating:
+ * /ratings:
  *   post:
  *     tags:
  *       - rating
@@ -40,7 +40,7 @@ const router = express.Router();
  */
 
 router.post(
-  '/rating',
+  '/ratings',
   tokenValidator.verifyToken,
   ratingMiddleware.validateRating,
   ratingController.post

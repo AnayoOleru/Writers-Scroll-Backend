@@ -8,6 +8,10 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         unique: true,
       },
+      user_id: {
+        type: Sequelize.UUID,
+        allowNull: false,
+      },
       comment_id: {
         type: Sequelize.UUID,
         allowNull: false,

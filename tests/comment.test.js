@@ -5,7 +5,9 @@ import app from '../server/app';
 let userToken;
 let userToken2;
 chai.use(chaiHttp);
-const baseUrl = '/api/v1/comment';
+
+const baseUrl = '/api/v1/comments';
+const replyUrl = `${baseUrl}/15a2628f-ecf7-4098-8db5-95ecaf24847e/replies`;
 
 const comment = {
   article_id: '7139d3af-b8b4-44f6-a49f-9305791700f4',
@@ -155,11 +157,11 @@ describe('POST COMMENT', () => {
   });
 });
 
-describe('GET COMMENTS AND EDIT HISTORY', () => {
-  it('should respond with the comments and its history', done => {
+describe('GET COMMENTS AND EDIT HISTORIES', () => {
+  it('should respond with the comments and its histories', done => {
     chai
       .request(app)
-      .get('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/history')
+      .get(`${baseUrl}/15a2628f-ecf7-4098-8db5-95ecaf24847e/histories`)
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -167,10 +169,8 @@ describe('GET COMMENTS AND EDIT HISTORY', () => {
         expect(res.body.comment[0]).have.to.have.all.keys(
           'id',
           'user_id',
-          'article_id',
           'body',
           'createdAt',
-          'updatedAt',
           'histories',
           'likes_count'
         );
@@ -190,7 +190,7 @@ describe('GET COMMENTS AND REPLIES', () => {
   it('should respond with the comments and its replies', done => {
     chai
       .request(app)
-      .get('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/replies')
+      .get(replyUrl)
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(200);
@@ -200,7 +200,8 @@ describe('GET COMMENTS AND REPLIES', () => {
           'likes_count',
           'body',
           'createdAt',
-          'replies'
+          'replies',
+          'user_id'
         );
         done();
       });
@@ -211,7 +212,7 @@ describe('EDIT COMMENT', () => {
   it('should respond 403 when the user id does not belong to the logged in user id', done => {
     chai
       .request(app)
-      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .patch('/api/v1/comments/15a2628f-ecf7-4098-8db5-95ecaf24847e')
       .set('Authorization', userToken)
       .send({ body: 'This is a new comment' })
       .end((err, res) => {
@@ -226,7 +227,7 @@ describe('EDIT COMMENT', () => {
   it('should return 400 with invalid or empty payload(body)', done => {
     chai
       .request(app)
-      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .patch('/api/v1/comments/15a2628f-ecf7-4098-8db5-95ecaf24847e')
       .set('Authorization', userToken)
       .send({})
       .end((req, res) => {
@@ -239,7 +240,7 @@ describe('EDIT COMMENT', () => {
   it('should respond with status code 200 on successful edit of a comment', done => {
     chai
       .request(app)
-      .patch('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/edit')
+      .patch('/api/v1/comments/15a2628f-ecf7-4098-8db5-95ecaf24847e')
       .set('Authorization', userToken2)
       .send({ body: 'This is a new comment' })
       .end((err, res) => {
@@ -256,7 +257,7 @@ describe('POST REPLY COMMENT', () => {
   it('should return 400 with invalid or empty payload(reply)', done => {
     chai
       .request(app)
-      .post('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/reply')
+      .post(replyUrl)
       .set('Authorization', userToken)
       .send({})
       .end((req, res) => {
@@ -269,7 +270,7 @@ describe('POST REPLY COMMENT', () => {
   it('should respond with status code 201 on successful reply of a comment', done => {
     chai
       .request(app)
-      .post('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/reply')
+      .post(replyUrl)
       .set('Authorization', userToken2)
       .send({ reply: 'This is a new reply' })
       .end((err, res) => {
@@ -285,7 +286,7 @@ describe('DELETE COMMENT', () => {
   it('should respond 403 when the user id does not belong to the logged in user id', done => {
     chai
       .request(app)
-      .delete('/api/v1/comment/0b29d287-0ad0-42ca-8f74-3159bbe304af/delete')
+      .delete(`${baseUrl}/0b29d287-0ad0-42ca-8f74-3159bbe304af`)
       .set('Authorization', userToken)
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -299,7 +300,7 @@ describe('DELETE COMMENT', () => {
   it('should respond with status code 200 on successful delete of a comment', done => {
     chai
       .request(app)
-      .delete('/api/v1/comment/15a2628f-ecf7-4098-8db5-95ecaf24847e/delete')
+      .delete(`${baseUrl}/15a2628f-ecf7-4098-8db5-95ecaf24847e`)
       .set('Authorization', userToken2)
       .end((err, res) => {
         expect(res).to.have.status(200);

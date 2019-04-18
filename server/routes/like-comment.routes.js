@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /likeComment/{commentid}:
+ * /comments/{commentid}/likes:
  *   post:
  *     tags:
  *       - comment
@@ -38,7 +38,7 @@ const router = express.Router();
  */
 
 router.post(
-  '/likeComment/:commentid',
+  '/comments/:commentid/likes',
   tokenValidator.verifyToken,
   commentMiddleware.verifyComment,
   commentController.toggleLike

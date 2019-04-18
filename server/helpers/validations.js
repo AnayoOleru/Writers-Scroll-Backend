@@ -98,6 +98,18 @@ const draftPublishMessage = isDraft => {
   return 'Article published successfully';
 };
 
+const validReportedArticleQueryString = query => {
+  let valid = true;
+  const searchableArticleField = ['status'];
+
+  Object.keys(query).forEach(item => {
+    if (!searchableArticleField.includes(item)) {
+      valid = false;
+    }
+  });
+
+  return valid;
+};
 const validations = {
   verifyUUID,
   validateArticlePage,
@@ -106,6 +118,7 @@ const validations = {
   validEditableProfileBody,
   compareFieldWithToken,
   draftPublishMessage,
+  validReportedArticleQueryString,
 };
 
 export default validations;

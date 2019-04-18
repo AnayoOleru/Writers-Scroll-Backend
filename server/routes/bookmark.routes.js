@@ -51,8 +51,6 @@ router.post(
  *     description: authenticated user can get all their bookmarked article
  *     produces:
  *       - application/json
- *         schema:
- *           $ref: '#/definitions/bookmarks'
  *     responses:
  *       201:
  *         description: Success

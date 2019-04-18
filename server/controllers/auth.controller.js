@@ -34,6 +34,7 @@ const loginController = async (req, res) => {
       is_admin: isAdmin,
       bio,
       image_url: image,
+      is_reviewer: isReviewer,
     } = user;
     const verifyPassword = authHelper.comparePassword(hashedPassword, password);
 
@@ -44,7 +45,7 @@ const loginController = async (req, res) => {
         },
       });
     }
-    const token = authHelper.encode({ id, isAdmin });
+    const token = authHelper.encode({ id, isAdmin, isReviewer });
 
     return res.status(200).json({
       user: {
@@ -83,8 +84,13 @@ const signupController = async (req, res) => {
       return res.status(204).json({ errors: { body: ['User not created'] } });
     }
 
-    const { id, is_admin: isAdmin, first_name: firstName } = user;
-    const token = authHelper.encode({ id, isAdmin });
+    const {
+      id,
+      is_admin: isAdmin,
+      first_name: firstName,
+      is_reviewer: isReviewer,
+    } = user;
+    const token = authHelper.encode({ id, isAdmin, isReviewer });
 
     const verificationToken = authHelper.encode({ email });
     const verificationLink = `${req.protocol}://${req.get(

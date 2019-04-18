@@ -64,7 +64,7 @@ const toggleBookmark = async (req, res) => {
 
 const userGetTheirBookmarkArticles = async (req, res) => {
   try {
-    const bookmarkedArticle = await Bookmark.findAll({
+    const bookmarkedArticles = await Bookmark.findAll({
       where: {
         user_id: req.user.userObj.id,
       },
@@ -84,14 +84,14 @@ const userGetTheirBookmarkArticles = async (req, res) => {
     });
 
     // check if the user hasn't bookmarked any article yet
-    if (!bookmarkedArticle.length) {
+    if (!bookmarkedArticles.length) {
       return res.status(201).json({
         message: "You haven't bookmarked any article yet",
       });
     }
     return res.status(201).json({
       message: 'Articles you bookmarked',
-      data: bookmarkedArticle,
+      data: bookmarkedArticles,
     });
   } catch (error) {
     return res.status(500).json({

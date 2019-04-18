@@ -2,14 +2,14 @@ import express from 'express';
 import controllers from '../controllers/statistics.controller';
 import middlewares from '../middlewares';
 
-const { tokenValidator, uuidMiddleware, userIdMiddleware } = middlewares;
+const { tokenValidator } = middlewares;
 
 const statisticRoute = express.Router();
 
 /**
  * @swagger
  *
- * /userid/statistic/daily:
+ * /statistics/daily:
  *   get:
  *     tags:
  *       - statistic
@@ -17,14 +17,10 @@ const statisticRoute = express.Router();
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: path
- *         name: userid
- *         description: Requires userid
- *         required: true
  *         schema:
- *           $ref: '#/definitions/statistic'
+ *           $ref: '#/definitions/statistics/daily'
  *     responses:
- *       201:
+ *       200:
  *         description: Success
  *       400:
  *         description: Bad request
@@ -33,34 +29,28 @@ const statisticRoute = express.Router();
  *       403:
  *         description: Forbidden
  *       500:
- *         description: Server error
+ *         description: server error
  */
 statisticRoute.get(
-  '/:userid/statistic/daily',
+  '/statistics/daily',
   tokenValidator.verifyToken,
-  userIdMiddleware.checkIfUserIdIsCorrect,
-  uuidMiddleware.checkUUID,
   controllers.getDailyStatistic
 );
 /**
  * @swagger
  *
- * /{userid}/statistic/weekly:
+ * /statistics/week:
  *   get:
  *     tags:
  *       - statistic
- *     description: get daily statistic of a user reading
+ *     description: get weekly statistic of a user reading
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: path
- *         name: userid
- *         description: Requires userid
- *         required: true
  *         schema:
- *           $ref: '#/definitions/statistic'
+ *           $ref: '#/definitions/statistics/week'
  *     responses:
- *       201:
+ *       200:
  *         description: Success
  *       400:
  *         description: Bad request
@@ -69,19 +59,17 @@ statisticRoute.get(
  *       403:
  *         description: Forbidden
  *       500:
- *         description: Server error
+ *         description: server error
  */
 statisticRoute.get(
-  '/:userid/statistic/week',
+  '/statistics/week',
   tokenValidator.verifyToken,
-  uuidMiddleware.checkUUID,
-  userIdMiddleware.checkIfUserIdIsCorrect,
   controllers.getWeeklyStatistic
 );
 /**
  * @swagger
  *
- * /{userid}/statistic/month:
+ * /statistics/month:
  *   get:
  *     tags:
  *       - statistic
@@ -89,14 +77,10 @@ statisticRoute.get(
  *     produces:
  *       - application/json
  *     parameters:
- *       - in: path
- *         name: userid
- *         description: Required userid
- *         required: true
  *         schema:
- *           $ref: '#/definitions/statistic'
+ *           $ref: '#/definitions/statistics/month'
  *     responses:
- *       201:
+ *       200:
  *         description: Success
  *       400:
  *         description: Bad request
@@ -105,14 +89,11 @@ statisticRoute.get(
  *       403:
  *         description: Forbidden
  *       500:
- *         description: Server error
+ *         description: server error
  */
 statisticRoute.get(
-  '/:userid/statistic/month',
+  '/statistics/month',
   tokenValidator.verifyToken,
-  uuidMiddleware.checkUUID,
-  userIdMiddleware.checkIfUserIdIsCorrect,
   controllers.getMonthlyStatistic
 );
-
 export default statisticRoute;

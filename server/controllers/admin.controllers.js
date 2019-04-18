@@ -30,7 +30,7 @@ const activateReviewer = async (req, res) => {
     const findUser = await User.findOne({
       where: { is_reviewer: false, id: userId },
     });
-    // check if user exist in the database
+    // check if user exists in the database
     if (!findUser) {
       return res.status(403).json({
         errors: {
@@ -81,7 +81,7 @@ const deactivateReviewer = async (req, res) => {
     const findUser = await User.findOne({
       where: { is_reviewer: true, id: userId },
     });
-    // Check if user exist in the database
+    // Check if user exists in the database
     if (!findUser) {
       return res.status(404).json({
         errors: {

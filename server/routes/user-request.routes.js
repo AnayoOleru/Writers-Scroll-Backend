@@ -42,7 +42,7 @@ router.post(
   '/request',
   tokenValidator.verifyToken,
   userRequest.verifyRequest,
-  userRequest.checkIfRequestExist,
+  userRequest.checkIfRequestExists,
   requestController.request
 );
 

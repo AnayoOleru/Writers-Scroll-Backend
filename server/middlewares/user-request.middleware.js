@@ -40,7 +40,7 @@ const verifyUncheckRequest = async (req, res, next) => {
   }
   next();
 };
-const checkIfRequestExist = async (req, res, next) => {
+const checkIfRequestExists = async (req, res, next) => {
   const userId = req.user.userObj.id;
   const findRequest = await User.findOne({
     where: {
@@ -57,4 +57,4 @@ const checkIfRequestExist = async (req, res, next) => {
   }
   next();
 };
-export default { verifyRequest, verifyUncheckRequest, checkIfRequestExist };
+export default { verifyRequest, verifyUncheckRequest, checkIfRequestExists };

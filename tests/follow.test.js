@@ -69,7 +69,7 @@ describe('TEST USER FOLLOW', () => {
       });
   });
 
-  it('should return 400 when invalid id is provided', done => {
+  it('should return 400 when an invalid id is provided', done => {
     chai
       .request(app)
       .post('/api/v1/follow/6517a6ea-662b-4eef-ab9f-20f89')

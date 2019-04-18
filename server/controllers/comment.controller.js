@@ -119,8 +119,10 @@ const updateComment = async (req, res) => {
 };
 
 const replyComment = async (req, res) => {
+  const userId = req.user.userObj.id;
   const reply = await CommentReply.create({
     comment_id: res.locals.comment.id,
+    user_id: userId,
     body: res.locals.comment.body,
     is_reply: true,
     reply: req.body.reply,

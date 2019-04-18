@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /comment:
+ * /comments:
  *   post:
  *     tags:
  *       - comment
@@ -38,7 +38,7 @@ const router = express.Router();
  */
 
 router.post(
-  '/comment',
+  '/comments',
   tokenValidator.verifyToken,
   commentMiddleware.validatePostComment,
   commentController.post
@@ -47,7 +47,7 @@ router.post(
 /**
  * @swagger
  *
- *  /comment/{commentid}/history:
+ *  /comments/{commentid}/histories:
  *   get:
  *     tags:
  *       - comment
@@ -75,7 +75,7 @@ router.post(
  */
 
 router.get(
-  '/comment/:commentid/history',
+  '/comments/:commentid/histories',
   tokenValidator.verifyToken,
   commentMiddleware.verifyComment,
   commentController.getCommentAndHistories
@@ -84,7 +84,7 @@ router.get(
 /**
  * @swagger
  *
- *  /comment/{commentid}/replies:
+ *  /comments/{commentid}/replies:
  *   get:
  *     tags:
  *       - comment
@@ -112,7 +112,7 @@ router.get(
  */
 
 router.get(
-  '/comment/:commentid/replies',
+  '/comments/:commentid/replies',
   tokenValidator.verifyToken,
   commentMiddleware.verifyComment,
   commentController.getCommentAndReplies
@@ -121,7 +121,7 @@ router.get(
 /**
  * @swagger
  *
- *  /comment/{commentid}/edit:
+ *  /comments/{commentid}:
  *   patch:
  *     tags:
  *       - comment
@@ -148,7 +148,7 @@ router.get(
  *         description: ran
  */
 router.patch(
-  '/comment/:commentid/edit',
+  '/comments/:commentid',
   tokenValidator.verifyToken,
   commentMiddleware.validateEditComment,
   commentMiddleware.verifyComment,
@@ -158,7 +158,7 @@ router.patch(
 /**
  * @swagger
  *
- *  /comment/{commentid}/reply:
+ *  /comments/{commentid}/replies:
  *   post:
  *     tags:
  *       - comment
@@ -190,7 +190,7 @@ router.patch(
  */
 
 router.post(
-  '/comment/:commentid/reply',
+  '/comments/:commentid/replies',
   tokenValidator.verifyToken,
   commentMiddleware.validateReplyComment,
   commentMiddleware.verifyComment,
@@ -200,7 +200,7 @@ router.post(
 /**
  * @swagger
  *
- *  /comment/{commentid}/delete:
+ *  /comments/{commentid}:
  *   delete:
  *     tags:
  *       - comment
@@ -227,7 +227,7 @@ router.post(
  *         description: ran
  */
 router.delete(
-  '/comment/:commentid/delete',
+  '/comments/:commentid',
   tokenValidator.verifyToken,
   commentMiddleware.verifyComment,
   commentController.deleteComment

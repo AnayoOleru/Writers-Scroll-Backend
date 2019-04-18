@@ -3,9 +3,9 @@ import chaiHttp from 'chai-http';
 import app from '../server/app';
 
 let userToken;
-const baseUrl1 = '/api/v1/likeComment/0b29d287-0ad0-42ca-8f74-3159bbe304af';
+const baseUrl1 = '/api/v1/comments/0b29d287-0ad0-42ca-8f74-3159bbe304af/likes';
 const invalidComment =
-  '/api/v1/likeComment/1a0267aa-dbc2-4b76-a0b0-1d67672febca';
+  '/api/v1/comments/1a0267aa-dbc2-4b76-a0b0-1d67672febca/likes';
 chai.use(chaiHttp);
 describe('POST LIKE ON SPECIFIC COMMENTS', () => {
   before(async () => {

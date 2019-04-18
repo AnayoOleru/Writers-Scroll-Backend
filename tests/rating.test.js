@@ -10,6 +10,8 @@ const rating = {
   rating_value: 3,
 };
 
+const baseUrl = '/api/v1/ratings';
+
 describe('POST RATING', () => {
   before(async () => {
     await chai
@@ -35,7 +37,7 @@ describe('POST RATING', () => {
   it('should return 401 error when no token is provided', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .send({
         article_id: rating.article_id,
         rating_value: rating.rating_value,
@@ -51,7 +53,7 @@ describe('POST RATING', () => {
   it('should return 403 error when invalid token is provided', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', 'eeeee')
       .send({
         article_id: rating.article_id,
@@ -68,7 +70,7 @@ describe('POST RATING', () => {
   it('should return 400 with invalid or empty payload(article_id)', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send({
         rating_value: rating.rating_value,
@@ -83,7 +85,7 @@ describe('POST RATING', () => {
   it('should return 400 with invalid or empty payload(rating_value)', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send({
         article_id: rating.article_id,
@@ -98,7 +100,7 @@ describe('POST RATING', () => {
   it('should return 404 error if article does not exist', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send({
         article_id: '8139d3af-b8b4-44f6-a49f-9305791700f4',
@@ -114,7 +116,7 @@ describe('POST RATING', () => {
   it('should return 400 error if rating value is not between 0 and 5', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send({
         article_id: rating.article_id,
@@ -132,7 +134,7 @@ describe('POST RATING', () => {
   it('should return 201 and rating details on successful post', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send(rating)
       .end((req, res) => {
@@ -153,7 +155,7 @@ describe('POST RATING', () => {
   it('should return 409 when the same user tries to rate same article again', done => {
     chai
       .request(app)
-      .post('/api/v1/rating')
+      .post(baseUrl)
       .set('Authorization', userToken)
       .send(rating)
       .end((req, res) => {

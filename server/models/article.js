@@ -112,10 +112,24 @@ module.exports = (sequelize, DataTypes) => {
       ],
     }
   );
-  Article.associate = models =>
+  Article.associate = models => {
     Article.belongsTo(models.User, {
       foreignKey: 'user_id',
       as: 'author',
     });
+
+    Article.hasMany(models.Like, {
+      foreignKey: 'article_id',
+    });
+
+    Article.hasMany(models.Bookmark, {
+      foreignKey: 'article_id',
+    });
+
+    Article.hasMany(models.Rating, {
+      foreignKey: 'article_id',
+    });
+  };
+
   return Article;
 };

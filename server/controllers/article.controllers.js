@@ -9,7 +9,15 @@ import statistic from '../helpers/statistics-storer';
 import notifications from '../helpers/notifications';
 
 const { findArticle } = serchDatabase;
-const { Article, User, Reported_articles: ReportedArticle, Highlight } = model;
+const {
+  Article,
+  User,
+  Reported_articles: ReportedArticle,
+  Highlight,
+  Like,
+  Bookmark,
+  Rating,
+} = model;
 
 /**
  * @description Get Article
@@ -44,6 +52,15 @@ const getOneArticle = async (req, res) => {
             'email',
             'bio',
           ],
+        },
+        {
+          model: Like,
+        },
+        {
+          model: Bookmark,
+        },
+        {
+          model: Rating,
         },
       ],
     });

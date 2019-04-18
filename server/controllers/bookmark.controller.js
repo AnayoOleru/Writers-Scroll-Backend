@@ -3,7 +3,7 @@ import bookmarkHelper from '../helpers/bookmark-helpers';
 import validations from '../helpers/validations';
 import serverError from '../helpers/server-error';
 
-const { Article, User } = model;
+const { Article, User, Bookmark } = model;
 
 const toggleBookmark = async (req, res) => {
   const token = validations.verifyAuthHeader(req);
@@ -62,5 +62,43 @@ const toggleBookmark = async (req, res) => {
   }
 };
 
-const bookmarkController = { toggleBookmark };
+const userGetTheirBookmarkArticles = async (req, res) => {
+  try {
+    const bookmarkedArticle = await Bookmark.findAll({
+      where: {
+        user_id: req.user.userObj.id,
+      },
+      attributes: ['article_id'],
+      include: [
+        {
+          model: Article,
+          attributes: [
+            'title',
+            'image_url',
+            'abstract',
+            'likes_count',
+            'reading_time',
+          ],
+        },
+      ],
+    });
+
+    // check if the user hasn't bookmarked any article yet
+    if (!bookmarkedArticle.length) {
+      return res.status(201).json({
+        message: "You haven't bookmarked any article yet",
+      });
+    }
+    return res.status(201).json({
+      message: 'Articles you bookmarked',
+      data: bookmarkedArticle,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
+const bookmarkController = { toggleBookmark, userGetTheirBookmarkArticles };
 export default bookmarkController;

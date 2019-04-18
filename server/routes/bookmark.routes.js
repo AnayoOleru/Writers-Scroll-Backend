@@ -41,4 +41,33 @@ router.post(
   tokenValidator.verifyToken,
   bookmarkController.toggleBookmark
 );
+/**
+ * @swagger
+ *
+ * /bookmarks:
+ *   post:
+ *     tags:
+ *       - bookmarked article
+ *     description: authenticated user can get all their bookmarked article
+ *     produces:
+ *       - application/json
+ *         schema:
+ *           $ref: '#/definitions/bookmarks'
+ *     responses:
+ *       201:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: ran
+ */
+router.get(
+  '/bookmarks',
+  tokenValidator.verifyToken,
+  bookmarkController.userGetTheirBookmarkArticles
+);
 export default router;

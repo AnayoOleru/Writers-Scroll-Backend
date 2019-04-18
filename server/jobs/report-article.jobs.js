@@ -2,8 +2,8 @@ import cron from 'node-cron';
 import model from '../models';
 
 const { Article } = model;
-const articleJob = () => {
-  return cron.schedule('00 00 00 * * *', async () => {
+const articleJob = () =>
+  cron.schedule('00 00 00 * * *', async () => {
     const articles = await Article.findAll({ where: { is_reported: true } });
     const compareDate = previousDate => {
       const today = new Date().getTime();
@@ -20,6 +20,5 @@ const articleJob = () => {
       return null;
     });
   });
-};
 
 export default articleJob;

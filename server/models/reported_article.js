@@ -63,12 +63,15 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   Reported.associate = models => {
-    Reported.belongsTo(models.Article, {
+    const { Article, User } = models;
+    Reported.belongsTo(Article, {
       foreignKey: 'reported_article_id',
+      as: 'article',
     });
-    Reported.belongsTo(models.User, {
+    Reported.belongsTo(User, {
       foreignKey: 'reporter_id',
       foreignKey: 'reported_user_id',
+      as: 'user',
     });
   };
 

@@ -2,7 +2,7 @@ import models from '../models';
 import validations from '../helpers/validations';
 import serverError from '../helpers/server-error';
 
-const { Article, User } = models;
+const { Article, User, Reported_articles: ReportedArticles } = models;
 
 const getArticles = async (req, res) => {
   if (validations.validateArticlePage(req.params.page)) {
@@ -59,8 +59,37 @@ const getArticles = async (req, res) => {
   });
 };
 
+const getAllReportedArticles = async (req, res) => {
+  try {
+    if (!validations.validReportedArticleQueryString(req.query)) {
+      return res.status(400).json({
+        errors: {
+          body: ['Invalid query string'],
+        },
+      });
+    }
+    const reportedArticles = await ReportedArticles.findAll({
+      where: req.query,
+      include: [
+        {
+          model: Article,
+          as: 'article',
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      reportedArticles,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
 const Articles = {
   getArticles,
+  getAllReportedArticles,
 };
 
 export default Articles;

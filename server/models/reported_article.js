@@ -1,27 +1,30 @@
 /**
  * @swagger
  * definition:
- *  reported_article:
+ *  report:
  *    type: object
  *    required:
- *      - reported_user_id
  *      - reporter_reason
  *      - reporter_comment
- *      - reviewer_comment
- *      - status
  *    properties:
- *      reporter_id:
- *        type: string
- *        format: uuid
- *      reported_user_id:
- *        type: string
- *        format: uuid
- *      reported_article_id:
- *        type: string
- *        format: uuid
  *      reporter_reason:
  *        type: string
  *      reporter_comment:
+ *        type: string
+ *  review:
+ *    type: object
+ *    required:
+ *      - reviewer_comment
+ *    properties:
+ *      reviewer_reason:
+ *        type: string
+ *  status:
+ *    type: object
+ *    required:
+ *      - status
+ *      - admin_comment
+ *    properties:
+ *      admin_reason:
  *        type: string
  *      status:
  *        type: string
@@ -34,6 +37,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
       unique: true,
+    },
+    reviewer_id: {
+      type: DataTypes.UUID,
     },
     reporter_id: {
       type: DataTypes.UUID,
@@ -54,6 +60,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
     },
     reviewer_comment: {
+      type: DataTypes.STRING,
+    },
+    admin_comment: {
       type: DataTypes.STRING,
     },
     status: {

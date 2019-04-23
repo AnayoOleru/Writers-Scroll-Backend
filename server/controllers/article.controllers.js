@@ -3,12 +3,10 @@ import validations from '../helpers/validations';
 import slugMaker from '../helpers/slug-maker';
 import tagsHelpers from '../helpers/tags-helpers';
 import serverError from '../helpers/server-error';
-import serchDatabase from '../helpers/search-database';
 import readingTime from '../helpers/reading-time';
 import statistic from '../helpers/statistics-storer';
 import notifications from '../helpers/notifications';
 
-const { findArticle } = serchDatabase;
 const {
   Article,
   User,
@@ -17,7 +15,10 @@ const {
   Like,
   Bookmark,
   Rating,
+  Sequelize,
 } = model;
+
+const { Op } = Sequelize;
 
 /**
  * @description Get Article
@@ -38,6 +39,7 @@ const getOneArticle = async (req, res) => {
     const article = await Article.findOne({
       where: {
         id: req.params.id,
+        is_reported: false,
       },
       include: [
         {
@@ -160,17 +162,31 @@ const deleteArticle = async (req, res) => {
   }
 };
 
+/**
+ * @description Report an article
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reported article
+ */
 const reportArticle = async (req, res) => {
   try {
     const { reason, comment } = req.body;
     const { articleId } = req.params;
     const { id: reporterId } = req.user.userObj;
 
-    // check if the article id has a relationship in the users table
-    const { user_id: reportedUserId } = await findArticle(articleId);
+    const reportedArticle = await Article.findOne({
+      where: { id: req.params.articleId },
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['email'],
+        },
+      ],
+    });
 
-    if (!reportedUserId) {
-      res.status(404).json({
+    if (!reportedArticle) {
+      return res.status(404).json({
         errors: {
           body: ['Article not found'],
         },
@@ -178,19 +194,22 @@ const reportArticle = async (req, res) => {
     }
     const reported = await ReportedArticle.create({
       reporter_id: reporterId,
-      reported_user_id: reportedUserId,
+      reported_user_id: reportedArticle.user_id,
       reported_article_id: articleId,
       reporter_reason: reason,
       reporter_comment: comment,
     });
 
-    // once a user is reported, then the user should not be able to review an article
-    await User.update(
-      { is_reviewer: false, is_reported: true },
-      { where: { id: reportedUserId } }
+    const messageBody = `<p>your article <b>${
+      reportedArticle.title
+    }</b> has been reported, and it is going through a review process</p>
+    <p>We will notify you when it is reviewed. Please bear with us</p>`;
+    await notifications.reportedArticleNotification(
+      reportedArticle.author.email,
+      messageBody
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       reported,
       message: 'Article was reported successfully',
     });
@@ -295,6 +314,126 @@ const getUserArticles = async (req, res) => {
   }
 };
 
+/**
+ * @description Review reported article
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reviewed article
+ */
+const reviewArticle = async (req, res) => {
+  const { id: reviewerId } = req.user.userObj;
+  const reviewedArticle = await ReportedArticle.findOne({
+    where: { reported_article_id: req.params.articleId },
+  });
+  if (!reviewedArticle) {
+    return res.status(404).json({
+      errors: {
+        body: ['Article not found'],
+      },
+    });
+  }
+  if (reviewedArticle.reported_user_id === reviewerId) {
+    return res.status(403).json({
+      errors: {
+        body: ["you can't review your own article"],
+      },
+    });
+  }
+  if (reviewedArticle.status === 'reviewed') {
+    return res.status(409).json({
+      errors: {
+        body: ['This article has already been reviewed'],
+      },
+    });
+  }
+
+  const values = {
+    reviewer_id: reviewerId,
+    reviewer_comment: req.body.reviewer_comment,
+    status: 'reviewed',
+  };
+
+  const updatedReview = await reviewedArticle.update(values);
+
+  return res.status(200).json({
+    updatedReview,
+    message: 'You have successfully reviewed this article',
+  });
+};
+
+/**
+ * @description Reported article status
+ * @param {*} req
+ * @param {*} res
+ * @returns {object} response and reported article status
+ */
+const articleStatus = async (req, res) => {
+  try {
+    const { articleId } = req.params;
+    const reviewedArticle = await ReportedArticle.findOne({
+      where: {
+        [Op.and]: [{ reported_article_id: articleId }, { status: 'reviewed' }],
+      },
+      include: [
+        {
+          model: Article,
+          as: 'article',
+          attributes: ['title'],
+        },
+      ],
+    });
+
+    if (!reviewedArticle) {
+      return res.status(404).json({
+        errors: {
+          body: ['Article not found or has been reviewed'],
+        },
+      });
+    }
+
+    const user = await User.findOne({
+      where: { id: reviewedArticle.reported_user_id },
+    });
+
+    const { status, admin_comment: adminComment } = req.body;
+    let isReported = user.is_reported;
+    let isReviewer = user.is_reviewer;
+
+    if (status === 'accepted') {
+      isReported = true;
+      isReviewer = false;
+    }
+
+    await User.update(
+      { is_reported: isReported, is_reviewer: isReviewer },
+      { where: { id: reviewedArticle.reported_user_id } }
+    );
+
+    await Article.update(
+      { is_reported: isReported },
+      { where: { id: articleId } }
+    );
+
+    const updatedReview = await reviewedArticle.update({
+      status,
+      admin_comment: adminComment,
+    });
+    const messageBody = `<p>your article <b>${
+      reviewedArticle.article.title
+    }</b> has been reviewed and the status is <b>${status}</b></p>
+    <p>Please note that you have to unpublish this article within 2 days</p>`;
+    await notifications.reportedArticleNotification(user.email, messageBody);
+    return res.status(200).json({
+      updatedReview,
+      message: `Article status has been changed to ${status}`,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
 const controller = {
   getOneArticle,
   createArticle,
@@ -303,6 +442,8 @@ const controller = {
   editAticle,
   createHighlight,
   getUserArticles,
+  reviewArticle,
+  articleStatus,
 };
 
 export default controller;

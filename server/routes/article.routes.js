@@ -98,10 +98,10 @@ router.post(
  *         required: true
  *       - in: body
  *         name: article_body
- *         description: Article body to report
+ *         description: Article body to reported
  *         required: true
  *         schema:
- *           $ref: '#/definitions/reported_article'
+ *           $ref: '#/definitions/report'
  *     responses:
  *       200:
  *         description: Success
@@ -120,6 +120,87 @@ router.post(
   tokenValidator.verifyToken,
   articleMiddleware.reportArticleValidator,
   articleController.reportArticle
+);
+
+/**
+ * @swagger
+ *
+ * /article/review/{articleId}:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: reviewers can review reported article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: articleId
+ *         description: id of the article
+ *         required: true
+ *       - in: body
+ *         name: article_body
+ *         description: Article body to review
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/review'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+
+router.patch(
+  '/article/review/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.reviewArticleValidator,
+  articleController.reviewArticle
+);
+
+/**
+ * @swagger
+ *
+ * /article/status/{articleId}:
+ *   post:
+ *     tags:
+ *       - article
+ *     description: admin can change the staus of reported article
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: articleId
+ *         description: id of the article
+ *         required: true
+ *       - in: body
+ *         name: article_body
+ *         description: Article body
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/status'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+router.patch(
+  '/article/status/:articleId',
+  tokenValidator.verifyToken,
+  articleMiddleware.articleStatusValidator,
+  articleController.articleStatus
 );
 
 /**

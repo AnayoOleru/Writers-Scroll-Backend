@@ -1,6 +1,7 @@
 /**
  * @swagger
  * definition:
+ *
  *  article:
  *    type: object
  *    required:

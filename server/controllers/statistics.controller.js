@@ -2,7 +2,7 @@ import moment from 'moment';
 import models from '../models';
 import serverError from '../helpers/server-error';
 
-const { Statistic, Sequelize } = models;
+const { Statistic, Article, Sequelize } = models;
 
 const { Op } = Sequelize;
 
@@ -16,14 +16,20 @@ const getDailyStatistic = async (req, res) => {
   try {
     const statisticBox = await Statistic.findAndCountAll({
       where: {
-        user_id: req.params.userid,
+        user_id: req.user.userObj.id,
         createdAt: {
           [Op.gte]: moment()
             .subtract(12, 'hours')
             .toDate(),
         },
       },
-      attributes: ['article_id', 'createdAt'],
+      attributes: ['article_id'],
+      include: [
+        {
+          model: Article,
+          attributes: ['title'],
+        },
+      ],
     });
     if (statisticBox.count === 0) {
       return res.status(200).json({
@@ -34,6 +40,7 @@ const getDailyStatistic = async (req, res) => {
     return res.status(200).json({
       message: 'Your Reading Statistic Today',
       statistic: `${statisticBox.count} article read today`,
+      data: statisticBox.rows,
     });
   } catch (err) {
     return serverError;
@@ -50,14 +57,20 @@ const getWeeklyStatistic = async (req, res) => {
   try {
     const statisticBox = await Statistic.findAndCountAll({
       where: {
-        user_id: req.params.userid,
+        user_id: req.user.userObj.id,
         createdAt: {
           [Op.gte]: moment()
             .subtract(6, 'days')
             .toDate(),
         },
       },
-      attributes: ['article_id', 'createdAt'],
+      attributes: ['article_id'],
+      include: [
+        {
+          model: Article,
+          attributes: ['title'],
+        },
+      ],
     });
 
     if (statisticBox.count === 0) {
@@ -69,6 +82,7 @@ const getWeeklyStatistic = async (req, res) => {
     return res.status(200).json({
       message: 'Your Reading Statistic This Week',
       statistic: `${statisticBox.count} article read this week`,
+      data: statisticBox.rows,
     });
   } catch (err) {
     return serverError;
@@ -85,14 +99,20 @@ const getMonthlyStatistic = async (req, res) => {
   try {
     const statisticBox = await Statistic.findAndCountAll({
       where: {
-        user_id: req.params.userid,
+        user_id: req.user.userObj.id,
         createdAt: {
           [Op.gte]: moment()
             .subtract(30, 'days')
             .toDate(),
         },
       },
-      attributes: ['article_id', 'createdAt'],
+      attributes: ['article_id'],
+      include: [
+        {
+          model: Article,
+          attributes: ['title'],
+        },
+      ],
     });
 
     if (statisticBox.count === 0) {
@@ -104,6 +124,7 @@ const getMonthlyStatistic = async (req, res) => {
     return res.status(200).json({
       message: 'Your Reading Statistic This Month',
       statistic: `${statisticBox.count} article read this month`,
+      data: statisticBox.rows,
     });
   } catch (err) {
     return serverError;

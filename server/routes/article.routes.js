@@ -240,4 +240,35 @@ router.post(
   articleController.createHighlight
 );
 
+/**
+ * @swagger
+ *
+ * /myArticles:
+ *   get:
+ *     tags:
+ *       - myArticles
+ *     description: An authenticated user can get his/her articles
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *         schema:
+ *           $ref: '#/definitions/myArticles'
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: server error
+ */
+router.get(
+  '/myArticles',
+  tokenValidator.verifyToken,
+  articleController.getUserArticles
+);
+
 export default router;

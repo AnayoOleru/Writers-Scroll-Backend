@@ -268,6 +268,33 @@ const createHighlight = async (req, res) => {
   });
 };
 
+const getUserArticles = async (req, res) => {
+  const userId = req.user.userObj.id;
+  try {
+    const findMyArticles = await Article.findAll({
+      where: {
+        user_id: userId,
+        is_reported: false,
+      },
+    });
+    if (findMyArticles.length === 0) {
+      return res.status(404).json({
+        errors: {
+          body: ['You have not written any article on this platform'],
+        },
+      });
+    }
+    return res.status(200).json({
+      message: 'You have successfully retrieved your articles',
+      articles: findMyArticles,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
+
 const controller = {
   getOneArticle,
   createArticle,
@@ -275,6 +302,7 @@ const controller = {
   reportArticle,
   editAticle,
   createHighlight,
+  getUserArticles,
 };
 
 export default controller;

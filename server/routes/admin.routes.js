@@ -10,7 +10,7 @@ const router = express.Router();
 /**
  * @swagger
  *
- * /admin/{id}/upgrade:
+ * /admin/{id}/upgrades:
  *   patch:
  *     tags:
  *       - admin
@@ -38,7 +38,7 @@ const router = express.Router();
 
 // Activate a use as a reviewer
 router.patch(
-  '/admin/:id/upgrade',
+  '/admin/:id/upgrades',
   tokenValidator.verifyToken,
   tokenValidator.verifyAdmin,
   adminMiddleware.checkAdmin,
@@ -48,7 +48,7 @@ router.patch(
 /**
  * @swagger
  *
- * /admin/{id}/downgrade:
+ * /admin/{id}/downgrades:
  *   patch:
  *     tags:
  *       - admin
@@ -75,7 +75,7 @@ router.patch(
  */
 // deactivate a user a reviewer
 router.patch(
-  '/admin/:id/downgrade',
+  '/admin/:id/downgrades',
   tokenValidator.verifyToken,
   tokenValidator.verifyAdmin,
   adminMiddleware.checkAdmin,
@@ -90,7 +90,7 @@ router.patch(
  *     tags:
  *       - admin
  *       - auth
- *     description: Admin can all users that make a request to become a reviewer
+ *     description: Admin can get all users that requested to be a reviewer
  *     produces:
  *       - application/json
  *     responses:
@@ -112,5 +112,38 @@ router.get(
   tokenValidator.verifyAdmin,
   adminMiddleware.checkAdmin,
   adminController.getAllReviewerRequests
+);
+
+/**
+ * @swagger
+ *
+ * /admin/reviewers:
+ *   get:
+ *     tags:
+ *       - admin
+ *       - auth
+ *     description: Admin can get all reviewers
+ *     produces:
+ *       - application/json
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+// get all reviewer request
+// get all reviewers
+router.get(
+  '/admin/reviewers',
+  tokenValidator.verifyToken,
+  tokenValidator.verifyAdmin,
+  adminMiddleware.checkAdmin,
+  adminController.getAllReviewers
 );
 export default router;

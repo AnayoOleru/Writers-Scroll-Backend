@@ -1,3 +1,23 @@
+/**
+ * @swagger
+ * definition:
+ *  bookmark:
+ *    type: object
+ *    required:
+ *      - id
+ *      - article_id
+ *      - user_id
+ *    properties:
+ *      id:
+ *        type: string
+ *        format: uuid
+ *      article_id:
+ *        type: string
+ *        format: uuid
+ *      user_d:
+ *        type: string
+ *        format: uuid
+ */
 module.exports = (sequelize, DataTypes) => {
   const Bookmark = sequelize.define('Bookmark', {
     id: {

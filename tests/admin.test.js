@@ -24,7 +24,7 @@ describe('TEST FOR ADMIN', () => {
   it('It should return a 200 status code on giving a user a reviewer access', done => {
     chai
       .request(app)
-      .patch('/api/v1/admin/7142e4ff-366d-46cc-9384-40eadb3b2626/upgrade')
+      .patch('/api/v1/admin/7142e4ff-366d-46cc-9384-40eadb3b2626/upgrades')
       .set('authorization', token1)
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -38,7 +38,7 @@ describe('TEST FOR ADMIN', () => {
   it('It should return a 200 status code on giving a user a reviewer access', done => {
     chai
       .request(app)
-      .patch('/api/v1/admin/7142e4ff-366d-46cc-9384-40eadb3b2626/downgrade')
+      .patch('/api/v1/admin/7142e4ff-366d-46cc-9384-40eadb3b2626/downgrades')
       .set('authorization', token1)
       .end((err, res) => {
         expect(res.status).to.equal(200);
@@ -52,7 +52,7 @@ describe('TEST FOR ADMIN', () => {
   it('It should return a 401 error for an empty token', done => {
     chai
       .request(app)
-      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dca/upgrade')
+      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dca/upgrades')
       .set('authorization', token1)
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -63,7 +63,7 @@ describe('TEST FOR ADMIN', () => {
   it('It should return a 404 error if Id is invalid', done => {
     chai
       .request(app)
-      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrade')
+      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrades')
       .set('authorization', token1)
       .end((err, res) => {
         expect(res).to.have.status(400);
@@ -74,7 +74,7 @@ describe('TEST FOR ADMIN', () => {
   it('It should return a 401 error for an empty token', done => {
     chai
       .request(app)
-      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrade')
+      .patch('/api/v1/admin/57c515a1-890d-412f-8ca1-0a5395123dc/upgrades')
       .set('authorization', '')
       .end((err, res) => {
         expect(res).to.have.status(401);
@@ -91,6 +91,19 @@ describe('TEST FOR ADMIN', () => {
         expect(res).to.have.status(200);
         expect(res.body.message).to.be.equal(
           'List of users requesting to be reviewers'
+        );
+        done();
+      });
+  });
+  it('It should return all reviewers', done => {
+    chai
+      .request(app)
+      .get('/api/v1/admin/reviewers')
+      .set('authorization', token1)
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.message).to.be.equal(
+          'List of users that are reviewers'
         );
         done();
       });

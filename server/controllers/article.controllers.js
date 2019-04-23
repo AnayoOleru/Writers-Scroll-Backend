@@ -203,7 +203,7 @@ const reportArticle = async (req, res) => {
     const messageBody = `<p>your article <b>${
       reportedArticle.title
     }</b> has been reported, and it is going through a review process</p>
-    <p>We will notify you when it is reviewed. Please bear with up</p>`;
+    <p>We will notify you when it is reviewed. Please bear with us</p>`;
     await notifications.reportedArticleNotification(
       reportedArticle.author.email,
       messageBody
@@ -421,7 +421,7 @@ const articleStatus = async (req, res) => {
     const messageBody = `<p>your article <b>${
       reviewedArticle.article.title
     }</b> has been reviewed and the status is <b>${status}</b></p>
-    <p>Please not that you have to unpublish this article within 2days</p>`;
+    <p>Please not that you have to unpublish this article within 2 days</p>`;
     await notifications.reportedArticleNotification(user.email, messageBody);
     return res.status(200).json({
       updatedReview,

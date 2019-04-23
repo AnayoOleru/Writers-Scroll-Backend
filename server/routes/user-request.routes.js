@@ -42,6 +42,7 @@ router.post(
   '/request',
   tokenValidator.verifyToken,
   userRequest.verifyRequest,
+  userRequest.checkIfRequestExists,
   requestController.request
 );
 

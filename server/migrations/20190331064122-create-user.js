@@ -54,6 +54,10 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },
+      is_requested: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       is_notified: {
         type: Sequelize.BOOLEAN,
         defaultValue: true,

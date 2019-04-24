@@ -111,7 +111,11 @@ const createArticle = async (req, res) => {
     }
 
     if (!req.body.is_draft) {
-      notifications.sendEmailNotificationArticle(article.title, userObj.id);
+      notifications.sendEmailNotificationArticle(
+        article.id,
+        article.title,
+        userObj.id
+      );
     }
 
     return res.status(201).json({

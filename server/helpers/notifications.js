@@ -2,8 +2,9 @@ import sendEmail from '../config/email';
 import models from '../models';
 import template from './template';
 import { pusher } from '../config/pusher';
+import serverError from './server-error';
 
-const { User, Follower } = models;
+const { User, Follower, Notification } = models;
 
 const forgetPassword = (email, link) => {
   const subject = 'Password Reset';
@@ -42,14 +43,36 @@ const signupEmail = (email, link, name) => {
   const message = template(title, body, email);
   sendEmail(email, title, message);
 };
-
 /**
  *
+ * @param {*} articleId
+ * @param {*} authorId
+ * @param {*} message
+ * @returns {*} save notification
+ */
+const saveNewNotification = async (articleId, authorId, message) => {
+  try {
+    const savedNotification = await Notification.create({
+      user_id: authorId,
+      article_id: articleId,
+      message,
+    });
+    return savedNotification;
+  } catch (err) {
+    return serverError;
+  }
+};
+/**
+ * @param {*} articleId
  * @param {*} articleTitle
  * @param {*} authorId
  * @returns {*} sends an email to the author
  */
-const sendEmailNotificationComment = async (articleTitle, authorId) => {
+const sendEmailNotificationComment = async (
+  articleId,
+  articleTitle,
+  authorId
+) => {
   const authorEmail = await User.findOne({
     where: { id: authorId },
     attributes: ['email', 'first_name'],
@@ -63,19 +86,26 @@ const sendEmailNotificationComment = async (articleTitle, authorId) => {
 
   const message = template(templateSubject, templateMessage, templateEmail);
   sendEmail(templateEmail, templateSubject, message);
+  saveNewNotification(articleId, authorId, templateMessage);
+
   // in-app notification
-  pusher.trigger('channel', 'event', {
+  pusher.trigger(`notification-comment-${authorId}`, 'new-comment', {
     message: `Your article ${articleTitle} has a new comment`,
   });
 };
 
 /**
  *
+ * @param {*} articleId
  * @param {*} articleTitle
  * @param {*} userId
  * @returns {*} sends an email to all followers
  */
-const sendEmailNotificationArticle = async (articleTitle, userId) => {
+const sendEmailNotificationArticle = async (
+  articleId,
+  articleTitle,
+  userId
+) => {
   const followers = await Follower.findAll({
     where: { followee_id: userId },
     attributes: ['follower_id'],
@@ -108,9 +138,10 @@ const sendEmailNotificationArticle = async (articleTitle, userId) => {
       templateFollowersEmail
     );
     sendEmail(templateFollowersEmail, templateSubject, message);
+    saveNewNotification(articleId, userId, templateMessage);
 
     // in-app notification
-    pusher.trigger('channel', 'event', {
+    pusher.trigger(`notification-article-${userId}`, 'new-article', {
       message: `${
         user.follower.first_name
       } has published a new article ${articleTitle}`,
@@ -134,6 +165,7 @@ const Notifications = {
   forgetPassword,
   passwordReset,
   signupEmail,
+  saveNewNotification,
   sendEmailNotificationComment,
   sendEmailNotificationArticle,
   reportedArticleNotification,

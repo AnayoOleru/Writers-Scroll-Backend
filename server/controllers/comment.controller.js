@@ -53,7 +53,11 @@ const post = async (req, res) => {
       body: req.body.body,
     });
 
-    notifications.sendEmailNotificationComment(article.title, article.user_id);
+    notifications.sendEmailNotificationComment(
+      req.body.article_id,
+      article.title,
+      article.user_id
+    );
     res.status(201).json({
       comment,
     });

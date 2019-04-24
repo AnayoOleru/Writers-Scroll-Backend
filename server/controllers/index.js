@@ -13,6 +13,7 @@ import bookmarkController from './bookmark.controller';
 import requestController from './user-request.controllers';
 import searchArticles from './search-article.controllers';
 import getAllReportedArticles from './get-articles.controllers';
+import updateIsSeenColumn from './notification.controllers';
 
 export default {
   profileController,
@@ -30,4 +31,5 @@ export default {
   requestController,
   searchArticles,
   getAllReportedArticles,
+  updateIsSeenColumn,
 };

@@ -67,7 +67,7 @@ router.get(
 router.get(
   '/notifications',
   tokenValidator.verifyToken,
-  updateIsSeenColumn.getAllNotification
+  updateIsSeenColumn.getAllNotifications
 );
 
 export default router;

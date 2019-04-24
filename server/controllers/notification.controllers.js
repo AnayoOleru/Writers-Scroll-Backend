@@ -44,21 +44,21 @@ const updateIsSeenColumn = async (req, res) => {
  * @param {*} res
  * @returns {object} All the notification belonging to the user
  */
-const getAllNotification = async (req, res) => {
+const getAllNotifications = async (req, res) => {
   try {
-    const notification = await Notification.findAndCountAll({
+    const notifications = await Notification.findAndCountAll({
       where: {
         user_id: req.user.userObj.id,
         is_seen: false,
       },
     });
-    if (!notification || notification.count === 0) {
+    if (!notifications || notifications.count === 0) {
       return res.status(200).json({
         message: "You don't have any notifications",
       });
     }
     return res.status(200).json({
-      data: notification,
+      data: notifications,
     });
   } catch (err) {
     return serverError;
@@ -67,7 +67,7 @@ const getAllNotification = async (req, res) => {
 
 const notificationController = {
   updateIsSeenColumn,
-  getAllNotification,
+  getAllNotifications,
 };
 
 export default notificationController;

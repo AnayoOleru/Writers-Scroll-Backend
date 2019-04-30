@@ -3,6 +3,7 @@ import swaggerUi from 'swagger-ui-express';
 import passport from 'passport';
 import session from 'cookie-session';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import articleJob from './jobs/report-article.jobs';
 import routes from './routes/index';
 import swaggerSpec from './documentation/swagger';
@@ -19,6 +20,7 @@ const app = express();
 
 app.use(express.json());
 app.use(trimmerMiddleware);
+app.use(cors());
 
 articleJob();
 const port = process.env.PORT || 6000;

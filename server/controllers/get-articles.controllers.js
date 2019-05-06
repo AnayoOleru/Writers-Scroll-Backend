@@ -32,9 +32,11 @@ const getArticles = async (req, res) => {
           'slug',
           'title',
           'body',
+          'likes_count',
+          'reading_time',
+          'category',
           'createdAt',
           'updatedAt',
-          'likes_count',
         ],
         include: [
           {
@@ -89,9 +91,32 @@ const getAllReportedArticles = async (req, res) => {
     });
   }
 };
+
+const getAllArticles = async (req, res) => {
+  try {
+    const articles = await Article.findAll({
+      include: [
+        {
+          model: User,
+          as: 'author',
+          attributes: ['first_name', 'last_name'],
+        },
+      ],
+    });
+
+    return res.status(200).json({
+      articles,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
 const Articles = {
   getArticles,
   getAllReportedArticles,
+  getAllArticles,
 };
 
 export default Articles;

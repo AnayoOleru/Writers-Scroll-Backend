@@ -30,3 +30,16 @@ describe('Display articles in pages', () => {
       });
   });
 });
+
+describe('Get all articles', () => {
+  it('should get all articles', done => {
+    chai
+      .request(app)
+      .get('/api/v1/articles')
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        expect(res.body.articles).to.be.a('array');
+        done();
+      });
+  });
+});

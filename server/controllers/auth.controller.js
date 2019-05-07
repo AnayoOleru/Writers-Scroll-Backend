@@ -93,8 +93,15 @@ const signupController = async (req, res) => {
       is_admin: isAdmin,
       first_name: firstName,
       is_reviewer: isReviewer,
+      is_activated: isActivated,
     } = user;
-    const token = authHelper.encode({ id, isAdmin, isReviewer });
+    const token = authHelper.encode({
+      id,
+      email,
+      isAdmin,
+      isReviewer,
+      isActivated,
+    });
 
     const verificationToken = authHelper.encode({ email });
     const verificationLink = `${req.protocol}://${req.get(

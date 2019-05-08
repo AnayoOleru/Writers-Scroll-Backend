@@ -164,9 +164,6 @@ module.exports = (sequelize, DataTypes) => {
   User.beforeCreate(user => {
     user.password = authHelpers.hashPassword(user.password);
   });
-  User.beforeUpdate(user => {
-    user.password = authHelpers.hashPassword(user.password);
-  });
 
   User.associate = models => {
     const { Follower, Article } = models;

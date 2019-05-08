@@ -67,4 +67,26 @@ router.get(
   Articles.getAllReportedArticles
 );
 
+/**
+ * @swagger
+ *
+ * /reported-articles:
+ *   get:
+ *     tags:
+ *       - article
+ *     description: a verified reviewer can get all articles
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: ran
+ */
+router.get('/articles', Articles.getAllArticles);
+
 export default router;

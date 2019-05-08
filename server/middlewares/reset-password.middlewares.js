@@ -51,6 +51,7 @@ const ResetPasswordMiddleware = {
 
   async mailer(req, res) {
     try {
+      // const urlTest = req.body;
       const linkUrl = `${req.protocol}://${req.get('host')}/api/v1/auth/reset/${
         req.token
       }/password`;

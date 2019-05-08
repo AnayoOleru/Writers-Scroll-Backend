@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
 import db from '../models';
 import authHelper from '../helpers/auth';
 import searchDatabase from '../helpers/search-database';
 import notifications from '../helpers/notifications';
 import serverError from '../helpers/server-error';
 
+dotenv.config();
 const { findUser } = searchDatabase;
 const { User } = db;
 const error = ['invalid username and/or password'];
@@ -104,9 +106,8 @@ const signupController = async (req, res) => {
     });
 
     const verificationToken = authHelper.encode({ email });
-    const verificationLink = `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/auth/verification/${verificationToken}`;
+    const { FRONTEND_VERIFY_EMAIL_URL } = process.env;
+    const verificationLink = `${FRONTEND_VERIFY_EMAIL_URL}?token=${verificationToken}`;
 
     await notifications.signupEmail(email, verificationLink, firstName);
 

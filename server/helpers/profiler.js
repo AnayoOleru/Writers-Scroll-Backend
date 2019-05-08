@@ -5,6 +5,7 @@ const profiler = user => {
     lastname: user.last_name,
     title: user.title,
     bio: user.bio,
+    imageUrl: user.image_url,
     phonenumber: user.phone_number,
     email: user.email,
     isreviewer: user.is_reviewer,

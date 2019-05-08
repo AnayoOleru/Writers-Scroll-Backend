@@ -8,7 +8,7 @@ const swaggerDefinition = {
     description:
       'A community of like-minded authors to foster inspiration and innovation by leveraging the modern web',
   },
-  host: 'localhost:3000',
+  host: 'https://hermes-ah-backend.herokuapp.com',
   basePath: '/api/v1',
   schemes: ['https', 'http'],
   securityDefinitions: {

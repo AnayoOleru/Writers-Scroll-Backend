@@ -77,13 +77,7 @@ const getFollowing = async (req, res) => {
         },
       ],
     });
-    if (users.length < 1) {
-      return res.status(200).json({
-        errors: {
-          body: ['Sorry, you are not following anyone'],
-        },
-      });
-    }
+
     return res.status(200).json({
       message:
         'You have successfully retrieved all the users you are following',

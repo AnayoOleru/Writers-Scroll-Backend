@@ -73,6 +73,7 @@ const validEditableProfileBody = body => {
     'title',
     'bio',
     'is_activated',
+    'phone_number',
     'image_url',
     'email',
     'is_reviewer',

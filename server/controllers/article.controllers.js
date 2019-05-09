@@ -300,13 +300,7 @@ const getUserArticles = async (req, res) => {
         is_reported: false,
       },
     });
-    if (findMyArticles.length === 0) {
-      return res.status(404).json({
-        errors: {
-          body: ['You have not written any article on this platform'],
-        },
-      });
-    }
+
     return res.status(200).json({
       message: 'You have successfully retrieved your articles',
       articles: findMyArticles,

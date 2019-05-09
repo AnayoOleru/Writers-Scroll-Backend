@@ -307,19 +307,6 @@ describe('ARTICLE', () => {
         done();
       });
   });
-  it('should respond with error: you have not written any article on this platform', done => {
-    chai
-      .request(app)
-      .get('/api/v1/myArticles')
-      .set('Authorization', userCToken)
-      .end((err, res) => {
-        expect(res).to.have.status(404);
-        expect(res.body.errors.body[0]).to.equal(
-          'You have not written any article on this platform'
-        );
-        done();
-      });
-  });
   it('should return this user articles', done => {
     chai
       .request(app)

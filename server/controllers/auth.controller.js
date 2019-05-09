@@ -157,7 +157,7 @@ const verifyEmail = async (req, res) => {
 
 const socialCallback = async (accessToken, refreshToken, profile, done) => {
   try {
-    const { id, displayName, emails, provider, photos } = profile;
+    const { id, displayName, emails, provider } = profile;
 
     if (!emails) {
       const userWithNoEmail = { noEmail: true };
@@ -166,7 +166,6 @@ const socialCallback = async (accessToken, refreshToken, profile, done) => {
 
     const userEmail = emails[0].value;
     const names = displayName.split(' ');
-    const profileImage = photos[0].value;
 
     const [user] = await User.findOrCreate({
       where: { email: userEmail },
@@ -176,7 +175,6 @@ const socialCallback = async (accessToken, refreshToken, profile, done) => {
         password: id,
         email: userEmail,
         social: provider,
-        image_url: profileImage,
       },
     });
 

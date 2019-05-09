@@ -84,7 +84,7 @@ describe('GET articles authors had bookmarked', () => {
       .get('/api/v1/bookmarks')
       .set('Authorization', userCToken)
       .end((err, res) => {
-        expect(res).to.have.status(201);
+        expect(res).to.have.status(200);
         expect(res.body.message).to.be.equal('Articles you bookmarked');
         expect(res.body).to.be.an('object');
         expect(res.body.data).to.be.an('array');

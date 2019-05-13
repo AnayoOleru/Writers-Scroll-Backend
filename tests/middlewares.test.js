@@ -8,7 +8,7 @@ describe('LOGIN VALIDATOR TEST', () => {
     chai
       .request(app)
       .post(`${baseUrl}/auth/login`)
-      .send({ email: '', password: 'testingpassword' })
+      .send({ email: '', password: 'h0=ttesttpassword' })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
           'email is not allowed to be empty'
@@ -20,7 +20,7 @@ describe('LOGIN VALIDATOR TEST', () => {
     chai
       .request(app)
       .post(`${baseUrl}/auth/login`)
-      .send({ email: 'test', password: 'testingpassword' })
+      .send({ email: 'test', password: 'h0=ttesttpassword' })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
           'email must be a valid email'
@@ -32,7 +32,7 @@ describe('LOGIN VALIDATOR TEST', () => {
     chai
       .request(app)
       .post(`${baseUrl}/auth/login`)
-      .send({ email: ['test'], password: 'testingpassword' })
+      .send({ email: ['test'], password: 'h0=ttesttpassword' })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal('email must be a string');
         done(err);
@@ -54,7 +54,7 @@ describe('LOGIN VALIDATOR TEST', () => {
     chai
       .request(app)
       .post(`${baseUrl}/auth/login`)
-      .send({ email: 'test@gmail.com', password: ['testingpassword'] })
+      .send({ email: 'test@gmail.com', password: ['h0=ttesttpassword'] })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
           'password must be a string'
@@ -71,10 +71,10 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: '',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -89,10 +89,10 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'email',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -107,10 +107,10 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: ['email'],
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal('email must be a string');
@@ -123,10 +123,10 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: '',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -141,10 +141,10 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: ['test'],
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -161,8 +161,8 @@ describe('SIGNUP VALIDATION TEST', () => {
         firstname: 'test',
         lastname: '',
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -179,8 +179,8 @@ describe('SIGNUP VALIDATION TEST', () => {
         firstname: 'test',
         lastname: ['test'],
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: 'testingpassword',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
@@ -195,14 +195,14 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
         password: '',
-        confirmPassword: 'testing',
+        confirmPassword: 'h0=ttestt',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'password is not allowed to be empty'
+          'Password must contain a number, character and alphabet'
         );
         done(err);
       });
@@ -213,14 +213,14 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: ['testingpassword'],
-        confirmPassword: 'testingpassword',
+        password: ['h0=ttesttpassword'],
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'password must be a string'
+          'Password must contain a number, character and alphabet'
         );
         done(err);
       });
@@ -231,14 +231,14 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
         password: 'test',
-        confirmPassword: 'testingpassword',
+        confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'password length must be at least 8 characters long'
+          'Password must contain a number, character and alphabet'
         );
         done(err);
       });
@@ -249,9 +249,9 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: 'testing1',
+        password: 'h0=ttestt1',
         confirmPassword: '',
       })
       .end((err, res) => {
@@ -267,14 +267,14 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: ['testingpassword'],
+        password: 'h0=ttesttpassword',
+        confirmPassword: ['h0=ttesttpassword'],
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'confirmPassword must be a string'
+          'Password must contain a number, character and alphabet'
         );
         done(err);
       });
@@ -285,13 +285,15 @@ describe('SIGNUP VALIDATION TEST', () => {
       .post(`${baseUrl}/auth/signup`)
       .send({
         firstname: 'Mr test',
-        lastname: 'testing',
+        lastname: 'h0=ttestt',
         email: 'test@gmail.com',
-        password: 'testingpassword',
-        confirmPassword: 'testing',
+        password: 'h0=ttesttpassword',
+        confirmPassword: 'h0=ttestt',
       })
       .end((err, res) => {
-        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Password must contain a number, character and alphabet'
+        );
         done(err);
       });
   });

@@ -59,8 +59,8 @@ describe('SIGNUP CONTROLLER TEST', () => {
         firstname: 'Mrs test',
         lastname: 'testers',
         email: 'mrstest@gmail.com',
-        password: 'testing1',
-        confirmPassword: 'testing1',
+        password: 'testing=1',
+        confirmPassword: 'testing=1',
       })
       .end((_err, res) => {
         const { user } = res.body;
@@ -79,8 +79,8 @@ describe('SIGNUP CONTROLLER TEST', () => {
         firstname: 'Mr test',
         lastname: 'tester',
         email: 'test@test.com',
-        password: 'testing1',
-        confirmPassword: 'testing1',
+        password: 'testing=1',
+        confirmPassword: 'testing=1',
       })
       .end((_err, res) => {
         const { user } = res.body;

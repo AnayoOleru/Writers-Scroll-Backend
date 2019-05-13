@@ -23,8 +23,8 @@ describe('POST COMMENT', () => {
         firstname: 'Adebisi',
         lastname: 'Adebisi',
         email: 'bukunmi@gmail.com',
-        password: 'h0ttestt',
-        confirmPassword: 'h0ttestt',
+        password: 'h0=ttestt',
+        confirmPassword: 'h0=ttestt',
       });
 
     const user1 = await chai
@@ -32,7 +32,7 @@ describe('POST COMMENT', () => {
       .post('/api/v1/auth/login')
       .send({
         email: 'bukunmi@gmail.com',
-        password: 'h0ttestt',
+        password: 'h0=ttestt',
       });
     userToken = user1.body.user.token;
 

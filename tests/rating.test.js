@@ -21,8 +21,8 @@ describe('POST RATING', () => {
         firstname: 'Adebisi',
         lastname: 'Adebisi',
         email: 'bukunmi@gmail.com',
-        password: 'h0ttestt',
-        confirmPassword: 'h0ttestt',
+        password: 'h0=ttestt',
+        confirmPassword: 'h0=ttestt',
       });
 
     const userDetails = await chai
@@ -30,7 +30,7 @@ describe('POST RATING', () => {
       .post('/api/v1/auth/login')
       .send({
         email: 'bukunmi@gmail.com',
-        password: 'h0ttestt',
+        password: 'h0=ttestt',
       });
     userToken = userDetails.body.user.token;
   });

@@ -79,6 +79,11 @@ const getAllReportedArticles = async (req, res) => {
           model: Article,
           as: 'article',
         },
+        {
+          model: User,
+          as: 'reviewer',
+          attributes: ['first_name', 'last_name'],
+        },
       ],
     });
 

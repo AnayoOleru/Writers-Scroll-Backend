@@ -31,8 +31,9 @@ module.exports = {
         reported_article_id: 'fb3def47-153c-40bd-8161-a1c787e083d7',
         reporter_reason: 'Copyright Infringment',
         reporter_comment: 'The article.................',
-        reviewer_comment: '',
-        status: 'pending',
+        reviewer_comment:
+          'Yeah this report is valid. The author violated the copyright policy',
+        status: 'reviewed',
       },
     ]),
 };

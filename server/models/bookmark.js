@@ -42,6 +42,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Bookmark.belongsTo(models.User, {
       foreignKey: 'user_id',
+      as: 'author',
     });
   };
   return Bookmark;

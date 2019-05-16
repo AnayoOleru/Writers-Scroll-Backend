@@ -9,7 +9,7 @@ const articleSchema = () => {
     body: Joi.string().min(5),
     is_draft: Joi.boolean().required(),
     image_url: Joi.string()
-      .min(1)
+      .min(0)
       .max(250),
     keywords: Joi.array().items(Joi.string(), Joi.number()),
     category: Joi.string()

@@ -130,7 +130,7 @@ const getAllReviewerRequests = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ['first_name', 'last_name', 'image_url'],
+          attributes: ['first_name', 'last_name', 'image_url', 'bio'],
         },
       ],
     });

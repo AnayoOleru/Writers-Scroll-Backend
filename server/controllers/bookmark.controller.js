@@ -79,6 +79,13 @@ const getBookMarkedArticlesForUser = async (req, res) => {
             'likes_count',
             'reading_time',
           ],
+          include: [
+            {
+              model: User,
+              as: 'author',
+              attributes: ['first_name', 'last_name'],
+            },
+          ],
         },
       ],
     });

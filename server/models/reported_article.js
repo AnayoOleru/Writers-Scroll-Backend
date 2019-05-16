@@ -82,6 +82,11 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'reported_user_id',
       as: 'user',
     });
+
+    Reported.belongsTo(User, {
+      foreignKey: 'reviewer_id',
+      as: 'reviewer',
+    });
   };
 
   return Reported;

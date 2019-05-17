@@ -4,17 +4,20 @@ const passwordSchema = Joi.object().keys({
   password: Joi.string()
     .strict()
     .trim()
-    .regex(/^[a-zA-Z0-9]{3,30}$/)
+    .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
     .min(8)
     .required()
-    .error(() => 'Password is required'),
+    .error(
+      () =>
+        `Password must be greater than 8 and should contain at least one upper case letter, one lower case letter, one digit and one special character`
+    ),
   confirmPassword: Joi.string()
     .strict()
     .trim()
-    .regex(/^[a-zA-Z0-9]{3,30}$/)
+    .regex(/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/)
     .min(8)
     .required()
-    .error(() => 'confirmPassword is required'),
+    .error(() => 'Confirm Password is required'),
 });
 
 const emailSchema = Joi.object().keys({

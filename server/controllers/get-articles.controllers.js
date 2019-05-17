@@ -100,6 +100,9 @@ const getAllReportedArticles = async (req, res) => {
 const getAllArticles = async (req, res) => {
   try {
     const articles = await Article.findAll({
+      where: {
+        is_draft: true,
+      },
       include: [
         {
           model: User,

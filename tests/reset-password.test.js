@@ -79,8 +79,8 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: '12345asdf',
-        confirmPassword: '12345asdf',
+        password: '@H0ttestt',
+        confirmPassword: '@H0ttestt',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
@@ -95,8 +95,8 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: '12345asdf',
-        confirmPassword: '12345asdf',
+        password: '@H0ttestt',
+        confirmPassword: '@H0ttestt',
       })
       .end((err, res) => {
         expect(res).to.have.status(403);
@@ -112,8 +112,8 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: '12345asdf',
-        confirmPassword: '12345asdf',
+        password: '@H0ttestt',
+        confirmPassword: '@H0ttestt',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
@@ -130,13 +130,15 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: '12345asdf',
-        confirmPassword: '12345wssasdf',
+        password: '@H0ttestt',
+        confirmPassword: 'H0ttestt',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Confirm Password is required'
+        );
         done();
       });
   });
@@ -146,12 +148,14 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        confirmPassword: '12345wssasdf',
+        confirmPassword: '@H0ttestt',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.errors.body[0]).to.be.equal('Password is required');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Password must be greater than 8 and should contain at least one upper case letter, one lower case letter, one digit and one special character'
+        );
         done();
       });
   });
@@ -161,13 +165,13 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: '12345wssasdf',
+        password: '@H0ttestt',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal(
-          'confirmPassword is required'
+          'Confirm Password is required'
         );
         done();
       });
@@ -184,7 +188,9 @@ describe('UPDATE Password', () => {
       .set('Authorization', emailToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
-        expect(res.body.errors.body[0]).to.be.equal('Password is required');
+        expect(res.body.errors.body[0]).to.be.equal(
+          'Password must be greater than 8 and should contain at least one upper case letter, one lower case letter, one digit and one special character'
+        );
         done();
       });
   });
@@ -194,14 +200,14 @@ describe('UPDATE Password', () => {
       .request(app)
       .patch('/api/v1/auth/new-password')
       .send({
-        password: 'dfddddjk',
+        password: '@H0ttestt',
         confirmPassword: 'dfd',
       })
       .set('Authorization', emailToken)
       .end((err, res) => {
         expect(res).to.have.status(400);
         expect(res.body.errors.body[0]).to.be.equal(
-          'confirmPassword is required'
+          'Confirm Password is required'
         );
         done();
       });

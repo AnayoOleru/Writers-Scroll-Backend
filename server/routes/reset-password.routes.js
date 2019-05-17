@@ -87,7 +87,7 @@ resetPasswordRouter.get('/reset/message', (req, res) => {
 /**
  * @swagger
  *
- * /new_password:
+ * /new-password:
  *   post:
  *     tags:
  *       - update password

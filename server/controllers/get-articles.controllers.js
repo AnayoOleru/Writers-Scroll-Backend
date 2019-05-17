@@ -101,7 +101,7 @@ const getAllArticles = async (req, res) => {
   try {
     const articles = await Article.findAll({
       where: {
-        is_draft: true,
+        is_draft: false,
       },
       include: [
         {

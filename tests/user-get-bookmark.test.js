@@ -4,22 +4,7 @@ import app from '../server/app';
 
 chai.use(chaiHttp);
 
-let userBToken;
 let userCToken;
-
-before('login user', done => {
-  chai
-    .request(app)
-    .post('/api/v1/auth/login')
-    .send({
-      email: 'adesojitest22@gmail.com',
-      password: '12345678',
-    })
-    .end((err, res) => {
-      userBToken = res.body.user.token;
-      done();
-    });
-});
 
 before('login user', done => {
   chai
@@ -65,26 +50,13 @@ describe('Check if payload exist and if payload is incorrect', () => {
 
 // controller test
 describe('GET articles authors had bookmarked', () => {
-  it("should respond with 201 when the user hasn't bookmarked any article yet", done => {
-    chai
-      .request(app)
-      .get('/api/v1/bookmarks')
-      .set('Authorization', userBToken)
-      .end((err, res) => {
-        expect(res).to.have.status(201);
-        expect(res.body.message).to.be.equal(
-          "You haven't bookmarked any article yet"
-        );
-        done();
-      });
-  });
   it('should respond with 201 with the articles, when the user have bookmarked articles', done => {
     chai
       .request(app)
       .get('/api/v1/bookmarks')
       .set('Authorization', userCToken)
       .end((err, res) => {
-        expect(res).to.have.status(201);
+        expect(res).to.have.status(200);
         expect(res.body.message).to.be.equal('Articles you bookmarked');
         expect(res.body).to.be.an('object');
         expect(res.body.data).to.be.an('array');

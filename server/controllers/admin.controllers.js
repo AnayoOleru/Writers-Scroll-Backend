@@ -126,6 +126,13 @@ const getAllReviewerRequests = async (req, res) => {
         is_reviewer: false,
         is_reported: false,
       },
+      attributes: ['user_id'],
+      include: [
+        {
+          model: User,
+          attributes: ['first_name', 'last_name', 'image_url', 'bio'],
+        },
+      ],
     });
     if (getAllUsersRequest) {
       return res.status(200).json({

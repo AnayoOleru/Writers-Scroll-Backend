@@ -14,8 +14,8 @@ describe('TEST USER FOLLOW', () => {
         firstname: 'Daniel',
         lastname: 'chuks',
         email: 'chuksgdf@gmail.com',
-        password: 'chuks121',
-        confirmPassword: 'chuks121',
+        password: 'chuks=121',
+        confirmPassword: 'chuks=121',
       })
       .end((err, res) => {
         const { token } = res.body.user;

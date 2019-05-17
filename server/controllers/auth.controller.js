@@ -1,9 +1,11 @@
+import dotenv from 'dotenv';
 import db from '../models';
 import authHelper from '../helpers/auth';
 import searchDatabase from '../helpers/search-database';
 import notifications from '../helpers/notifications';
 import serverError from '../helpers/server-error';
 
+dotenv.config();
 const { findUser } = searchDatabase;
 const { User } = db;
 const error = ['invalid username and/or password'];
@@ -93,13 +95,19 @@ const signupController = async (req, res) => {
       is_admin: isAdmin,
       first_name: firstName,
       is_reviewer: isReviewer,
+      is_activated: isActivated,
     } = user;
-    const token = authHelper.encode({ id, isAdmin, isReviewer });
+    const token = authHelper.encode({
+      id,
+      email,
+      isAdmin,
+      isReviewer,
+      isActivated,
+    });
 
     const verificationToken = authHelper.encode({ email });
-    const verificationLink = `${req.protocol}://${req.get(
-      'host'
-    )}/api/v1/auth/verification/${verificationToken}`;
+    const { FRONTEND_VERIFY_EMAIL_URL } = process.env;
+    const verificationLink = `${FRONTEND_VERIFY_EMAIL_URL}?token=${verificationToken}`;
 
     await notifications.signupEmail(email, verificationLink, firstName);
 
@@ -149,7 +157,7 @@ const verifyEmail = async (req, res) => {
 
 const socialCallback = async (accessToken, refreshToken, profile, done) => {
   try {
-    const { id, displayName, emails, provider, photos } = profile;
+    const { id, displayName, emails, provider } = profile;
 
     if (!emails) {
       const userWithNoEmail = { noEmail: true };
@@ -158,7 +166,6 @@ const socialCallback = async (accessToken, refreshToken, profile, done) => {
 
     const userEmail = emails[0].value;
     const names = displayName.split(' ');
-    const profileImage = photos[0].value;
 
     const [user] = await User.findOrCreate({
       where: { email: userEmail },
@@ -168,7 +175,6 @@ const socialCallback = async (accessToken, refreshToken, profile, done) => {
         password: id,
         email: userEmail,
         social: provider,
-        image_url: profileImage,
       },
     });
 
@@ -189,8 +195,20 @@ const socialRedirect = async (req, res) => {
     return res.redirect(`${process.env.FRONTEND_URL}/auth/social?error=${400}`);
   }
 
-  const { id, email } = req.user;
-  const token = await authHelper.encode({ id, email });
+  const {
+    id,
+    email,
+    is_admin: isAdmin,
+    is_reviewer: isReviewer,
+    is_activated: isActivated,
+  } = req.user;
+  const token = await authHelper.encode({
+    id,
+    email,
+    isAdmin,
+    isReviewer,
+    isActivated,
+  });
   return res.redirect(`${process.env.FRONTEND_URL}/auth/social?${token}`);
 };
 

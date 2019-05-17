@@ -79,17 +79,18 @@ const getBookMarkedArticlesForUser = async (req, res) => {
             'likes_count',
             'reading_time',
           ],
+          include: [
+            {
+              model: User,
+              as: 'author',
+              attributes: ['first_name', 'last_name'],
+            },
+          ],
         },
       ],
     });
 
-    // check if the user hasn't bookmarked any article yet
-    if (!bookmarkedArticles.length) {
-      return res.status(201).json({
-        message: "You haven't bookmarked any article yet",
-      });
-    }
-    return res.status(201).json({
+    return res.status(200).json({
       message: 'Articles you bookmarked',
       data: bookmarkedArticles,
     });

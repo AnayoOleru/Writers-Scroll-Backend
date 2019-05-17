@@ -120,7 +120,7 @@ describe('PROFILE', () => {
       .end((err, res) => {
         expect(res).to.have.status(200);
 
-        const { firstname } = res.body.profile;
+        const { first_name: firstname } = res.body.profile;
         expect(firstname).to.equal('Sammy');
         done();
       });

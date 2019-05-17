@@ -15,6 +15,7 @@ module.exports = {
         likes_count: 23,
         image_url: 'https://picsum.photos/200/300',
         is_reported: false,
+        reading_time: 8,
       },
       {
         id: 'fa3def47-153a-40bd-8181-a1c787e083d6',
@@ -30,6 +31,7 @@ module.exports = {
         likes_count: 3244,
         image_url: 'https://picsum.photos/200/300',
         is_reported: false,
+        reading_time: 3,
       },
       {
         id: 'fb3def47-153c-40bd-8161-a1c787e083d6',
@@ -45,6 +47,7 @@ module.exports = {
         likes_count: 3244,
         image_url: 'https://picsum.photos/200/300',
         is_reported: false,
+        reading_time: 1,
       },
       {
         id: 'fb3def47-153c-40bd-8161-a1c787e083d7',
@@ -60,6 +63,7 @@ module.exports = {
         likes_count: 3244,
         image_url: 'https://picsum.photos/200/300',
         is_reported: false,
+        reading_time: 5,
       },
     ]),
 };

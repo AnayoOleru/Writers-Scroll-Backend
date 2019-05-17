@@ -1,8 +1,10 @@
+import dotenv from 'dotenv';
 import notification from '../helpers/notifications';
 import Authenticate from '../helpers/auth';
 import model from '../models';
 import serverError from '../helpers/server-error';
 
+dotenv.config();
 const { User } = model;
 
 const { hashPassword } = Authenticate;
@@ -32,14 +34,12 @@ const updatePassword = async (req, res) => {
   }
 };
 
-const acceptRequest = (req, res) =>
+const acceptRequest = (req, res) => {
+  const { FRONTEND_PASSWORD_RESET_URL } = process.env;
   res
     .status(200)
-    .redirect(
-      `${req.protocol}://${req.get('host')}/api/v1/auth/reset/message?token=${
-        req.params.token
-      }`
-    );
+    .redirect(`${FRONTEND_PASSWORD_RESET_URL}?token=${req.params.token}`);
+};
 
 const ResetPasswordController = { updatePassword, acceptRequest };
 

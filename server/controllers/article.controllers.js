@@ -15,6 +15,9 @@ const {
   Like,
   Bookmark,
   Rating,
+  Comment,
+  Comment_reply: CommentReply,
+  Keyword,
   Sequelize,
 } = model;
 
@@ -53,6 +56,7 @@ const getOneArticle = async (req, res) => {
             'phone_number',
             'email',
             'bio',
+            'image_url',
           ],
         },
         {
@@ -63,6 +67,36 @@ const getOneArticle = async (req, res) => {
         },
         {
           model: Rating,
+        },
+        {
+          model: Comment,
+          attributes: ['id', 'body', 'likes_count', 'createdAt', 'updatedAt'],
+          include: [
+            {
+              model: User,
+              as: 'comment-owner',
+              attributes: ['first_name', 'last_name', 'image_url'],
+            },
+            {
+              model: CommentReply,
+              required: false,
+              as: 'replies',
+              order: ['body'],
+              attributes: ['reply', 'createdAt'],
+              include: [
+                {
+                  model: User,
+                  as: 'replier',
+                  attributes: ['first_name', 'last_name', 'image_url'],
+                },
+              ],
+            },
+          ],
+          order: [['replies', 'createdAt', 'asc']],
+        },
+        {
+          model: Keyword,
+          attributes: ['keyword'],
         },
       ],
     });

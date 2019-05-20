@@ -202,7 +202,7 @@ describe('SIGNUP VALIDATION TEST', () => {
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'Password must contain a number, character and alphabet'
+          'password is not allowed to be empty'
         );
         done(err);
       });
@@ -220,7 +220,7 @@ describe('SIGNUP VALIDATION TEST', () => {
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'Password must contain a number, character and alphabet'
+          'password must be a string'
         );
         done(err);
       });
@@ -237,9 +237,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'h0=ttesttpassword',
       })
       .end((err, res) => {
-        expect(res.body.errors.body[0]).to.be.equal(
-          'Password must contain a number, character and alphabet'
-        );
+        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
         done(err);
       });
   });
@@ -274,7 +272,7 @@ describe('SIGNUP VALIDATION TEST', () => {
       })
       .end((err, res) => {
         expect(res.body.errors.body[0]).to.be.equal(
-          'Password must contain a number, character and alphabet'
+          'confirmPassword must be a string'
         );
         done(err);
       });
@@ -291,9 +289,7 @@ describe('SIGNUP VALIDATION TEST', () => {
         confirmPassword: 'h0=ttestt',
       })
       .end((err, res) => {
-        expect(res.body.errors.body[0]).to.be.equal(
-          'Password must contain a number, character and alphabet'
-        );
+        expect(res.body.errors.body[0]).to.be.equal('Passwords do not match');
         done(err);
       });
   });

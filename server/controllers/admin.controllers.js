@@ -30,14 +30,6 @@ const activateReviewer = async (req, res) => {
     const findUser = await User.findOne({
       where: { is_reviewer: false, id: userId },
     });
-    // check if user exists in the database
-    if (!findUser) {
-      return res.status(403).json({
-        errors: {
-          body: ['user not found'],
-        },
-      });
-    }
     // Give user a reveiwer access
     if (findUser) {
       const userUpgrade = await findUser.update({
@@ -81,14 +73,6 @@ const deactivateReviewer = async (req, res) => {
     const findUser = await User.findOne({
       where: { is_reviewer: true, id: userId },
     });
-    // Check if user exists in the database
-    if (!findUser) {
-      return res.status(404).json({
-        errors: {
-          body: ['User not found'],
-        },
-      });
-    }
     // Deactivate user reveiwer access
     if (findUser) {
       const downgradeUser = await findUser.update({ is_reviewer: false });

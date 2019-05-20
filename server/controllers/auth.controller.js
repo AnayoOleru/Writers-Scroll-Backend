@@ -195,19 +195,13 @@ const socialRedirect = async (req, res) => {
     return res.redirect(`${process.env.FRONTEND_URL}/auth/social?error=${400}`);
   }
 
-  const {
-    id,
-    email,
-    is_admin: isAdmin,
-    is_reviewer: isReviewer,
-    is_activated: isActivated,
-  } = req.user;
+  const { id, email, is_admin: isAdmin, is_reviewer: isReviewer } = req.user;
   const token = await authHelper.encode({
     id,
     email,
     isAdmin,
     isReviewer,
-    isActivated,
+    isActivated: true,
   });
   return res.redirect(`${process.env.FRONTEND_URL}/auth/social?${token}`);
 };

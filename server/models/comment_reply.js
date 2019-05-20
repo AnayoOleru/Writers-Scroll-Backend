@@ -21,8 +21,13 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
   Comment_reply.associate = models => {
+    const { User } = models;
     Comment_reply.hasMany(models.Comment, {
       foreignKey: 'id',
+    });
+    Comment_reply.belongsTo(User, {
+      foreignKey: 'user_id',
+      as: 'replier',
     });
   };
   return Comment_reply;

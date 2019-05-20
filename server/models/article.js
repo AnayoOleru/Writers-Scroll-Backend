@@ -130,6 +130,14 @@ module.exports = (sequelize, DataTypes) => {
     Article.hasMany(models.Rating, {
       foreignKey: 'article_id',
     });
+
+    Article.hasMany(models.Comment, {
+      foreignKey: 'article_id',
+    });
+
+    Article.hasMany(models.Keyword, {
+      foreignKey: 'article_id',
+    });
   };
 
   return Article;

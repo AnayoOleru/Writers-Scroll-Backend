@@ -35,6 +35,11 @@ const activateReviewer = async (req, res) => {
       const userUpgrade = await findUser.update({
         is_reviewer: true,
       });
+      await Request.destroy({
+        where: {
+          user_id: userId,
+        },
+      });
       const userDetails = profileHelper.profiler(userUpgrade);
       return res.status(200).json({
         message: 'You have granted a user reviewer access',
@@ -76,6 +81,11 @@ const deactivateReviewer = async (req, res) => {
     // Deactivate user reveiwer access
     if (findUser) {
       const downgradeUser = await findUser.update({ is_reviewer: false });
+      await Request.destroy({
+        where: {
+          user_id: userId,
+        },
+      });
       const userDetails = profileHelper.profiler(downgradeUser);
       return res.status(200).json({
         message: 'You have removed a user reviewer access',

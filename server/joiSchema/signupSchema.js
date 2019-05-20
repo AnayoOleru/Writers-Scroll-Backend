@@ -13,9 +13,7 @@ const signupSchema = () => {
     email: Joi.string()
       .email({ minDomainAtoms: 2 })
       .required(),
-    password: Joi.string()
-      .regex(/^(?=.*[0-9])(?=.*[!@#$%^&=*])[a-zA-Z0-9!@#$%^&=*]{6,16}$/)
-      .error(() => 'Password must contain a number, character and alphabet'),
+    password: Joi.string().required(),
     confirmPassword: Joi.string()
       .required()
       .valid(Joi.ref('password'))

@@ -48,6 +48,43 @@ router.patch(
 /**
  * @swagger
  *
+ * /admin/{id}/reject:
+ *   delete:
+ *     tags:
+ *       - admin
+ *       - auth
+ *     description: Admin can reject a user request
+ *     produces:
+ *       - application/json
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         description: Requires user id
+ *         required: true
+ *     responses:
+ *       200:
+ *         description: Success
+ *       400:
+ *         description: Bad request
+ *       401:
+ *         description: unauthorized
+ *       403:
+ *         description: Forbidden
+ *       500:
+ *         description: Server error
+ */
+// Activate a use as a reviewer
+router.delete(
+  '/admin/:id/reject',
+  tokenValidator.verifyToken,
+  tokenValidator.verifyAdmin,
+  adminMiddleware.checkAdmin,
+  adminController.rejectReviewerRequest
+);
+
+/**
+ * @swagger
+ *
  * /admin/{id}/downgrades:
  *   patch:
  *     tags:
@@ -73,6 +110,7 @@ router.patch(
  *       500:
  *         description: Server error
  */
+
 // deactivate a user a reviewer
 router.patch(
   '/admin/:id/downgrades',

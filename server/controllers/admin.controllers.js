@@ -1,6 +1,7 @@
 import model from '../models';
 import serverError from '../helpers/server-error';
 import profileHelper from '../helpers/profiler';
+import notifications from '../helpers/notifications';
 import validations from '../helpers/validations';
 
 const { User, Request } = model;
@@ -40,6 +41,7 @@ const activateReviewer = async (req, res) => {
           user_id: userId,
         },
       });
+      await notifications.activateUser(findUser.email, findUser.first_name);
       const userDetails = profileHelper.profiler(userUpgrade);
       return res.status(200).json({
         message: 'You have granted a user reviewer access',
@@ -86,6 +88,7 @@ const deactivateReviewer = async (req, res) => {
           user_id: userId,
         },
       });
+      await notifications.deActivateUser(findUser.email, findUser.first_name);
       const userDetails = profileHelper.profiler(downgradeUser);
       return res.status(200).json({
         message: 'You have removed a user reviewer access',
@@ -103,7 +106,50 @@ const deactivateReviewer = async (req, res) => {
     });
   }
 };
-
+/**
+ * @method rejectUserRequest
+ * @description Admin priviledges
+ * @param {Object} req
+ * @param {Object} res
+ * @returns {undefined}
+ */
+const rejectReviewerRequest = async (req, res) => {
+  const userId = req.params.id;
+  try {
+    // Is user id correct?
+    if (!validations.verifyUUID(req.params.id)) {
+      return res.status(400).json({
+        errors: {
+          body: ['id not valid'],
+        },
+      });
+    }
+    const findUser = await User.findOne({
+      where: { is_reviewer: false, id: userId },
+    });
+    // Give user a reveiwer access
+    if (findUser) {
+      const deactivateRequest = await Request.destroy({
+        where: {
+          user_id: userId,
+        },
+      });
+      await notifications.rejectUserRequest(
+        findUser.email,
+        findUser.first_name
+      );
+      const userDetails = profileHelper.profiler(deactivateRequest);
+      return res.status(200).json({
+        message: 'Your request has been rejected',
+        user: userDetails,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      errors: serverError(),
+    });
+  }
+};
 const getAllReviewerRequests = async (req, res) => {
   const userId = req.user.userObj.id;
   try {
@@ -197,5 +243,6 @@ const usersRequest = {
   deactivateReviewer,
   getAllReviewerRequests,
   getAllReviewers,
+  rejectReviewerRequest,
 };
 export default usersRequest;

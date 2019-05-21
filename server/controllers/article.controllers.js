@@ -74,7 +74,7 @@ const getOneArticle = async (req, res) => {
           include: [
             {
               model: User,
-              as: 'comment-owner',
+              as: 'commentOwner',
               attributes: ['first_name', 'last_name', 'image_url'],
             },
             {

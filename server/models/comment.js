@@ -57,7 +57,7 @@ module.exports = (sequelize, DataTypes) => {
     });
     Comment.belongsTo(User, {
       foreignKey: 'user_id',
-      as: 'comment-owner',
+      as: 'commentOwner',
     });
 
     Comment.hasMany(Comment_history, {

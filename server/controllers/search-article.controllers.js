@@ -14,7 +14,9 @@ const searchArticles = async (req, res) => {
       });
     }
     const searchFilter = req.query.filter;
+    const limit = 3;
     const articles = Article.findAll({
+      limit,
       where: {
         title: {
           [sequelize.Op.iLike]: `%${searchFilter}%`,
@@ -38,6 +40,7 @@ const searchArticles = async (req, res) => {
     });
 
     const keywords = Keyword.findAll({
+      limit,
       where: {
         keyword: {
           [sequelize.Op.iLike]: `%${searchFilter}%`,
@@ -68,6 +71,7 @@ const searchArticles = async (req, res) => {
     });
 
     const authors = User.findAll({
+      limit,
       where: {
         first_name: {
           [sequelize.Op.iLike]: `%${searchFilter}%`,

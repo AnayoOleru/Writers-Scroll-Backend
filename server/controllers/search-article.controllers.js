@@ -23,6 +23,7 @@ const searchArticles = async (req, res) => {
         },
       },
       attributes: [
+        'id',
         'slug',
         'title',
         'body',
@@ -52,6 +53,7 @@ const searchArticles = async (req, res) => {
           model: Article,
           as: 'article',
           attributes: [
+            'id',
             'slug',
             'title',
             'body',
@@ -83,6 +85,7 @@ const searchArticles = async (req, res) => {
           model: Article,
           as: 'author',
           attributes: [
+            'id',
             'slug',
             'title',
             'body',

@@ -71,7 +71,6 @@ const getOneArticle = async (req, res) => {
         {
           model: Comment,
           order: [['createdAt', 'DESC']],
-          as: 'comments',
           include: [
             {
               model: User,

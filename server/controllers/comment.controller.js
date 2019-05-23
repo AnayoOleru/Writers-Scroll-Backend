@@ -66,12 +66,14 @@ const post = async (req, res) => {
     );
 
     res.status(201).json({
-      id: comment.id,
-      body: comment.body,
-      createdAt: comment.createdAt,
-      updatedAt: comment.updatedAt,
-      likes_count: comment.likes_count,
-      commentOwner,
+      comment: {
+        id: comment.id,
+        body: comment.body,
+        createdAt: comment.createdAt,
+        updatedAt: comment.updatedAt,
+        likes_count: comment.likes_count,
+        commentOwner,
+      },
     });
   } catch (err) {
     databaseError(err, res);

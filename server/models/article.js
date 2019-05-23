@@ -133,6 +133,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Article.hasMany(models.Comment, {
       foreignKey: 'article_id',
+      as: 'comments',
     });
 
     Article.hasMany(models.Keyword, {

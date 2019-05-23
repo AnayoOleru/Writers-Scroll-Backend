@@ -45,6 +45,36 @@ const signupEmail = (email, link, name) => {
 };
 /**
  *
+ * @param {*} email
+ *  @param {*} name
+ * @returns {*} sends an email to based on his request status
+ */
+const activateUser = (email, name) => {
+  const title = 'Request to be a reviewer';
+  const body = `<p>Dear ${name},</p>
+  <p>Your request has been accepted.</p>
+      `;
+  const message = template(body, email);
+  sendEmail(email, title, message);
+};
+const deActivateUser = (email, name) => {
+  const title = 'Deactivated from being a reviewer';
+  const body = `<p>Dear ${name},</p>
+  <p>Your reviewer right has been removed.</p>
+      `;
+  const message = template(body, email);
+  sendEmail(email, title, message);
+};
+const rejectUserRequest = (email, name) => {
+  const title = 'Declined reviewer Request';
+  const body = `<p>Dear ${name},</p>
+  <p>Your request has been rejected.</p>
+      `;
+  const message = template(body, email);
+  sendEmail(email, title, message);
+};
+/**
+ *
  * @param {*} articleId
  * @param {*} authorId
  * @param {*} message
@@ -169,6 +199,9 @@ const Notifications = {
   sendEmailNotificationComment,
   sendEmailNotificationArticle,
   reportedArticleNotification,
+  activateUser,
+  deActivateUser,
+  rejectUserRequest,
 };
 
 export default Notifications;

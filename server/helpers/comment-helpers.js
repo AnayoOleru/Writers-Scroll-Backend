@@ -22,7 +22,6 @@ const getCommentAndReplies = async (Comment, CommentReply, commentid) => {
           model: CommentReply,
           required: false,
           as: 'replies',
-          order: ['body'],
           attributes: ['id', 'user_id', 'comment_id', 'reply', 'createdAt'],
         },
       ],

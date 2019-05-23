@@ -70,7 +70,7 @@ const getOneArticle = async (req, res) => {
         },
         {
           model: Comment,
-          attributes: ['id', 'body', 'likes_count', 'createdAt', 'updatedAt'],
+          order: [['createdAt', 'DESC']],
           include: [
             {
               model: User,
@@ -81,7 +81,6 @@ const getOneArticle = async (req, res) => {
               model: CommentReply,
               required: false,
               as: 'replies',
-              order: ['body'],
               attributes: ['reply', 'createdAt'],
               include: [
                 {
@@ -92,7 +91,6 @@ const getOneArticle = async (req, res) => {
               ],
             },
           ],
-          order: [['replies', 'createdAt', 'asc']],
         },
         {
           model: Keyword,

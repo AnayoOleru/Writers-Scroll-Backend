@@ -47,6 +47,12 @@ const post = async (req, res) => {
         },
       });
     }
+    const commentOwner = await User.findOne({
+      where: {
+        id: userId,
+      },
+      attributes: ['first_name', 'last_name', 'image_url'],
+    });
     const comment = await Comment.create({
       user_id: userId,
       article_id: req.body.article_id,
@@ -58,8 +64,16 @@ const post = async (req, res) => {
       article.title,
       article.user_id
     );
+
     res.status(201).json({
-      comment,
+      comment: {
+        id: comment.id,
+        body: comment.body,
+        createdAt: comment.createdAt,
+        updatedAt: comment.updatedAt,
+        likes_count: comment.likes_count,
+        commentOwner,
+      },
     });
   } catch (err) {
     databaseError(err, res);

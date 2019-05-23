@@ -59,7 +59,7 @@ const post = async (req, res) => {
       body: req.body.body,
     });
 
-    await notifications.sendEmailNotificationComment(
+    notifications.sendEmailNotificationComment(
       req.body.article_id,
       article.title,
       article.user_id

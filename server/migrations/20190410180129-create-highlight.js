@@ -15,6 +15,11 @@ module.exports = {
       article_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       start_position: {
         type: Sequelize.INTEGER,

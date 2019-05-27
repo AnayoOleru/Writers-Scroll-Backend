@@ -22,6 +22,11 @@ module.exports = {
       reported_article_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       reporter_reason: {
         type: Sequelize.STRING,

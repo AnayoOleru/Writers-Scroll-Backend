@@ -10,6 +10,11 @@ module.exports = {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       rating_value: {
         type: Sequelize.INTEGER,

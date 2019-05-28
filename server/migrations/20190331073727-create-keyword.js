@@ -11,6 +11,11 @@ module.exports = {
       article_id: {
         type: Sequelize.UUID,
         allowNull: false,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       keyword: {
         type: Sequelize.STRING,

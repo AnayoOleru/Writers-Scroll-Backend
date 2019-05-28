@@ -13,6 +13,11 @@ module.exports = {
       },
       article_id: {
         type: Sequelize.UUID,
+        references: {
+          model: 'Articles',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

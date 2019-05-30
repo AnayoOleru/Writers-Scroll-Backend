@@ -72,6 +72,7 @@ const post = async (req, res) => {
         createdAt: comment.createdAt,
         updatedAt: comment.updatedAt,
         likes_count: comment.likes_count,
+        user_id: comment.user_id,
         commentOwner,
       },
     });
@@ -127,6 +128,7 @@ const updateComment = async (req, res) => {
     await CommentHistory.create({
       comment_id: res.locals.comment.id,
       body: res.locals.comment.body,
+      createdAt: res.locals.comment.updatedAt,
     });
   }
 

@@ -38,17 +38,24 @@ const getCommentAndHistories = async (Comment, CommentHistory, commentid) => {
       where: {
         id: commentid,
       },
-      attributes: ['id', 'likes_count', 'user_id', 'body', 'createdAt'],
+      attributes: [
+        'id',
+        'likes_count',
+        'user_id',
+        'body',
+        'createdAt',
+        'updatedAt',
+      ],
       include: [
         {
           model: CommentHistory,
           required: false,
           as: 'histories',
           order: ['body'],
-          attributes: ['id', 'comment_id', 'body', 'updatedAt'],
+          attributes: ['id', 'comment_id', 'body', 'updatedAt', 'createdAt'],
         },
       ],
-      order: [['histories', 'updatedAt', 'desc']],
+      order: [['histories', 'updatedAt', 'asc']],
     });
   } catch (err) {
     return err;

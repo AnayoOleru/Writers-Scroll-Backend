@@ -172,13 +172,15 @@ describe('GET COMMENTS AND EDIT HISTORIES', () => {
           'body',
           'createdAt',
           'histories',
-          'likes_count'
+          'likes_count',
+          'updatedAt'
         );
         expect(res.body.comment[0].histories[0]).to.have.all.keys(
           'id',
           'body',
           'comment_id',
-          'updatedAt'
+          'updatedAt',
+          'createdAt'
         );
         expect(res.body.comment[0].histories[0].body).equal('deep write up');
         done();

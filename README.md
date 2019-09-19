@@ -1,6 +1,6 @@
 [![Reviewed by Hound](https://img.shields.io/badge/Reviewed_by-Hound-8E64B0.svg)](https://houndci.com) [![Build Status](https://travis-ci.com/andela/hermes-ah-backend.svg?branch=develop)](https://travis-ci.com/andela/hermes-ah-backend) [![Coverage Status](https://coveralls.io/repos/github/andela/hermes-ah-backend/badge.svg?branch=develop)](https://coveralls.io/github/andela/hermes-ah-backend?branch=develop)
 
-Authors Haven - A Social platform for the creative at heart.
+A social platform for creative writers to expose their work and connect to other writers.
 
 ## Vision
 
